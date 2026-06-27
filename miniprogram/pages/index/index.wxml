@@ -1,0 +1,5 @@
+<!-- pages/index/index.wxml -->
+<view class="container">
+  <view class="welcome">{{message}}</view>
+  <view class="btn" bindtap="goToToolF">进入工具页</view>
+</view>

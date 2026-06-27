@@ -1,0 +1,79 @@
+<!-- pages/tool/tool_f/tool_f.wxml -->
+<view class="container">
+  <view class="header">
+    <view class="title">体育成绩登记</view>
+    <view class="subtitle">请选择项目并填写成绩（非必填）</view>
+  </view>
+
+  <view class="form">
+    <!-- 省份 -->
+    <view class="form-item">
+      <view class="label">省份</view>
+      <picker mode="selector" range="{{provinceList}}" value="{{provinceIndex}}" bindchange="onProvinceChange">
+        <view class="picker">{{provinceList[provinceIndex]}}<text class="arrow">▼</text></view>
+      </picker>
+    </view>
+
+    <!-- 性别 -->
+    <view class="form-item">
+      <view class="label">性别</view>
+      <picker mode="selector" range="{{genderList}}" value="{{genderIndex}}" bindchange="onGenderChange">
+        <view class="picker">{{genderList[genderIndex]}}<text class="arrow">▼</text></view>
+      </picker>
+    </view>
+
+    <!-- ========== 基本素质 ========== -->
+    <view class="section-title">基本素质</view>
+
+    <view class="form-item">
+      <view class="label">类别</view>
+      <picker mode="selector" range="{{mainTypeList}}" value="{{mainTypeIndex}}" bindchange="onMainTypeChange">
+        <view class="picker">{{mainTypeList[mainTypeIndex]}}<text class="arrow">▼</text></view>
+      </picker>
+    </view>
+
+    <block wx:for="{{mainSubList}}" wx:key="code">
+      <view class="form-item">
+        <view class="label">{{item.name}}（{{item.unit}}）<text class="code-tag">{{item.code}}</text></view>
+        <input class="input" type="digit" placeholder="选填" value="{{mainScores[item.code] || ''}}" data-code="{{item.code}}" bindinput="onMainScoreInput" />
+      </view>
+    </block>
+
+    <!-- ========== 专项 ========== -->
+    <view class="section-title">专项</view>
+
+    <view class="form-item">
+      <view class="label">类别</view>
+      <picker mode="selector" range="{{specialTypeList}}" value="{{specialTypeIndex}}" bindchange="onSpecialTypeChange">
+        <view class="picker">{{specialTypeList[specialTypeIndex]}}<text class="arrow">▼</text></view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <view class="label">项目</view>
+      <picker mode="selector" range="{{specialSubNames}}" value="{{specialSubIndex}}" bindchange="onSpecialSubChange">
+        <view class="picker">{{specialSubNames[specialSubIndex]}}<text class="arrow">▼</text></view>
+      </picker>
+    </view>
+
+    <block wx:if="{{showVolleyballSkill}}">
+      <view class="form-item">
+        <view class="label">技能</view>
+        <picker mode="selector" range="{{volleyballSkillList}}" value="{{volleyballSkillIndex}}" bindchange="onVolleyballSkillChange">
+          <view class="picker">{{volleyballSkillList[volleyballSkillIndex]}}<text class="arrow">▼</text></view>
+        </picker>
+      </view>
+    </block>
+
+    <view class="form-item">
+      <view class="label">
+        <block wx:if="{{showVolleyballSkill}}">{{specialSubList[specialSubIndex].name}}-{{volleyballSkillList[volleyballSkillIndex]}}（{{specialSubUnit}}）</block>
+        <block wx:else>{{specialSubList[specialSubIndex].name}}（{{specialSubUnit}}）</block>
+      </view>
+      <input class="input" type="digit" placeholder="选填" value="{{specialScore}}" bindinput="onSpecialScoreInput" />
+    </view>
+
+    <button class="submit-btn" bindtap="submitForm" loading="{{submitting}}" disabled="{{submitting}}">提交</button>
+    <button class="reset-btn" bindtap="resetForm">重置</button>
+  </view>
+</view>
