@@ -1,0 +1,101 @@
+<!-- pages/tool/tool_f/tool_f.wxml -->
+<view class="container">
+  <view class="header">
+    <view class="title">体考成绩查询</view>
+    <!-- <view class="subtitle">请选择项目并填写成绩（非必填）</view> -->
+  </view>
+
+  <view class="form">
+    <!-- ========== 基本信息 ========== -->
+    <view class="section-block">
+      <view class="section-title">基本信息</view>
+      <view class="form-item">
+        <view class="label">省份</view>
+        <picker mode="selector" range="{{provinceList}}" value="{{provinceIndex}}" bindchange="onProvinceChange">
+          <view class="picker">{{provinceList[provinceIndex]}}<text class="arrow">▼</text></view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <view class="label">性别</view>
+        <picker mode="selector" range="{{genderList}}" value="{{genderIndex}}" bindchange="onGenderChange">
+          <view class="picker">{{genderList[genderIndex]}}<text class="arrow">▼</text></view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- ========== 基本素质 ========== -->
+    <view class="section-block">
+      <view class="section-title">基本素质</view>
+
+      <view class="form-item">
+        <view class="label">类别</view>
+        <picker mode="selector" range="{{mainTypeList}}" value="{{mainTypeIndex}}" bindchange="onMainTypeChange">
+          <view class="picker">{{mainTypeList[mainTypeIndex]}}<text class="arrow">▼</text></view>
+        </picker>
+      </view>
+
+      <block wx:for="{{mainSubList}}" wx:key="code">
+        <view class="form-item">
+          <view class="label">{{item.name}}</view>
+          <input class="input" type="digit" placeholder="{{item.unit}}" value="{{mainScores[item.code] || ''}}" data-code="{{item.code}}" bindinput="onMainScoreInput" />
+        </view>
+      </block>
+    </view>
+
+    <!-- ========== 专项 ========== -->
+    <view class="section-block">
+      <view class="section-title">专项</view>
+
+      <!-- 二选一：球类 / 游泳 -->
+      <view class="form-item">
+        <view class="label">类别</view>
+        <picker mode="selector" range="{{specialTypeList}}" value="{{specialTypeIndex}}" bindchange="onSpecialTypeChange">
+          <view class="picker">{{specialTypeList[specialTypeIndex]}}<text class="arrow">▼</text></view>
+        </picker>
+      </view>
+
+      <!-- 根据选择动态显示对应专项 -->
+      <!-- 有 subList 时显示项目选择器 -->
+      <block wx:if="{{specialGroup.subList.length > 0}}">
+        <view class="form-item">
+          <view class="label">项目</view>
+          <picker mode="selector" range="{{specialGroup.subNames}}" value="{{specialGroup.subIndex}}" bindchange="onSpecialSubChange">
+            <view class="picker">{{specialGroup.subNames[specialGroup.subIndex]}}<text class="arrow">▼</text></view>
+          </picker>
+        </view>
+      </block>
+
+      <!-- 非技能类：单个 input -->
+      <block wx:if="{{!specialGroup.showSkill}}">
+        <view class="form-item">
+          <view class="label">{{specialGroup.currentSubName}}</view>
+          <input class="input" type="digit" placeholder="{{specialGroup.currentUnit}}" value="{{specialGroup.score}}" bindinput="onSpecialScoreInput" />
+        </view>
+      </block>
+
+      <!-- 技能类：每个技能一个或多个 input（排球、健美操等） -->
+      <block wx:if="{{specialGroup.showSkill}}">
+        <block wx:for="{{specialGroup.skillItems}}" wx:key="code" wx:for-item="skillItem" wx:for-index="ski">
+          <view class="form-item">
+            <view class="label">{{skillItem.name}}</view>
+            <block wx:if="{{skillItem.inputCount === 1}}">
+              <input class="input" type="{{skillItem.allowNegative ? 'text' : 'digit'}}" placeholder="{{skillItem.unit}}" value="{{skillItem.values[0] || ''}}" data-ski="{{ski}}" data-input-index="0" bindinput="onSkillScoreInput" />
+            </block>
+            <block wx:if="{{skillItem.inputCount > 1}}">
+              <block wx:for="{{skillItem.inputLabels}}" wx:key="*this" wx:for-item="inputLabel" wx:for-index="inputIndex">
+                <input class="input" type="{{skillItem.allowNegative ? 'text' : 'digit'}}" placeholder="{{inputLabel}}{{skillItem.unit ? '（' + skillItem.unit + '）' : ''}}" value="{{skillItem.values[inputIndex] || ''}}" data-ski="{{ski}}" data-input-index="{{inputIndex}}" bindinput="onSkillScoreInput" />
+              </block>
+            </block>
+          </view>
+        </block>
+      </block>
+    </view>
+
+    <!-- ========== 操作按钮 ========== -->
+    <view class="section-block">
+      <button class="submit-btn" bindtap="submitForm" loading="{{submitting}}" disabled="{{submitting}}">提交</button>
+      <button class="reset-btn" bindtap="resetForm">重置</button>
+    </view>
+  </view>
+</view>

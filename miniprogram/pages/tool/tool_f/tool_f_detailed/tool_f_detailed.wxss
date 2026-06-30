@@ -1,0 +1,218 @@
+/** pages/tool/tool_f/tool_f_detailed/tool_f_detailed.wxss **/
+
+/* ==========================================
+   整体布局
+   ========================================== */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e8f4fd 0%, #f0f7e8 30%, #fef9e7 60%, #fce4ec 100%);
+  padding: 24rpx 24rpx 60rpx;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   Header 信息
+   ========================================== */
+.header {
+  text-align: center;
+  padding: 30rpx 0 20rpx;
+}
+
+.title {
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #1a1a2e;
+  letter-spacing: 4rpx;
+}
+
+.subtitle {
+  font-size: 24rpx;
+  color: #8e8e93;
+  margin-top: 8rpx;
+  letter-spacing: 1rpx;
+  padding: 10rpx 24rpx;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 20rpx;
+  display: inline-block;
+}
+
+/* ==========================================
+   总分卡片
+   ========================================== */
+.score-card {
+  background: linear-gradient(135deg, #07c160 0%, #00d4aa 100%);
+  border-radius: 24rpx;
+  padding: 48rpx 30rpx 40rpx;
+  text-align: center;
+  margin-bottom: 30rpx;
+  box-shadow: 0 12rpx 40rpx rgba(7, 193, 96, 0.35), 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.score-card::before {
+  content: '';
+  position: absolute;
+  top: -40rpx;
+  right: -30rpx;
+  width: 160rpx;
+  height: 160rpx;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.score-card::after {
+  content: '';
+  position: absolute;
+  bottom: -30rpx;
+  left: -20rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+}
+
+.total-label {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  letter-spacing: 8rpx;
+  text-transform: uppercase;
+}
+
+.total-score {
+  font-size: 120rpx;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  margin: 6rpx 0;
+  text-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.15);
+  letter-spacing: -4rpx;
+}
+
+.total-unit {
+  font-size: 32rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ==========================================
+   分段卡片
+   ========================================== */
+.section {
+  background-color: #fff;
+  border-radius: 24rpx;
+  padding: 28rpx 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.04), 0 2rpx 8rpx rgba(0, 0, 0, 0.02);
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 20rpx;
+  padding-left: 20rpx;
+  border-left: 6rpx solid #07c160;
+  line-height: 1.4;
+}
+
+/* ==========================================
+   成绩列表
+   ========================================== */
+.score-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.score-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22rpx 20rpx;
+  background: linear-gradient(135deg, #f7f8fa 0%, #fefefe 100%);
+  border-radius: 16rpx;
+  border: 2rpx solid #f0f1f5;
+  transition: all 0.15s ease;
+}
+
+.score-item:active {
+  background: linear-gradient(135deg, #f0fdf4 0%, #fefefe 100%);
+  border-color: #c8e6c9;
+}
+
+.item-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 6rpx;
+}
+
+.item-detail {
+  font-size: 24rpx;
+  color: #8e8e93;
+  line-height: 1.4;
+}
+
+.item-score {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #07c160;
+  margin-left: 24rpx;
+  flex-shrink: 0;
+  min-width: 80rpx;
+  text-align: right;
+}
+
+/* ==========================================
+   AI 辅助区域
+   ========================================== */
+.ai-section {
+  border: 2rpx solid #ffe8b0;
+  background: linear-gradient(135deg, #fffdf0 0%, #fff 100%);
+}
+
+.ai-title {
+  color: #e6a23c;
+  border-left-color: #e6a23c;
+}
+
+.ai-content {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  padding: 10rpx 0;
+}
+
+/* ==========================================
+   底部按钮
+   ========================================== */
+.btn-group {
+  margin-top: 30rpx;
+  padding-bottom: 40rpx;
+}
+
+.primary-btn {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: linear-gradient(135deg, #07c160 0%, #05d08a 50%, #00d4aa 100%);
+  color: #fff;
+  font-size: 34rpx;
+  font-weight: 700;
+  border-radius: 48rpx;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba(7, 193, 96, 0.3);
+  letter-spacing: 4rpx;
+}
+
+.primary-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 12rpx rgba(7, 193, 96, 0.2);
+}

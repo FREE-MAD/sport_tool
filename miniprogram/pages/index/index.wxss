@@ -1,0 +1,87 @@
+/** pages/index/index.wxss **/
+
+/* ==========================================
+   整体布局
+   ========================================== */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(160deg, #e8f4fd 0%, #f0f7e8 25%, #fef9e7 55%, #fce4ec 85%, #f3e5f5 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景装饰圆 */
+.container::before {
+  content: '';
+  position: absolute;
+  top: -120rpx;
+  right: -80rpx;
+  width: 360rpx;
+  height: 360rpx;
+  background: radial-gradient(circle, rgba(7, 193, 96, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.container::after {
+  content: '';
+  position: absolute;
+  bottom: -80rpx;
+  left: -60rpx;
+  width: 280rpx;
+  height: 280rpx;
+  background: radial-gradient(circle, rgba(87, 107, 149, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+/* ==========================================
+   欢迎文字
+   ========================================== */
+.welcome {
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 80rpx;
+  letter-spacing: 4rpx;
+  text-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+  position: relative;
+  z-index: 1;
+}
+
+.welcome::after {
+  content: '';
+  display: block;
+  width: 60rpx;
+  height: 6rpx;
+  background: linear-gradient(90deg, #07c160, #00d4aa);
+  border-radius: 3rpx;
+  margin: 16rpx auto 0;
+}
+
+/* ==========================================
+   进入按钮
+   ========================================== */
+.btn {
+  width: 480rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  color: #fff;
+  font-size: 34rpx;
+  font-weight: 700;
+  background: linear-gradient(135deg, #07c160 0%, #05d08a 50%, #00d4aa 100%);
+  border-radius: 50rpx;
+  letter-spacing: 6rpx;
+  box-shadow: 0 12rpx 36rpx rgba(7, 193, 96, 0.35), 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+  position: relative;
+  z-index: 1;
+  transition: all 0.2s ease;
+}
+
+.btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 6rpx 18rpx rgba(7, 193, 96, 0.25);
+}

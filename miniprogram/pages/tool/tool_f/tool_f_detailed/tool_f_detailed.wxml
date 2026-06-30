@@ -1,0 +1,51 @@
+<!-- pages/tool/tool_f/tool_f_detailed/tool_f_detailed.wxml -->
+<view class="container">
+  <!-- 总分卡片 -->
+  <view class="score-card">
+    <view class="total-label">总分</view>
+    <view class="total-score">{{totalScore}}</view>
+    <!-- <view class="total-unit">分</view> -->
+  </view>
+  <view class="header">
+    <!-- <view class="title">评分结果</view> -->
+    <view class="subtitle">{{province}} · {{gender}} · {{mainType}} {{specialType ? '· ' + specialType : ''}}</view>
+  </view>
+  <!-- 基本素质 -->
+  <view class="section" wx:if="{{mainScores.length > 0}}">
+    <view class="section-title">基本素质</view>
+    <view class="score-list">
+      <view class="score-item" wx:for="{{mainScores}}" wx:key="code">
+        <view class="item-left">
+          <view class="item-name">{{item.name}}</view>
+          <view class="item-detail">成绩 {{item.value}}{{item.unit}} → 得分 {{item.score}} 分</view>
+        </view>
+        <!-- <view class="item-score">{{item.score}}分</view> -->
+      </view>
+    </view>
+  </view>
+
+  <!-- 专项 -->
+  <view class="section" wx:if="{{specialScores.length > 0}}">
+    <view class="section-title">专项</view>
+    <view class="score-list">
+      <view class="score-item" wx:for="{{specialScores}}" wx:key="code">
+        <view class="item-left">
+          <view class="item-name">{{item.name}}</view>
+          <view class="item-detail">成绩 {{item.value}}{{item.unit}} → 得分 {{item.score}} 分</view>
+        </view>
+        <!-- <view class="item-score">{{item.score}}分</view> -->
+      </view>
+    </view>
+  </view>
+
+  <!-- AI兜底 -->
+  <!-- <view class="section ai-section" wx:if="{{aiFallback}}">
+    <view class="section-title ai-title">AI 辅助评分</view>
+    <view class="ai-content">{{aiFallback}}</view>
+  </view> -->
+
+  <!-- 底部按钮 -->
+  <!-- <view class="btn-group">
+    <button class="primary-btn" bindtap="goBack">返回重新填写</button>
+  </view> -->
+</view>
