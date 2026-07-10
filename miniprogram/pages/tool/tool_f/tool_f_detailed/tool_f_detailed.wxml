@@ -1,0 +1,44 @@
+<!-- pages/tool/tool_f/tool_f_detailed/tool_f_detailed.wxml -->
+<view class="container">
+  <view class="hero-card">
+    <view class="hero-panel">
+      <view class="hero-decor hero-decor-large"></view>
+      <view class="hero-decor hero-decor-small"></view>
+      <view class="hero-decor-line"></view>
+    </view>
+    <view class="score-card">
+      <view class="total-label">本次总分</view>
+      <view class="total-score">{{totalScore}}</view>
+    </view>
+  </view>
+  <view class="header">
+    <view class="subtitle">{{province}} · {{gender}} · {{mainType}}{{specialType ? ' · ' + specialType : ''}}</view>
+  </view>
+  <!-- 成绩详情 -->
+  <view class="section" wx:if="{{allScores.length > 0}}">
+    <!-- <view class="section-title">运动项目</view>
+    <view class="section-hint">+具体成绩</view> -->
+    <view class="score-list">
+      <view class="score-item" wx:for="{{allScores}}" wx:key="code">
+        <view class="item-left">
+          <view class="item-name">{{item.name}}</view>
+        </view>
+        <view class="item-right">
+          <view class="item-detail">{{item.value}}{{item.unit}}</view>
+          <view class="item-score">{{item.score}}分</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- AI兜底 -->
+  <!-- <view class="section ai-section" wx:if="{{aiFallback}}">
+    <view class="section-title ai-title">AI 辅助评分</view>
+    <view class="ai-content">{{aiFallback}}</view>
+  </view> -->
+
+  <!-- 底部按钮 -->
+  <!-- <view class="btn-group">
+    <button class="primary-btn" bindtap="goBack">返回重新填写</button>
+  </view> -->
+</view>

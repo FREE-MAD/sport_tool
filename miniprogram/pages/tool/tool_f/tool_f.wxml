@@ -1,79 +1,230 @@
 <!-- pages/tool/tool_f/tool_f.wxml -->
 <view class="container">
-  <view class="header">
-    <view class="title">体育成绩登记</view>
-    <view class="subtitle">请选择项目并填写成绩（非必填）</view>
+  <view class="hero-card">
+    <view class="hero-kicker">体考分数计算 / 查分</view>
+    <view class="hero-title">体考成绩查询</view>
+    <view class="hero-desc">信息与接口保持不变，升级页面观感与填写体验</view>
   </view>
 
-  <view class="form">
-    <!-- 省份 -->
-    <view class="form-item">
-      <view class="label">省份</view>
-      <picker mode="selector" range="{{provinceList}}" value="{{provinceIndex}}" bindchange="onProvinceChange">
-        <view class="picker">{{provinceList[provinceIndex]}}<text class="arrow">▼</text></view>
-      </picker>
-    </view>
-
-    <!-- 性别 -->
-    <view class="form-item">
-      <view class="label">性别</view>
-      <picker mode="selector" range="{{genderList}}" value="{{genderIndex}}" bindchange="onGenderChange">
-        <view class="picker">{{genderList[genderIndex]}}<text class="arrow">▼</text></view>
-      </picker>
-    </view>
-
-    <!-- ========== 基本素质 ========== -->
-    <view class="section-title">基本素质</view>
-
-    <view class="form-item">
-      <view class="label">类别</view>
-      <picker mode="selector" range="{{mainTypeList}}" value="{{mainTypeIndex}}" bindchange="onMainTypeChange">
-        <view class="picker">{{mainTypeList[mainTypeIndex]}}<text class="arrow">▼</text></view>
-      </picker>
-    </view>
-
-    <block wx:for="{{mainSubList}}" wx:key="code">
-      <view class="form-item">
-        <view class="label">{{item.name}}（{{item.unit}}）<text class="code-tag">{{item.code}}</text></view>
-        <input class="input" type="digit" placeholder="选填" value="{{mainScores[item.code] || ''}}" data-code="{{item.code}}" bindinput="onMainScoreInput" />
+  <view class="content">
+    <view class="section-card">
+      <view class="section-head">
+        <view class="section-title">基础信息</view>
+        <view class="section-desc">用于匹配对应地区与性别标准</view>
       </view>
-    </block>
 
-    <!-- ========== 专项 ========== -->
-    <view class="section-title">专项</view>
+      <view class="field-list">
+        <view class="field-row">
+          <view class="field-label">省份</view>
+          <picker class="field-picker" mode="selector" range="{{provinceList}}" value="{{provinceIndex}}" bindchange="onProvinceChange">
+            <view class="select-shell">
+              <text class="select-value">{{provinceList[provinceIndex]}}</text>
+              <text class="select-arrow">›</text>
+            </view>
+          </picker>
+        </view>
 
-    <view class="form-item">
-      <view class="label">类别</view>
-      <picker mode="selector" range="{{specialTypeList}}" value="{{specialTypeIndex}}" bindchange="onSpecialTypeChange">
-        <view class="picker">{{specialTypeList[specialTypeIndex]}}<text class="arrow">▼</text></view>
-      </picker>
-    </view>
-
-    <view class="form-item">
-      <view class="label">项目</view>
-      <picker mode="selector" range="{{specialSubNames}}" value="{{specialSubIndex}}" bindchange="onSpecialSubChange">
-        <view class="picker">{{specialSubNames[specialSubIndex]}}<text class="arrow">▼</text></view>
-      </picker>
-    </view>
-
-    <block wx:if="{{showVolleyballSkill}}">
-      <view class="form-item">
-        <view class="label">技能</view>
-        <picker mode="selector" range="{{volleyballSkillList}}" value="{{volleyballSkillIndex}}" bindchange="onVolleyballSkillChange">
-          <view class="picker">{{volleyballSkillList[volleyballSkillIndex]}}<text class="arrow">▼</text></view>
-        </picker>
+        <view class="field-row">
+          <view class="field-label">性别</view>
+          <picker class="field-picker" mode="selector" range="{{genderList}}" value="{{genderIndex}}" bindchange="onGenderChange">
+            <view class="select-shell">
+              <text class="select-value">{{genderList[genderIndex]}}</text>
+              <text class="select-arrow">›</text>
+            </view>
+          </picker>
+        </view>
       </view>
-    </block>
-
-    <view class="form-item">
-      <view class="label">
-        <block wx:if="{{showVolleyballSkill}}">{{specialSubList[specialSubIndex].name}}-{{volleyballSkillList[volleyballSkillIndex]}}（{{specialSubUnit}}）</block>
-        <block wx:else>{{specialSubList[specialSubIndex].name}}（{{specialSubUnit}}）</block>
-      </view>
-      <input class="input" type="digit" placeholder="选填" value="{{specialScore}}" bindinput="onSpecialScoreInput" />
     </view>
 
-    <button class="submit-btn" bindtap="submitForm" loading="{{submitting}}" disabled="{{submitting}}">提交</button>
-    <button class="reset-btn" bindtap="resetForm">重置</button>
+    <view class="section-card">
+      <view class="section-head">
+        <view class="section-title">项目成绩</view>
+        <view class="section-desc">输入基础项目成绩，系统会自动参与后续计算</view>
+      </view>
+
+      <view class="field-list">
+        <view class="field-row">
+          <view class="field-label">类别</view>
+          <picker class="field-picker" mode="selector" range="{{mainTypeList}}" value="{{mainTypeIndex}}" bindchange="onMainTypeChange">
+            <view class="select-shell">
+              <text class="select-value">{{mainTypeList[mainTypeIndex]}}</text>
+              <text class="select-arrow">›</text>
+            </view>
+          </picker>
+        </view>
+      </view>
+
+      <view class="score-list">
+        <block wx:for="{{mainSubList}}" wx:key="code">
+          <view class="score-card">
+            <view class="score-meta">
+              <view class="score-name">{{item.name}}</view>
+              <view class="score-hint">请输入该项目成绩</view>
+            </view>
+            <view class="score-field">
+              <input class="score-input" type="digit" placeholder="请输入成绩" value="{{mainScores[item.code] || ''}}" data-code="{{item.code}}" bindinput="onMainScoreInput" />
+              <text class="score-unit" wx:if="{{item.unit}}">{{item.unit}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <view class="section-head">
+        <view class="section-tag">专项</view>
+        <view class="section-title">专项选择</view>
+        <view class="section-desc">用于匹配专项对应标准</view>
+      </view>
+
+      <view class="field-list">
+        <view class="field-row">
+          <view class="field-label">类别</view>
+          <view class="field-picker">
+            <view class="option-group option-group--row">
+              <block wx:for="{{specialTypeList}}" wx:key="*this" wx:for-item="specialType" wx:for-index="typeIndex">
+                <button
+                  class="option-btn {{specialTypeIndex === typeIndex ? 'option-btn--active' : ''}}"
+                  data-index="{{typeIndex}}"
+                  bindtap="onSpecialTypeTap"
+                >{{specialType}}</button>
+              </block>
+            </view>
+          </view>
+        </view>
+
+        <block wx:if="{{specialGroup.subList.length > 0}}">
+          <view class="field-row">
+            <view class="field-label">项目</view>
+            <picker class="field-picker" mode="selector" range="{{specialGroup.subNames}}" value="{{specialGroup.subIndex}}" bindchange="onSpecialSubChange">
+              <view class="select-shell">
+                <text class="select-value">{{specialGroup.subNames[specialGroup.subIndex]}}</text>
+                <text class="select-arrow">›</text>
+              </view>
+            </picker>
+          </view>
+        </block>
+      </view>
+
+      <block wx:if="{{!specialGroup.showSkill}}">
+        <view class="score-list">
+          <view class="score-card">
+            <view class="score-meta">
+              <view class="score-name">{{specialGroup.currentSubName}}</view>
+              <view class="score-hint">请输入专项成绩</view>
+            </view>
+            <view class="score-field">
+              <input class="score-input" type="digit" placeholder="请输入成绩" value="{{specialGroup.score}}" bindinput="onSpecialScoreInput" />
+              <text class="score-unit" wx:if="{{specialGroup.currentUnit}}">{{specialGroup.currentUnit}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <block wx:if="{{specialGroup.showSkill}}">
+        <block wx:if="{{specialGroup.useSkillPicker}}">
+          <view class="field-list">
+            <view class="field-row">
+              <view class="field-label">细项</view>
+              <picker class="field-picker" mode="selector" range="{{specialGroup.skillList}}" value="{{specialGroup.skillIndex}}" bindchange="onSkillChange">
+                <view class="select-shell">
+                  <text class="select-value">{{specialGroup.skillList[specialGroup.skillIndex]}}</text>
+                  <text class="select-arrow">›</text>
+                </view>
+              </picker>
+            </view>
+          </view>
+
+          <view class="score-list" wx:if="{{specialGroup.currentSkillItem}}">
+            <view class="score-card">
+              <view class="score-meta">
+                <view class="score-name">{{specialGroup.currentSkillItem.name}}</view>
+                <view class="score-hint">请完成当前细项成绩填写</view>
+              </view>
+
+              <block wx:if="{{specialGroup.currentSkillItem.inputCount === 1}}">
+                <block wx:if="{{specialGroup.currentSkillItem.isTimePicker}}">
+                  <picker mode="multiSelector" range="{{timePickerRange}}" value="{{specialGroup.currentSkillItem.timePickerValue}}" data-ski="{{specialGroup.skillIndex}}" bindchange="onTimePickerChange">
+                    <view class="select-shell select-shell--soft">
+                      <text class="select-value">{{specialGroup.currentSkillItem.timeDisplay || '请选择分 / 秒 / 毫秒'}}</text>
+                      <text class="select-arrow">›</text>
+                    </view>
+                  </picker>
+                </block>
+                <block wx:if="{{!specialGroup.currentSkillItem.isTimePicker}}">
+                  <view class="score-field">
+                    <input class="score-input" type="{{specialGroup.currentSkillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{specialGroup.currentSkillItem.values[0] || ''}}" data-ski="{{specialGroup.skillIndex}}" data-input-index="0" bindinput="onSkillScoreInput" />
+                    <text class="score-unit" wx:if="{{specialGroup.currentSkillItem.unit}}">{{specialGroup.currentSkillItem.unit}}</text>
+                  </view>
+                </block>
+              </block>
+
+              <block wx:if="{{specialGroup.currentSkillItem.inputCount > 1}}">
+                <view class="multi-input-list">
+                  <block wx:for="{{specialGroup.currentSkillItem.inputLabels}}" wx:key="*this" wx:for-item="inputLabel" wx:for-index="inputIndex">
+                    <view class="multi-input-item">
+                      <view class="multi-input-label">{{inputLabel}}</view>
+                      <view class="score-field score-field--compact">
+                        <input class="score-input" type="{{specialGroup.currentSkillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{specialGroup.currentSkillItem.values[inputIndex] || ''}}" data-ski="{{specialGroup.skillIndex}}" data-input-index="{{inputIndex}}" bindinput="onSkillScoreInput" />
+                        <text class="score-unit" wx:if="{{specialGroup.currentSkillItem.unit}}">{{specialGroup.currentSkillItem.unit}}</text>
+                      </view>
+                    </view>
+                  </block>
+                </view>
+              </block>
+            </view>
+          </view>
+        </block>
+
+        <block wx:if="{{!specialGroup.useSkillPicker}}">
+          <view class="score-list">
+            <block wx:for="{{specialGroup.skillItems}}" wx:key="code" wx:for-item="skillItem" wx:for-index="ski">
+              <view class="score-card">
+                <view class="score-meta">
+                  <view class="score-name">{{skillItem.name}}</view>
+                  <view class="score-hint">请填写该细项成绩</view>
+                </view>
+
+                <block wx:if="{{skillItem.inputCount === 1}}">
+                  <block wx:if="{{skillItem.isTimePicker}}">
+                    <picker mode="multiSelector" range="{{timePickerRange}}" value="{{skillItem.timePickerValue}}" data-ski="{{ski}}" bindchange="onTimePickerChange">
+                      <view class="select-shell select-shell--soft">
+                        <text class="select-value">{{skillItem.timeDisplay || '请选择分 / 秒 / 毫秒'}}</text>
+                        <text class="select-arrow">›</text>
+                      </view>
+                    </picker>
+                  </block>
+                  <block wx:if="{{!skillItem.isTimePicker}}">
+                    <view class="score-field">
+                      <input class="score-input" type="{{skillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{skillItem.values[0] || ''}}" data-ski="{{ski}}" data-input-index="0" bindinput="onSkillScoreInput" />
+                      <text class="score-unit" wx:if="{{skillItem.unit}}">{{skillItem.unit}}</text>
+                    </view>
+                  </block>
+                </block>
+
+                <block wx:if="{{skillItem.inputCount > 1}}">
+                  <view class="multi-input-list">
+                    <block wx:for="{{skillItem.inputLabels}}" wx:key="*this" wx:for-item="inputLabel" wx:for-index="inputIndex">
+                      <view class="multi-input-item">
+                        <view class="multi-input-label">{{inputLabel}}</view>
+                        <view class="score-field score-field--compact">
+                          <input class="score-input" type="{{skillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{skillItem.values[inputIndex] || ''}}" data-ski="{{ski}}" data-input-index="{{inputIndex}}" bindinput="onSkillScoreInput" />
+                          <text class="score-unit" wx:if="{{skillItem.unit}}">{{skillItem.unit}}</text>
+                        </view>
+                      </view>
+                    </block>
+                  </view>
+                </block>
+              </view>
+            </block>
+          </view>
+        </block>
+      </block>
+    </view>
+
+    <view class="section-card section-card--action">
+      <button class="submit-btn" bindtap="submitForm" loading="{{submitting}}" disabled="{{submitting}}">点击查分</button>
+      <button class="reset-btn" bindtap="resetForm">重置表单</button>
+    </view>
   </view>
 </view>

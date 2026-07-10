@@ -19,35 +19,49 @@ const provinceMap = {
         default: false
       }
     ],
-
     specialProject: [
       {
         code: "1a",
         order: 1,
+        enabled: true
+      },
+      {
+        code: "2b",
+        order: 2,
+        enabled: true
+      },
+      {
+        code: "3c",
+        order: 3,
         enabled: true
       }
     ]
   },
 
-  "002": {
-    name: "北京市",
+  // "002": {
+  //   name: "北京市",
 
-    mainProject: [
-      {
-        code: "1A",
-        order: 1,
-        enabled: true
-      }
-    ],
+  //   mainProject: [
+  //     {
+  //       code: "1A",
+  //       order: 1,
+  //       enabled: true
+  //     }
+  //   ],
 
-    specialProject: [
-      {
-        code: "1a",
-        order: 1,
-        enabled: true
-      }
-    ]
-  }
+  //   specialProject: [
+  //     {
+  //       code: "1a",
+  //       order: 1,
+  //       enabled: true
+  //     },
+  //     {
+  //       code: "2b",
+  //       order: 2,
+  //       enabled: true
+  //     }
+  //   ]
+  // }
 };
 
 module.exports = provinceMap;
