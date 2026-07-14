@@ -1,0 +1,35 @@
+{
+  "code": {
+    "table_name": "艺术体操专项素质评分标准",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-13_o_001",
+    "max_value": "20",
+    "min_value": "0.5",
+    "total": "4",
+    "data": [
+      {
+        "score": "1",
+        "value": "0.5",
+        "number": "1"
+      },
+      {
+        "score": "10",
+        "value": "10",
+        "number": "2"
+      },
+      {
+        "score": "5",
+        "value": "10",
+        "number": "3"
+      },
+      {
+        "score": "10",
+        "value": "20",
+        "number": "4"
+      }
+    ]
+  }
+}

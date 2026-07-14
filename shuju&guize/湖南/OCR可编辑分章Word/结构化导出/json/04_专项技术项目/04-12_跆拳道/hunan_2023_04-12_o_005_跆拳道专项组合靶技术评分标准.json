@@ -1,0 +1,35 @@
+{
+  "code": {
+    "table_name": "跆拳道专项组合靶技术评分标准",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-12_o_005",
+    "max_value": "10",
+    "min_value": "6.9",
+    "total": "4",
+    "data": [
+      {
+        "score": "6.0",
+        "value": "6.9",
+        "number": "1"
+      },
+      {
+        "score": "7.0",
+        "value": "7.9",
+        "number": "2"
+      },
+      {
+        "score": "8.0",
+        "value": "8.9",
+        "number": "3"
+      },
+      {
+        "score": "9.0",
+        "value": "10",
+        "number": "4"
+      }
+    ]
+  }
+}

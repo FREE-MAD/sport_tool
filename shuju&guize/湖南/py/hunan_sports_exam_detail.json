@@ -1,0 +1,738 @@
+{
+  "title": "湖南省普通高等学校招生体育专业考试细则和评分标准（2023年版）",
+  "total_score": 300,
+  "chapters": [
+    {
+      "chapter": "第一章",
+      "title": "考试项目及分值设置",
+      "sections": [
+        {
+          "section": "一",
+          "title": "考试项目构成",
+          "content": "体育专业考试项目由身体素质项目、辅助技术项目（简称辅项）、专项技术项目（简称专项）三部分构成。三部分考试合计成绩总分300分。"
+        },
+        {
+          "section": "二",
+          "title": "项目分值设置",
+          "content": [
+            {
+              "category": "身体素质项目",
+              "score": 150,
+              "items": [
+                {
+                  "name": "100米跑",
+                  "score": 90
+                },
+                {
+                  "name": "五米三向折回跑",
+                  "score": 60
+                }
+              ]
+            },
+            {
+              "category": "辅助技术项目",
+              "score": 50,
+              "items": [
+                {
+                  "name": "篮球往返运球单手低手投篮"
+                },
+                {
+                  "name": "排球对墙传球垫球"
+                },
+                {
+                  "name": "足球运球绕杆射门"
+                },
+                {
+                  "name": "游泳"
+                }
+              ],
+              "note": "考生任选其一参加考试，需回避专项技术考试项目"
+            },
+            {
+              "category": "专项技术项目",
+              "score": 100,
+              "items": [
+                {
+                  "name": "田径",
+                  "sub_items": [
+                    "200米",
+                    "400米",
+                    "800米",
+                    "1500米",
+                    "110米栏(男)",
+                    "100米栏(女)",
+                    "铅球",
+                    "铁饼",
+                    "标枪",
+                    "三级跳远",
+                    "跳高",
+                    "跳远"
+                  ]
+                },
+                {
+                  "name": "篮球"
+                },
+                {
+                  "name": "排球"
+                },
+                {
+                  "name": "足球"
+                },
+                {
+                  "name": "武术"
+                },
+                {
+                  "name": "体操"
+                },
+                {
+                  "name": "网球"
+                },
+                {
+                  "name": "游泳"
+                },
+                {
+                  "name": "羽毛球"
+                },
+                {
+                  "name": "乒乓球"
+                },
+                {
+                  "name": "健美操"
+                },
+                {
+                  "name": "跆拳道"
+                },
+                {
+                  "name": "艺术体操"
+                }
+              ],
+              "note": "考生任选其一参加考试"
+            }
+          ]
+        },
+        {
+          "section": "三",
+          "title": "成绩计分规则",
+          "content": "考试成绩总分：身体素质项目、辅助技术项目和专项技术项目的考试成绩均取两位小数换算分值；合计考试成绩总分之后四舍五入取整，作为考生的最终考试成绩。"
+        }
+      ]
+    },
+    ///////////////////////////////////
+    // 身体素质项目
+    {
+      "chapter": "第二章",
+      "title": "身体素质项目",
+      "total_score": 150,
+      "sections": [
+        {
+          "section": "第一节",
+          "title": "100米跑",
+          "score": 90,
+          "gender_separate": true,
+          "scoring_standards": {
+            "men": {
+              "table": "表1",
+              "description": "男子100米跑成绩评分标准",
+              "max": {
+                "score": 100,
+                "time": "11.54秒"
+              },
+              "min": {
+                // "score": 0,
+                // "time": "15.24秒"
+              }
+            },
+            "women": {
+              "table": "表2",
+              "description": "女子100米跑成绩评分标准",
+              "max": {
+                "score": 100,
+                "time": "13.04秒"
+              },
+              "min": {
+                // "score": 0,
+                // "time": "21.08秒"
+              }
+            }
+          }
+        },
+        {
+          "section": "第二节",
+          "title": "五米三向折回跑",
+          "score": 60,
+          "gender_separate": true,
+          "scoring_standards": {
+            "men": {
+              "table": "表3",
+              "description": "男子五米三向折回跑成绩评分标准",
+              "max": {
+                "score": 100,
+                "time": "7.30秒"
+              },
+              "min": {
+                // "score": 0,
+                // "time": "10.80秒"
+              }
+            },
+            "women": {
+              "table": "表4",
+              "description": "女子五米三向折回跑成绩评分标准",
+              "max": {
+                "score": 100,
+                "time": "8.00秒"
+              },
+              "min": {
+                "score": 0,
+                "time": "11.75秒"
+              }
+            }
+          }
+        }
+      ]
+    },
+    ///////////////////////////////////
+    // 辅助技术项目
+    {
+      "chapter": "第三章",
+      "title": "辅助技术项目",
+      "total_score": 50,
+      "note": "考生任选其一参加考试，需回避专项技术考试项目",
+      "sections": [
+        {
+          "section": "第一节",
+          "title": "篮球往返运球单手低手投篮",
+          "gender_separate": true,
+          "scoring_standards": {
+            "men": {
+              "table": "表5",
+              "description": "篮球辅项往返运球单手低手投篮成绩评分标准（男子）",
+              "min": {
+                "score": 100,
+                "time": "13.60秒"
+              }
+            },
+            "women": {
+              "table": "表6",
+              "description": "篮球辅项往返运球单手低手投篮成绩评分标准（女子）",
+              "min": {
+                "score": 100,
+                "time": "16.20秒"
+              }
+            }
+          }
+        },
+        {
+          "section": "第二节",
+          "title": "排球对墙传球垫球",
+          "gender_separate": false,
+          "scoring_standards": {
+            "table": "表7",
+            "description": "排球辅项对墙传球垫球成绩评分标准",
+            "min": {
+              "score": 100,
+              "count": 40
+            }
+          }
+        },
+        {
+          "section": "第三节",
+          "title": "足球运球绕杆射门",
+          "gender_separate": true,
+          "scoring_standards": {
+            "men": {
+              "table": "表8",
+              "description": "足球辅项运球绕杆射门成绩评分标准（男子）",
+              "min": {
+                "score": 100,
+                "time": "8.00秒"
+              }
+            },
+            "women": {
+              "table": "表9",
+              "description": "足球辅项运球绕杆射门成绩评分标准（女子）",
+              "min": {
+                "score": 100,
+                "time": "10.00秒"
+              }
+            }
+          }
+        },
+        {
+          "section": "第四节",
+          "title": "游泳",
+          "gender_separate": true,
+          "scoring_standards": {
+            "men": {
+              "table": "表10",
+              "description": "游泳辅项成绩评分标准（男子）",
+              "min": {
+                "score": 100,
+                "time": "40.00秒"
+              }
+            },
+            "women": {
+              "table": "表11",
+              "description": "游泳辅项成绩评分标准（女子）",
+              "min": {
+                "score": 100,
+                "time": "46.00秒"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "chapter": "第四章",
+      "title": "专项技术项目",
+      "total_score": 100,
+      "note": "考生任选其一参加考试",
+      "sections": [
+        {
+          "section": "第一节",
+          "title": "田径",
+          "sub_items": [
+            {
+              "name": "200米",
+              "gender_separate": true,
+              "men_table": "表12",
+              "women_table": "表13"
+            },
+            {
+              "name": "400米",
+              "gender_separate": true,
+              "men_table": "表14",
+              "women_table": "表15"
+            },
+            {
+              "name": "800米",
+              "gender_separate": true,
+              "men_table": "表16",
+              "women_table": "表17"
+            },
+            {
+              "name": "1500米",
+              "gender_separate": true,
+              "men_table": "表18",
+              "women_table": "表19"
+            },
+            {
+              "name": "110米栏",
+              "gender_separate": true,
+              "gender": "男",
+              "table": "表20"
+            },
+            {
+              "name": "100米栏",
+              "gender_separate": true,
+              "gender": "女",
+              "table": "表21"
+            },
+            {
+              "name": "铅球",
+              "gender_separate": true,
+              "men_table": "表22",
+              "women_table": "表23"
+            },
+            {
+              "name": "铁饼",
+              "gender_separate": true,
+              "men_table": "表24",
+              "women_table": "表25"
+            },
+            {
+              "name": "标枪",
+              "gender_separate": true,
+              "men_table": "表26",
+              "women_table": "表27"
+            },
+            {
+              "name": "三级跳远",
+              "gender_separate": true,
+              "men_table": "表28",
+              "women_table": "表29"
+            },
+            {
+              "name": "跳高",
+              "gender_separate": true,
+              "men_table": "表30",
+              "women_table": "表31"
+            },
+            {
+              "name": "跳远",
+              "gender_separate": true,
+              "men_table": "表32",
+              "women_table": "表33"
+            }
+          ]
+        },
+        {
+          "section": "第二节",
+          "title": "篮球",
+          "gender_separate": true,
+          "items": [
+            {
+              "name": "助跑摸高",
+              "scoring_standards": {
+                "men": {
+                  "table": "表32",
+                  "min": {
+                    "score": 30,
+                    "height": "3.10米"
+                  }
+                },
+                "women": {
+                  "table": "表33",
+                  "min": {
+                    "score": 30,
+                    "height": "2.75米"
+                  }
+                }
+              }
+            },
+            {
+              "name": "往返运球单手低手投篮",
+              "scoring_standards": {
+                "men": {
+                  "table": "表34",
+                  "description": "篮球专项往返运球单手低手投篮达标评分标准（男子）"
+                },
+                "women": {
+                  "table": "表35",
+                  "description": "篮球专项往返运球单手低手投篮达标评分标准（女子）"
+                }
+              }
+            },
+            {
+              "name": "一分钟自投自抢投篮",
+              "scoring_standards": {
+                "men": {
+                  "table": "表32",
+                  "min": {
+                    "score": 25,
+                    "count": 8
+                  }
+                },
+                "women": {
+                  "table": "表33",
+                  "min": {
+                    "score": 25,
+                    "count": 8
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "section": "第三节",
+          "title": "排球",
+          "gender_separate": true,
+          "items": [
+            {
+              "name": "助跑摸高",
+              "scoring_standards": {
+                "men": {
+                  "table": "表36",
+                  "min": {
+                    "score": 20,
+                    "height": "3.10米"
+                  }
+                },
+                "women": {
+                  "table": "表36",
+                  "min": {
+                    "score": 20,
+                    "height": "2.75米"
+                  }
+                }
+              }
+            },
+            {
+              "name": "发球技术"
+            },
+            {
+              "name": "传球技术"
+            },
+            {
+              "name": "垫球技术"
+            },
+            {
+              "name": "扣球技术"
+            }
+          ]
+        },
+        {
+          "section": "第四节",
+          "title": "足球",
+          "gender_separate": true,
+          "items": [
+            {
+              "name": "颠球",
+              "scoring_standards": {
+                "table": "表37",
+                "min": {
+                  "score": 20,
+                  "count": 65
+                }
+              }
+            },
+            {
+              "name": "运球绕杆射门",
+              "scoring_standards": {
+                "men": {
+                  "table": "表38",
+                  "description": "足球专项运球绕杆射门成绩评分标准（男子）"
+                },
+                "women": {
+                  "table": "表39",
+                  "description": "足球专项运球绕杆射门成绩评分标准（女子）"
+                }
+              }
+            },
+            {
+              "name": "定位球传准"
+            },
+            {
+              "name": "守门员加试-立定跳远",
+              "scoring_standards": {
+                "table": "表40"
+              }
+            },
+            {
+              "name": "守门员加试-扑接球技术",
+              "scoring_standards": {
+                "table": "表41"
+              }
+            }
+          ]
+        },
+        {
+          "section": "第五节",
+          "title": "武术",
+          "gender_separate": true,
+          "items": [
+            {
+              "name": "动作规格错误扣分",
+              "scoring_standards": {
+                "table": "表42",
+                "description": "武术专项动作规格错误内容及扣分标准"
+              }
+            },
+            {
+              "name": "难度内容分值",
+              "scoring_standards": {
+                "table": "表43",
+                "description": "武术专项难度内容分值及完成不符合规定的确认标准"
+              }
+            }
+          ]
+        },
+        {
+          "section": "第六节",
+          "title": "体操",
+          "gender_separate": true,
+          "items": [
+            {
+              "name": "自由体操",
+              "scoring_standards": {
+                "men": {
+                  "table": "表44",
+                  "description": "自由体操动作说明和动作错误扣分标准（男子）"
+                },
+                "women": {
+                  "table": "表47",
+                  "description": "自由体操动作说明和动作错误扣分标准（女子）"
+                }
+              }
+            },
+            {
+              "name": "单杠",
+              "scoring_standards": {
+                "men": {
+                  "table": "表45",
+                  "description": "单杠动作说明和动作错误扣分标准（男子）"
+                },
+                "women": {
+                  "table": "表48",
+                  "description": "单杠动作说明和动作错误扣分标准（女子）"
+                }
+              }
+            },
+            {
+              "name": "双杠",
+              "scoring_standards": {
+                "men": {
+                  "table": "表46",
+                  "description": "双杠动作说明和动作错误扣分标准（男子）"
+                },
+                "women": {
+                  "table": "表49",
+                  "description": "双杠动作说明和动作错误扣分标准（女子）"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "section": "第七节",
+          "title": "网球",
+          "gender_separate": true
+        },
+        {
+          "section": "第八节",
+          "title": "游泳",
+          "gender_separate": true,
+          "items": [
+            {
+              "name": "100米自由泳",
+              "men_table": "表50",
+              "women_table": "表51"
+            },
+            {
+              "name": "100米仰泳",
+              "men_table": "表52",
+              "women_table": "表53"
+            },
+            {
+              "name": "100米蛙泳",
+              "men_table": "表54",
+              "women_table": "表55"
+            },
+            {
+              "name": "100米蝶泳",
+              "men_table": "表56",
+              "women_table": "表57"
+            }
+          ]
+        },
+        {
+          "section": "第九节",
+          "title": "羽毛球",
+          "gender_separate": true
+        },
+        {
+          "section": "第十节",
+          "title": "乒乓球",
+          "gender_separate": true,
+          "items": [
+            {
+              "name": "达标项目",
+              "scoring_standards": {
+                "table": "表58",
+                "description": "乒乓球专项达标成绩评分标准",
+                "min": {
+                  "score": 40,
+                  "combined_tech": 36
+                }
+              }
+            }
+          ]
+        },
+        {
+          "section": "第十一节",
+          "title": "健美操",
+          "gender_separate": true,
+          "items": [
+            {
+              "name": "纵劈腿",
+              "scoring_standards": {
+                "table": "表59",
+                "description": "健美操专项纵劈腿（左、右）评分标准"
+              }
+            },
+            {
+              "name": "10秒钟快速俯卧撑",
+              "scoring_standards": {
+                "men": {
+                  "table": "表60",
+                  "description": "健美操专项10秒钟快速俯卧撑评分标准（男生）"
+                },
+                "women": {
+                  "table": "表61",
+                  "description": "健美操专项10秒钟快速俯卧撑评分标准（女生）"
+                }
+              }
+            },
+            {
+              "name": "难度动作",
+              "scoring_standards": {
+                "table": "表62",
+                "description": "健美操专项难度动作评分标准"
+              }
+            }
+          ]
+        },
+        {
+          "section": "第十二节",
+          "title": "跆拳道",
+          "gender_separate": true,
+          "items": [
+            {
+              "name": "横叉",
+              "scoring_standards": {
+                "men": {
+                  "table": "表63",
+                  "description": "跆拳道专项男子横叉评分标准"
+                },
+                "women": {
+                  "table": "表64",
+                  "description": "跆拳道专项女子横叉评分标准"
+                }
+              }
+            },
+            {
+              "name": "双飞踢",
+              "scoring_standards": {
+                "men": {
+                  "table": "表65",
+                  "description": "跆拳道专项男子双飞踢成绩评分标准"
+                },
+                "women": {
+                  "table": "表66",
+                  "description": "跆拳道专项女子双飞踢成绩评分标准"
+                }
+              }
+            },
+            {
+              "name": "组合靶技术",
+              "scoring_standards": {
+                "table": "表67",
+                "description": "跆拳道专项组合靶技术评分标准"
+              }
+            }
+          ]
+        },
+        {
+          "section": "第十三节",
+          "title": "艺术体操",
+          "gender_separate": false,
+          "gender": "女",
+          "items": [
+            {
+              "name": "专项素质",
+              "scoring_standards": {
+                "table": "表68",
+                "description": "艺术体操专项素质评分标准"
+              }
+            },
+            {
+              "name": "徒手规定动作",
+              "scoring_standards": {
+                "table": "表69",
+                "description": "艺术体操专项技术徒手规定动作评分标准"
+              }
+            },
+            {
+              "name": "球规定动作",
+              "scoring_standards": {
+                "table": "表70",
+                "description": "艺术体操专项球规定动作评分标准"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

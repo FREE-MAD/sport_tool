@@ -1,0 +1,130 @@
+{
+  "code": {
+    "table_name": "跆拳道专项男子横叉评分标准",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-12_m_001",
+    "max_value": "0.0",
+    "min_value": "25",
+    "total": "23",
+    "data": [
+      {
+        "score": "25",
+        "value": "0.0",
+        "number": "1"
+      },
+      {
+        "score": "24",
+        "value": "0.5",
+        "number": "2"
+      },
+      {
+        "score": "23",
+        "value": "1.0",
+        "number": "3"
+      },
+      {
+        "score": "0.5",
+        "value": "1",
+        "number": "4"
+      },
+      {
+        "score": "22",
+        "value": "1.5",
+        "number": "5"
+      },
+      {
+        "score": "21",
+        "value": "2.0",
+        "number": "6"
+      },
+      {
+        "score": "20",
+        "value": "2.5",
+        "number": "7"
+      },
+      {
+        "score": "19",
+        "value": "3.0",
+        "number": "8"
+      },
+      {
+        "score": "18",
+        "value": "3.5",
+        "number": "9"
+      },
+      {
+        "score": "17",
+        "value": "4.0",
+        "number": "10"
+      },
+      {
+        "score": "16",
+        "value": "4.5",
+        "number": "11"
+      },
+      {
+        "score": "15",
+        "value": "5.0",
+        "number": "12"
+      },
+      {
+        "score": "14",
+        "value": "5.5",
+        "number": "13"
+      },
+      {
+        "score": "13",
+        "value": "6.0",
+        "number": "14"
+      },
+      {
+        "score": "12",
+        "value": "6.5",
+        "number": "15"
+      },
+      {
+        "score": "11",
+        "value": "7.0",
+        "number": "16"
+      },
+      {
+        "score": "10",
+        "value": "7.5",
+        "number": "17"
+      },
+      {
+        "score": "9",
+        "value": "8.0",
+        "number": "18"
+      },
+      {
+        "score": "8",
+        "value": "8.5",
+        "number": "19"
+      },
+      {
+        "score": "7",
+        "value": "9.0",
+        "number": "20"
+      },
+      {
+        "score": "6",
+        "value": "9.5",
+        "number": "21"
+      },
+      {
+        "score": "5",
+        "value": "10.0",
+        "number": "22"
+      },
+      {
+        "score": "0",
+        "value": "25",
+        "number": "23"
+      }
+    ]
+  }
+}

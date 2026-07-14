@@ -1,0 +1,220 @@
+{
+  "document": "湖南省普通高等学校招生体育专业考试细则和评分标准（2023更新版）",
+  "summary": {
+    "total_tables": 18,
+    "total_scoring_points": 7605
+  },
+  "sections": [
+    {
+      "code": "02-01",
+      "name": "100米跑",
+      "tables_count": 3,
+      "total_scoring_points": 1108,
+      "tables": [
+        {
+          "table_name": "评分标准详见《表1:男子100米跑成绩评分标准》、《表2:女子100米跑成绩",
+          "gender": "男子",
+          "scoring_points": 0,
+          "page_range": [
+            1,
+            1
+          ]
+        },
+        {
+          "table_name": "男子100米跑成绩评分标准",
+          "gender": "男子",
+          "scoring_points": 354,
+          "page_range": [
+            2,
+            3
+          ]
+        },
+        {
+          "table_name": "女子100米跑成绩评分标准",
+          "gender": "女子",
+          "scoring_points": 754,
+          "page_range": [
+            4,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "code": "02-02",
+      "name": "五米三向折回跑",
+      "tables_count": 3,
+      "total_scoring_points": 563,
+      "tables": [
+        {
+          "table_name": "评分标准详见《表3:男子五米三向折回跑成绩评分标准》、《表4:女子五米三",
+          "gender": "男子",
+          "scoring_points": 0,
+          "page_range": [
+            2,
+            2
+          ]
+        },
+        {
+          "table_name": "男子五米三向折回跑成绩评分标准",
+          "gender": "男子",
+          "scoring_points": 313,
+          "page_range": [
+            3,
+            4
+          ]
+        },
+        {
+          "table_name": "女子五米三向折回跑成绩评分标准",
+          "gender": "女子",
+          "scoring_points": 250,
+          "page_range": [
+            5,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "code": "03-01",
+      "name": "篮球往返运球单手低手投篮",
+      "tables_count": 4,
+      "total_scoring_points": 2394,
+      "tables": [
+        {
+          "table_name": "评分标准详见《表5:篮球辅项往返运球单手低手投篮成绩评分标准(男子)》、",
+          "gender": "男子",
+          "scoring_points": 0,
+          "page_range": [
+            2,
+            2
+          ]
+        },
+        {
+          "table_name": "《表6:篮球辅项往返运球单手低手投篮成绩评分标准(女子)》。",
+          "gender": "女子",
+          "scoring_points": 0,
+          "page_range": [
+            2,
+            2
+          ]
+        },
+        {
+          "table_name": "篮球辅项往返运球单手低手投篮成绩评分标准(男子)",
+          "gender": "男子",
+          "scoring_points": 828,
+          "page_range": [
+            3,
+            6
+          ]
+        },
+        {
+          "table_name": "篮球辅项往返运球单手低手投篮成绩评分标准(女子)",
+          "gender": "女子",
+          "scoring_points": 1566,
+          "page_range": [
+            7,
+            14
+          ]
+        }
+      ]
+    },
+    {
+      "code": "03-02",
+      "name": "排球对墙传球垫球",
+      "tables_count": 2,
+      "total_scoring_points": 38,
+      "tables": [
+        {
+          "table_name": "(四)评分标准详见《表7:排球辅项对墙传球垫球成绩评分标准》。",
+          "gender": "通用",
+          "scoring_points": 0,
+          "page_range": [
+            2,
+            2
+          ]
+        },
+        {
+          "table_name": "排球辅项对墙传球垫球成绩评分标准",
+          "gender": "通用",
+          "scoring_points": 38,
+          "page_range": [
+            2,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "code": "03-03",
+      "name": "足球运球绕杆射门",
+      "tables_count": 3,
+      "total_scoring_points": 941,
+      "tables": [
+        {
+          "table_name": "评分标准详见《表8:足球辅项运球绕杆射门成绩评分标准(男子)》、《表9:",
+          "gender": "男子",
+          "scoring_points": 0,
+          "page_range": [
+            2,
+            2
+          ]
+        },
+        {
+          "table_name": "足球辅项运球绕杆射门成绩评分标准(男子)",
+          "gender": "男子",
+          "scoring_points": 451,
+          "page_range": [
+            3,
+            4
+          ]
+        },
+        {
+          "table_name": "足球辅项运球绕杆射门成绩评分标准(女子)",
+          "gender": "女子",
+          "scoring_points": 490,
+          "page_range": [
+            5,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "code": "03-04",
+      "name": "游泳",
+      "tables_count": 3,
+      "total_scoring_points": 2561,
+      "tables": [
+        {
+          "table_name": "评分标准详见《表10:游泳辅项成绩评分标准(男子)》、《表11:游泳辅项",
+          "gender": "男子",
+          "scoring_points": 0,
+          "page_range": [
+            1,
+            1
+          ]
+        },
+        {
+          "table_name": "游泳辅项成绩评分标准(男子)",
+          "gender": "男子",
+          "scoring_points": 2097,
+          "page_range": [
+            2,
+            24
+          ]
+        },
+        {
+          "table_name": "游泳辅项成绩评分标准(女子)",
+          "gender": "女子",
+          "scoring_points": 464,
+          "page_range": [
+            25,
+            47
+          ]
+        }
+      ]
+    }
+  ],
+  "processing_time_seconds": 2795.7
+}

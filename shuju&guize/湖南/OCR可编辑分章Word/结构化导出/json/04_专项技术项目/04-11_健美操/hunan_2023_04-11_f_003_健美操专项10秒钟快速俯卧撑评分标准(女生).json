@@ -1,0 +1,75 @@
+{
+  "code": {
+    "table_name": "健美操专项10秒钟快速俯卧撑评分标准(女生)",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-11_f_003",
+    "max_value": "13",
+    "min_value": "2",
+    "total": "12",
+    "data": [
+      {
+        "score": "0",
+        "value": "2",
+        "number": "1"
+      },
+      {
+        "score": "0",
+        "value": "3",
+        "number": "2"
+      },
+      {
+        "score": "1",
+        "value": "4",
+        "number": "3"
+      },
+      {
+        "score": "2",
+        "value": "5",
+        "number": "4"
+      },
+      {
+        "score": "3",
+        "value": "6",
+        "number": "5"
+      },
+      {
+        "score": "4",
+        "value": "7",
+        "number": "6"
+      },
+      {
+        "score": "5",
+        "value": "8",
+        "number": "7"
+      },
+      {
+        "score": "6",
+        "value": "9",
+        "number": "8"
+      },
+      {
+        "score": "7",
+        "value": "10",
+        "number": "9"
+      },
+      {
+        "score": "8",
+        "value": "11",
+        "number": "10"
+      },
+      {
+        "score": "9",
+        "value": "12",
+        "number": "11"
+      },
+      {
+        "score": "10",
+        "value": "13",
+        "number": "12"
+      }
+    ]
+  }
+}

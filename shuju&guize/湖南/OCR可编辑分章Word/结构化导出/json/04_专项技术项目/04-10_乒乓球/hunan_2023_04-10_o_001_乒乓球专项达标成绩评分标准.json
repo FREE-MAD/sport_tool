@@ -1,0 +1,295 @@
+{
+  "code": {
+    "table_name": "乒乓球专项达标成绩评分标准",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-10_o_001",
+    "max_value": "36",
+    "min_value": "1",
+    "total": "56",
+    "data": [
+      {
+        "score": "2",
+        "value": "1",
+        "number": "1"
+      },
+      {
+        "score": "1",
+        "value": "1",
+        "number": "2"
+      },
+      {
+        "score": "8",
+        "value": "2",
+        "number": "3"
+      },
+      {
+        "score": "2",
+        "value": "2",
+        "number": "4"
+      },
+      {
+        "score": "3",
+        "value": "3",
+        "number": "5"
+      },
+      {
+        "score": "1",
+        "value": "3",
+        "number": "6"
+      },
+      {
+        "score": "16",
+        "value": "4",
+        "number": "7"
+      },
+      {
+        "score": "5",
+        "value": "4",
+        "number": "8"
+      },
+      {
+        "score": "4",
+        "value": "4",
+        "number": "9"
+      },
+      {
+        "score": "5",
+        "value": "5",
+        "number": "10"
+      },
+      {
+        "score": "22",
+        "value": "6",
+        "number": "11"
+      },
+      {
+        "score": "7",
+        "value": "6",
+        "number": "12"
+      },
+      {
+        "score": "6",
+        "value": "6",
+        "number": "13"
+      },
+      {
+        "score": "7",
+        "value": "7",
+        "number": "14"
+      },
+      {
+        "score": "26",
+        "value": "8",
+        "number": "15"
+      },
+      {
+        "score": "8",
+        "value": "8",
+        "number": "16"
+      },
+      {
+        "score": "10",
+        "value": "9",
+        "number": "17"
+      },
+      {
+        "score": "9",
+        "value": "9",
+        "number": "18"
+      },
+      {
+        "score": "30",
+        "value": "10",
+        "number": "19"
+      },
+      {
+        "score": "10",
+        "value": "10",
+        "number": "20"
+      },
+      {
+        "score": "11",
+        "value": "11",
+        "number": "21"
+      },
+      {
+        "score": "3",
+        "value": "11",
+        "number": "22"
+      },
+      {
+        "score": "13",
+        "value": "12",
+        "number": "23"
+      },
+      {
+        "score": "12",
+        "value": "12",
+        "number": "24"
+      },
+      {
+        "score": "13",
+        "value": "13",
+        "number": "25"
+      },
+      {
+        "score": "15",
+        "value": "14",
+        "number": "26"
+      },
+      {
+        "score": "14",
+        "value": "14",
+        "number": "27"
+      },
+      {
+        "score": "15",
+        "value": "15",
+        "number": "28"
+      },
+      {
+        "score": "16",
+        "value": "16",
+        "number": "29"
+      },
+      {
+        "score": "18",
+        "value": "17",
+        "number": "30"
+      },
+      {
+        "score": "17",
+        "value": "17",
+        "number": "31"
+      },
+      {
+        "score": "18",
+        "value": "18",
+        "number": "32"
+      },
+      {
+        "score": "19",
+        "value": "19",
+        "number": "33"
+      },
+      {
+        "score": "5",
+        "value": "19",
+        "number": "34"
+      },
+      {
+        "score": "21",
+        "value": "20",
+        "number": "35"
+      },
+      {
+        "score": "20",
+        "value": "20",
+        "number": "36"
+      },
+      {
+        "score": "21",
+        "value": "21",
+        "number": "37"
+      },
+      {
+        "score": "22",
+        "value": "22",
+        "number": "38"
+      },
+      {
+        "score": "26",
+        "value": "23",
+        "number": "39"
+      },
+      {
+        "score": "23",
+        "value": "23",
+        "number": "40"
+      },
+      {
+        "score": "28",
+        "value": "24",
+        "number": "41"
+      },
+      {
+        "score": "24",
+        "value": "24",
+        "number": "42"
+      },
+      {
+        "score": "25",
+        "value": "25",
+        "number": "43"
+      },
+      {
+        "score": "27",
+        "value": "26",
+        "number": "44"
+      },
+      {
+        "score": "33",
+        "value": "27",
+        "number": "45"
+      },
+      {
+        "score": "7",
+        "value": "27",
+        "number": "46"
+      },
+      {
+        "score": "34",
+        "value": "28",
+        "number": "47"
+      },
+      {
+        "score": "29",
+        "value": "28",
+        "number": "48"
+      },
+      {
+        "score": "25",
+        "value": "29",
+        "number": "49"
+      },
+      {
+        "score": "30",
+        "value": "30",
+        "number": "50"
+      },
+      {
+        "score": "31",
+        "value": "31",
+        "number": "51"
+      },
+      {
+        "score": "32",
+        "value": "32",
+        "number": "52"
+      },
+      {
+        "score": "9",
+        "value": "34",
+        "number": "53"
+      },
+      {
+        "score": "38",
+        "value": "35",
+        "number": "54"
+      },
+      {
+        "score": "40",
+        "value": "36",
+        "number": "55"
+      },
+      {
+        "score": "29",
+        "value": "36",
+        "number": "56"
+      }
+    ]
+  }
+}

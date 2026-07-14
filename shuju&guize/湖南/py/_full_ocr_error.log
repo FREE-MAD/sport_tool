@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\32614\Desktop\sport_tool\dm\shuju&guize\湖南\count_all_scoring_points.py", line 222, in <module>
+    main()
+  File "C:\Users\32614\Desktop\sport_tool\dm\shuju&guize\湖南\count_all_scoring_points.py", line 185, in main
+    tables = process_pdf(PDF_PATH, TEMP_DIR)
+  File "C:\Users\32614\Desktop\sport_tool\dm\shuju&guize\湖南\count_all_scoring_points.py", line 97, in process_pdf
+    tmp.unlink()  # 用完即删
+  File "C:\Users\32614\AppData\Local\Programs\Python\Python310\lib\pathlib.py", line 1206, in unlink
+    self._accessor.unlink(self)
+FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\_temp_full_ocr\\full_pg_004.png'

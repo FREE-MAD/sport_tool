@@ -1,0 +1,35 @@
+{
+  "code": {
+    "table_name": "足球专项守门员加试扑接球技术评分标准",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-04_o_004",
+    "max_value": "15.0",
+    "min_value": "0",
+    "total": "4",
+    "data": [
+      {
+        "score": "4.9",
+        "value": "0",
+        "number": "1"
+      },
+      {
+        "score": "9.9",
+        "value": "5.0",
+        "number": "2"
+      },
+      {
+        "score": "14.9",
+        "value": "10.0",
+        "number": "3"
+      },
+      {
+        "score": "20.0",
+        "value": "15.0",
+        "number": "4"
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "code": {
+    "table_name": "健美操专项难度动作评分标准",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-11_o_004",
+    "max_value": "0.3",
+    "min_value": "0",
+    "total": "2",
+    "data": [
+      {
+        "score": "0.1",
+        "value": "0",
+        "number": "1"
+      },
+      {
+        "score": "0.5",
+        "value": "0.3",
+        "number": "2"
+      }
+    ]
+  }
+}

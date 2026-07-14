@@ -1,0 +1,109 @@
+{
+  "source_pdf": "C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\湖南省普通高等学校招生体育专业考试细则和评分标准（2023更新版）-1-88.pdf",
+  "page_offset": 4,
+  "max_printed_page_in_current_pdf": 84,
+  "total_pdf_pages": 88,
+  "chapter_items": [
+    {
+      "kind": "chapter",
+      "order": "01",
+      "title": "第一章_考试项目及分值设置",
+      "start_printed": 1,
+      "end_printed": 1,
+      "start_pdf": 5,
+      "end_pdf": 5,
+      "output_file": "C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\按目录切分_1-88\\按章\\01_第一章_考试项目及分值设置_印刷页001-001.pdf",
+      "page_count": 1
+    },
+    {
+      "kind": "chapter",
+      "order": "02",
+      "title": "第二章_身体素质项目",
+      "start_printed": 2,
+      "end_printed": 14,
+      "start_pdf": 6,
+      "end_pdf": 18,
+      "output_file": "C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\按目录切分_1-88\\按章\\02_第二章_身体素质项目_印刷页002-014.pdf",
+      "page_count": 13
+    },
+    {
+      "kind": "chapter",
+      "order": "03",
+      "title": "第三章_辅助技术项目",
+      "start_printed": 15,
+      "end_printed": 84,
+      "start_pdf": 19,
+      "end_pdf": 88,
+      "output_file": "C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\按目录切分_1-88\\按章\\03_第三章_辅助技术项目_印刷页015-084.pdf",
+      "page_count": 70
+    }
+  ],
+  "section_items": [
+    {
+      "kind": "section",
+      "order": "02-01",
+      "title": "第二章_第一节_100米跑",
+      "start_printed": 2,
+      "end_printed": 8,
+      "start_pdf": 6,
+      "end_pdf": 12,
+      "output_file": "C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\按目录切分_1-88\\按节\\02-01_第二章_第一节_100米跑_印刷页002-008.pdf",
+      "page_count": 7
+    },
+    {
+      "kind": "section",
+      "order": "02-02",
+      "title": "第二章_第二节_五米三向折回跑",
+      "start_printed": 9,
+      "end_printed": 14,
+      "start_pdf": 13,
+      "end_pdf": 18,
+      "output_file": "C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\按目录切分_1-88\\按节\\02-02_第二章_第二节_五米三向折回跑_印刷页009-014.pdf",
+      "page_count": 6
+    },
+    {
+      "kind": "section",
+      "order": "03-01",
+      "title": "第三章_第一节_篮球往返运球单手低手投篮",
+      "start_printed": 15,
+      "end_printed": 28,
+      "start_pdf": 19,
+      "end_pdf": 32,
+      "output_file": "C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\按目录切分_1-88\\按节\\03-01_第三章_第一节_篮球往返运球单手低手投篮_印刷页015-028.pdf",
+      "page_count": 14
+    },
+    {
+      "kind": "section",
+      "order": "03-02",
+      "title": "第三章_第二节_排球对墙传球垫球",
+      "start_printed": 29,
+      "end_printed": 30,
+      "start_pdf": 33,
+      "end_pdf": 34,
+      "output_file": "C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\按目录切分_1-88\\按节\\03-02_第三章_第二节_排球对墙传球垫球_印刷页029-030.pdf",
+      "page_count": 2
+    },
+    {
+      "kind": "section",
+      "order": "03-03",
+      "title": "第三章_第三节_足球运球绕杆射门",
+      "start_printed": 31,
+      "end_printed": 37,
+      "start_pdf": 35,
+      "end_pdf": 41,
+      "output_file": "C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\按目录切分_1-88\\按节\\03-03_第三章_第三节_足球运球绕杆射门_印刷页031-037.pdf",
+      "page_count": 7
+    },
+    {
+      "kind": "section",
+      "order": "03-04",
+      "title": "第三章_第四节_游泳",
+      "start_printed": 38,
+      "end_printed": 84,
+      "start_pdf": 42,
+      "end_pdf": 88,
+      "output_file": "C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\按目录切分_1-88\\按节\\03-04_第三章_第四节_游泳_印刷页038-084.pdf",
+      "page_count": 47
+    }
+  ]
+}
