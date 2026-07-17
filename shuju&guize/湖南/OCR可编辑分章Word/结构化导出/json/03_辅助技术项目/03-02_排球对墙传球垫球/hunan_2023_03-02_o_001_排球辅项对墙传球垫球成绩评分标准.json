@@ -9,191 +9,13 @@
     "max_value": "40",
     "min_value": "1",
     "total": "39",
+     // total completed yuanbao_check 
+    // first to five check
     "data": [
       {
-        "score": "2.50",
-        "value": "1",
-        "number": "1"
-      },
-      {
-        "score": "5.00",
-        "value": "2",
-        "number": "2"
-      },
-      {
-        "score": "7.50",
-        "value": "3",
-        "number": "3"
-      },
-      {
-        "score": "10.00",
-        "value": "4",
-        "number": "4"
-      },
-      {
-        "score": "12.50",
-        "value": "5",
-        "number": "5"
-      },
-      {
-        "score": "15.00",
-        "value": "6",
-        "number": "6"
-      },
-      {
-        "score": "17.50",
-        "value": "7",
-        "number": "7"
-      },
-      {
-        "score": "20.00",
-        "value": "8",
-        "number": "8"
-      },
-      {
-        "score": "22.50",
-        "value": "9",
-        "number": "9"
-      },
-      {
-        "score": "25.00",
-        "value": "10",
-        "number": "10"
-      },
-      {
-        "score": "27.50",
-        "value": "11",
-        "number": "11"
-      },
-      {
-        "score": "30.00",
-        "value": "12",
-        "number": "12"
-      },
-      {
-        "score": "32.50",
-        "value": "13",
-        "number": "13"
-      },
-      {
-        "score": "35.00",
-        "value": "14",
-        "number": "14"
-      },
-      {
-        "score": "37.50",
-        "value": "15",
-        "number": "15"
-      },
-      {
-        "score": "40.00",
-        "value": "16",
-        "number": "16"
-      },
-      {
-        "score": "42.50",
-        "value": "17",
-        "number": "17"
-      },
-      {
-        "score": "45.00",
-        "value": "18",
-        "number": "18"
-      },
-      {
-        "score": "47.50",
-        "value": "19",
-        "number": "19"
-      },
-      {
-        "score": "50.00",
-        "value": "20",
-        "number": "20"
-      },
-      {
-        "score": "52.50",
-        "value": "21",
-        "number": "21"
-      },
-      {
-        "score": "55.00",
-        "value": "22",
-        "number": "22"
-      },
-      {
-        "score": "57.50",
-        "value": "23",
-        "number": "23"
-      },
-      {
-        "score": "60.00",
-        "value": "24",
-        "number": "24"
-      },
-      {
-        "score": "62.50",
-        "value": "25",
-        "number": "25"
-      },
-      {
-        "score": "65.00",
-        "value": "26",
-        "number": "26"
-      },
-      {
-        "score": "70.00",
-        "value": "28",
-        "number": "27"
-      },
-      {
-        "score": "72.50",
-        "value": "29",
-        "number": "28"
-      },
-      {
-        "score": "75.00",
-        "value": "30",
-        "number": "29"
-      },
-      {
-        "score": "77.50",
-        "value": "31",
-        "number": "30"
-      },
-      {
-        "score": "80.00",
-        "value": "32",
-        "number": "31"
-      },
-      {
-        "score": "82.50",
-        "value": "33",
-        "number": "32"
-      },
-      {
-        "score": "85.00",
-        "value": "34",
-        "number": "33"
-      },
-      {
-        "score": "87.50",
-        "value": "35",
-        "number": "34"
-      },
-      {
-        "score": "90.00",
-        "value": "36",
-        "number": "35"
-      },
-      {
-        "score": "92.50",
-        "value": "37",
-        "number": "36"
-      },
-      {
-        "score": "95.00",
-        "value": "38",
-        "number": "37"
+        "score": "100.00",
+        "value": "40",
+        "number": "39"
       },
       {
         "score": "97.50",
@@ -201,10 +23,191 @@
         "number": "38"
       },
       {
-        "score": "100.00",
-        "value": "40",
-        "number": "39"
+        "score": "95.00",
+        "value": "38",
+        "number": "37"
+      },
+      {
+        "score": "92.50",
+        "value": "37",
+        "number": "36"
+      },
+      {
+        "score": "90.00",
+        "value": "36",
+        "number": "35"
+      },
+      {
+        "score": "87.50",
+        "value": "35",
+        "number": "34"
+      },
+      {
+        "score": "85.00",
+        "value": "34",
+        "number": "33"
+      },
+      {
+        "score": "82.50",
+        "value": "33",
+        "number": "32"
+      },
+      {
+        "score": "80.00",
+        "value": "32",
+        "number": "31"
+      },
+      {
+        "score": "77.50",
+        "value": "31",
+        "number": "30"
+      },
+      {
+        "score": "75.00",
+        "value": "30",
+        "number": "29"
+      },
+      {
+        "score": "72.50",
+        "value": "29",
+        "number": "28"
+      },
+      {
+        "score": "70.00",
+        "value": "28",
+        "number": "27"
+      },
+      {
+        "score": "65.00",
+        "value": "26",
+        "number": "26"
+      },
+      {
+        "score": "62.50",
+        "value": "25",
+        "number": "25"
+      },
+      {
+        "score": "60.00",
+        "value": "24",
+        "number": "24"
+      },
+      {
+        "score": "57.50",
+        "value": "23",
+        "number": "23"
+      },
+      {
+        "score": "55.00",
+        "value": "22",
+        "number": "22"
+      },
+      {
+        "score": "52.50",
+        "value": "21",
+        "number": "21"
+      },
+      {
+        "score": "50.00",
+        "value": "20",
+        "number": "20"
+      },
+      {
+        "score": "47.50",
+        "value": "19",
+        "number": "19"
+      },
+      {
+        "score": "45.00",
+        "value": "18",
+        "number": "18"
+      },
+      {
+        "score": "42.50",
+        "value": "17",
+        "number": "17"
+      },
+      {
+        "score": "40.00",
+        "value": "16",
+        "number": "16"
+      },
+      {
+        "score": "37.50",
+        "value": "15",
+        "number": "15"
+      },
+      {
+        "score": "35.00",
+        "value": "14",
+        "number": "14"
+      },
+      {
+        "score": "32.50",
+        "value": "13",
+        "number": "13"
+      },
+      {
+        "score": "30.00",
+        "value": "12",
+        "number": "12"
+      },
+      {
+        "score": "27.50",
+        "value": "11",
+        "number": "11"
+      },
+      {
+        "score": "25.00",
+        "value": "10",
+        "number": "10"
+      },
+      {
+        "score": "22.50",
+        "value": "9",
+        "number": "9"
+      },
+      {
+        "score": "20.00",
+        "value": "8",
+        "number": "8"
+      },
+      {
+        "score": "17.50",
+        "value": "7",
+        "number": "7"
+      },
+      {
+        "score": "15.00",
+        "value": "6",
+        "number": "6"
+      },
+      {
+        "score": "12.50",
+        "value": "5",
+        "number": "5"
+      },
+      {
+        "score": "10.00",
+        "value": "4",
+        "number": "4"
+      },
+      {
+        "score": "7.50",
+        "value": "3",
+        "number": "3"
+      },
+      {
+        "score": "5.00",
+        "value": "2",
+        "number": "2"
+      },
+      {
+        "score": "2.50",
+        "value": "1",
+        "number": "1"
       }
     ]
+    // final five check
   }
 }

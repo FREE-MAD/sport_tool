@@ -1,9 +1,29 @@
-from rapidocr_onnxruntime import RapidOCR
-ocr = RapidOCR()
-img = r'c:\Users\32614\Desktop\sport_tool\dm\shuju&guize\湖南\OCR可编辑分章Word\结构化导出\_rendered_pages\03-04_第三章_第四节_游泳_印刷页038-084\page_003.png'
-result, _ = ocr(img)
-print('OCR result count:', len(result) if result else 0)
-for box, text, score in result[:30]:
-    x = sum(p[0] for p in box)/4
-    y = sum(p[1] for p in box)/4
-    print(f'{x:.0f},{y:.0f}: {text}')
+import fitz, os, numpy as np, easyocr
+from PIL import Image
+import io
+
+BASE = r'C:\Users\32614\Desktop\sport_tool\dm\shuju&guize\湖南\按目录切分_1-88\按节'
+
+# Initialize reader once
+reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
+
+# Test 100m page 2
+path = os.path.join(BASE, '02-01_第二章_第一节_100米跑_印刷页002-008.pdf')
+doc = fitz.open(path)
+
+page = doc[1]  # page index 1 = printed page 2
+print(f"Processing page 2/7 of 100m run...")
+
+mat = fitz.Matrix(200/72, 200/72)
+pix = page.get_pixmap(matrix=mat)
+img_data = pix.tobytes("png")
+img = Image.open(io.BytesIO(img_data))
+arr = np.array(img)
+
+results = reader.readtext(arr)
+texts = [r[1] for r in results]
+for t in texts[:30]:
+    print(f"  {t}")
+print(f"... ({len(texts)} text blocks total)")
+
+doc.close()

@@ -10,6 +10,15 @@
 // parallel_num: 与 parallel=true 搭配，表示当前规则节点前端要渲染几个 input。
 // choose: 配在包含 skills 的父级节点上，表示该组 skills 允许选择几个候选项；当前前端已实现 choose: 1 的单选渲染。
 // "Seconds and minutes": true 时，前端对该规则下的时间成绩使用微信原生多列 picker，按“分/秒/毫秒”选择，并提交为 MM:SS.xx。
+// timeRange: 可选，和 "Seconds and minutes" 放在同一层级；用于自定义"分/秒/毫秒"三列的选项数量。
+//           格式：timeRange: { minute: 10, second: 60, millisecond: 100 }
+//           表示"分钟列"有 10 项(00~09)、"秒列"有 60 项(00~59)、"毫秒列"有 100 项(00~99)。
+//           未配置时走默认：minute=10 / second=60 / millisecond=100。
+//           若有 skills 的父级节点配了 timeRange，则其下所有 skills 继承该范围；也可在子 item 单独覆盖。
+// timeDefaultValue / timeDefault：可选，独立于 timeRange 的"初始选中位置"（不会减少可选值数量）。
+//   写法一（索引数组）：timeDefaultValue: [minuteIdx, secondIdx, millisecondIdx]   例 [0, 20, 0] → 00分20秒00毫秒
+//   写法二（值对象）：  timeDefault:      { minute: 0, second: 20, millisecond: 0 }   未写的字段默认补 0
+//   优先级：子 skill 单独配 > 父级 item/type 配 > 用户之前的选择(切换项目时) > 兜底 [0,0,0]。
 // better: 查表方向(smaller=值越小分越高, larger=值越大分越高)，只影响评分，不改变前端布局。
 // match: 匹配方式(threshold=阈值查表)，只影响评分，不改变前端布局。
 // genderless: 使用不分性别编码，只影响编码拼接，不改变前端布局。

@@ -3,7 +3,7 @@
   <view class="hero-card">
     <view class="hero-kicker">体考分数计算 / 查分</view>
     <view class="hero-title">体考成绩查询</view>
-    <view class="hero-desc">信息与接口保持不变，升级页面观感与填写体验</view>
+    <view class="hero-desc">按省份动态加载规则，支持基础项、专项与辅项填写</view>
   </view>
 
   <view class="content">
@@ -38,11 +38,11 @@
 
     <view class="section-card">
       <view class="section-head">
-        <view class="section-title">项目成绩</view>
+        <view class="section-title">基础项目</view>
         <view class="section-desc">输入基础项目成绩，系统会自动参与后续计算</view>
       </view>
 
-      <view class="field-list">
+      <view class="field-list" wx:if="{{showMainTypePicker}}">
         <view class="field-row">
           <view class="field-label">类别</view>
           <picker class="field-picker" mode="selector" range="{{mainTypeList}}" value="{{mainTypeIndex}}" bindchange="onMainTypeChange">
@@ -67,21 +67,228 @@
             </view>
           </view>
         </block>
+
+        <block wx:for="{{mainChooseGroups}}" wx:key="label" wx:for-item="group" wx:for-index="groupIndex">
+          <view class="score-card">
+            <view class="score-meta">
+              <view class="score-name">{{group.label}}</view>
+              <view class="score-hint">请选择其中一项填写并提交</view>
+            </view>
+
+            <view class="option-group option-group--row option-group--adaptive">
+              <block wx:for="{{group.options}}" wx:key="code" wx:for-item="option">
+                <button
+                  class="option-btn {{option.code === group.selectedCode ? 'option-btn--active' : ''}}"
+                  data-group-index="{{groupIndex}}"
+                  data-code="{{option.code}}"
+                  bindtap="onMainChooseOptionTap"
+                >{{option.name}}</button>
+              </block>
+            </view>
+
+            <block wx:for="{{group.options}}" wx:key="code" wx:for-item="option">
+              <block wx:if="{{option.code === group.selectedCode}}">
+                <view class="score-field score-field--main-choice">
+                  <input class="score-input" type="digit" placeholder="请输入成绩" value="{{mainScores[option.code] || ''}}" data-code="{{option.code}}" bindinput="onMainScoreInput" />
+                  <text class="score-unit" wx:if="{{option.unit}}">{{option.unit}}</text>
+                </view>
+              </block>
+            </block>
+          </view>
+        </block>
       </view>
     </view>
+
+    <block wx:if="{{auxiliaryEnabled}}">
+      <view class="section-card">
+        <view class="section-head">
+          <view class="section-tag">辅项</view>
+          <view class="section-title">辅助项目</view>
+          <view class="section-desc">仅在当前省份存在辅项规则时显示</view>
+        </view>
+
+        <view class="field-list">
+          <view class="field-row field-row--aux-type">
+            <view class="field-label">类别</view>
+            <view class="field-picker">
+              <view class="option-group option-group--row">
+                <block wx:for="{{auxiliaryTypeList}}" wx:key="*this" wx:for-item="auxiliaryType" wx:for-index="typeIndex">
+                  <button
+                    class="option-btn {{auxiliaryTypeIndex === typeIndex ? 'option-btn--active' : ''}}"
+                    data-index="{{typeIndex}}"
+                    bindtap="onAuxiliaryTypeTap"
+                  >{{auxiliaryType}}</button>
+                </block>
+              </view>
+            </view>
+          </view>
+
+          <block wx:if="{{auxiliaryGroup.groupList.length > 0}}">
+            <view class="field-row">
+              <view class="field-label">{{auxiliaryGroup.groupLabel}}</view>
+              <picker class="field-picker" mode="selector" range="{{auxiliaryGroup.groupList}}" value="{{auxiliaryGroup.groupIndex}}" bindchange="onAuxiliaryGroupChange">
+                <view class="select-shell">
+                  <text class="select-value">{{auxiliaryGroup.groupList[auxiliaryGroup.groupIndex]}}</text>
+                  <text class="select-arrow">›</text>
+                </view>
+              </picker>
+            </view>
+          </block>
+
+          <block wx:if="{{auxiliaryGroup.subList.length > 0}}">
+            <view class="field-row">
+              <view class="field-label">项目</view>
+              <picker class="field-picker" mode="selector" range="{{auxiliaryGroup.subNames}}" value="{{auxiliaryGroup.subIndex}}" bindchange="onAuxiliarySubChange">
+                <view class="select-shell">
+                  <text class="select-value">{{auxiliaryGroup.subNames[auxiliaryGroup.subIndex]}}</text>
+                  <text class="select-arrow">›</text>
+                </view>
+              </picker>
+            </view>
+          </block>
+        </view>
+
+        <block wx:if="{{!auxiliaryGroup.showSkill}}">
+          <view class="score-list">
+            <view class="score-card">
+              <view class="score-meta">
+                <view class="score-name">{{auxiliaryGroup.currentSubName}}</view>
+                <view class="score-hint">{{auxiliaryGroup.currentTimeDefaultHint || '请输入辅项成绩'}}</view>
+              </view>
+
+              <block wx:if="{{auxiliaryGroup.currentIsTimePicker}}">
+                <picker mode="multiSelector" range="{{auxiliaryGroup.currentTimePickerRange}}" value="{{auxiliaryGroup.currentTimePickerValue}}" data-group-key="auxiliaryGroup" bindchange="onDirectTimePickerChange">
+                  <view class="select-shell select-shell--soft">
+                    <text class="select-value">{{auxiliaryGroup.currentTimeDisplay || '请选择分 / 秒 / 毫秒'}}</text>
+                    <text class="select-arrow">›</text>
+                  </view>
+                </picker>
+              </block>
+
+              <block wx:if="{{!auxiliaryGroup.currentIsTimePicker}}">
+                <view class="score-field">
+                  <input class="score-input" type="{{auxiliaryGroup.currentAllowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{auxiliaryGroup.score}}" data-group-key="auxiliaryGroup" bindinput="onSpecialScoreInput" />
+                  <text class="score-unit" wx:if="{{auxiliaryGroup.currentUnit}}">{{auxiliaryGroup.currentUnit}}</text>
+                </view>
+              </block>
+            </view>
+          </view>
+        </block>
+
+        <block wx:if="{{auxiliaryGroup.showSkill}}">
+          <block wx:if="{{auxiliaryGroup.useSkillPicker}}">
+            <view class="field-list">
+              <view class="field-row">
+                <view class="field-label">细项</view>
+                <picker class="field-picker" mode="selector" range="{{auxiliaryGroup.skillList}}" value="{{auxiliaryGroup.skillIndex}}" bindchange="onAuxiliarySkillChange">
+                  <view class="select-shell">
+                    <text class="select-value">{{auxiliaryGroup.skillList[auxiliaryGroup.skillIndex]}}</text>
+                    <text class="select-arrow">›</text>
+                  </view>
+                </picker>
+              </view>
+            </view>
+
+            <view class="score-list" wx:if="{{auxiliaryGroup.currentSkillItem}}">
+              <view class="score-card">
+                <view class="score-meta">
+                  <view class="score-name">{{auxiliaryGroup.currentSkillItem.name}}</view>
+                  <view class="score-hint">{{auxiliaryGroup.currentSkillItem.timeDefaultHint || '请完成当前细项成绩填写'}}</view>
+                </view>
+
+                <block wx:if="{{auxiliaryGroup.currentSkillItem.inputCount === 1}}">
+                  <block wx:if="{{auxiliaryGroup.currentSkillItem.isTimePicker}}">
+                    <picker mode="multiSelector" range="{{auxiliaryGroup.currentSkillItem.timePickerRange}}" value="{{auxiliaryGroup.currentSkillItem.timePickerValue}}" data-group-key="auxiliaryGroup" data-ski="{{auxiliaryGroup.skillIndex}}" bindchange="onTimePickerChange">
+                      <view class="select-shell select-shell--soft">
+                        <text class="select-value">{{auxiliaryGroup.currentSkillItem.timeDisplay || '请选择分 / 秒 / 毫秒'}}</text>
+                        <text class="select-arrow">›</text>
+                      </view>
+                    </picker>
+                  </block>
+                  <block wx:if="{{!auxiliaryGroup.currentSkillItem.isTimePicker}}">
+                    <view class="score-field">
+                      <input class="score-input" type="{{auxiliaryGroup.currentSkillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{auxiliaryGroup.currentSkillItem.values[0] || ''}}" data-group-key="auxiliaryGroup" data-ski="{{auxiliaryGroup.skillIndex}}" data-input-index="0" bindinput="onSkillScoreInput" />
+                      <text class="score-unit" wx:if="{{auxiliaryGroup.currentSkillItem.unit}}">{{auxiliaryGroup.currentSkillItem.unit}}</text>
+                    </view>
+                  </block>
+                </block>
+
+                <block wx:if="{{auxiliaryGroup.currentSkillItem.inputCount > 1}}">
+                  <view class="multi-input-list">
+                    <block wx:for="{{auxiliaryGroup.currentSkillItem.inputLabels}}" wx:key="*this" wx:for-item="inputLabel" wx:for-index="inputIndex">
+                      <view class="multi-input-item">
+                        <view class="multi-input-label">{{inputLabel}}</view>
+                        <view class="score-field score-field--compact">
+                          <input class="score-input" type="{{auxiliaryGroup.currentSkillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{auxiliaryGroup.currentSkillItem.values[inputIndex] || ''}}" data-group-key="auxiliaryGroup" data-ski="{{auxiliaryGroup.skillIndex}}" data-input-index="{{inputIndex}}" bindinput="onSkillScoreInput" />
+                          <text class="score-unit" wx:if="{{auxiliaryGroup.currentSkillItem.unit}}">{{auxiliaryGroup.currentSkillItem.unit}}</text>
+                        </view>
+                      </view>
+                    </block>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </block>
+
+          <block wx:if="{{!auxiliaryGroup.useSkillPicker}}">
+            <view class="score-list">
+              <block wx:for="{{auxiliaryGroup.skillItems}}" wx:key="code" wx:for-item="skillItem" wx:for-index="ski">
+                <view class="score-card">
+                  <view class="score-meta">
+                    <view class="score-name">{{skillItem.name}}</view>
+                    <view class="score-hint">{{skillItem.timeDefaultHint || '请填写该细项成绩'}}</view>
+                  </view>
+
+                  <block wx:if="{{skillItem.inputCount === 1}}">
+                    <block wx:if="{{skillItem.isTimePicker}}">
+                      <picker mode="multiSelector" range="{{skillItem.timePickerRange}}" value="{{skillItem.timePickerValue}}" data-group-key="auxiliaryGroup" data-ski="{{ski}}" bindchange="onTimePickerChange">
+                        <view class="select-shell select-shell--soft">
+                          <text class="select-value">{{skillItem.timeDisplay || '请选择分 / 秒 / 毫秒'}}</text>
+                          <text class="select-arrow">›</text>
+                        </view>
+                      </picker>
+                    </block>
+                    <block wx:if="{{!skillItem.isTimePicker}}">
+                      <view class="score-field">
+                        <input class="score-input" type="{{skillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{skillItem.values[0] || ''}}" data-group-key="auxiliaryGroup" data-ski="{{ski}}" data-input-index="0" bindinput="onSkillScoreInput" />
+                        <text class="score-unit" wx:if="{{skillItem.unit}}">{{skillItem.unit}}</text>
+                      </view>
+                    </block>
+                  </block>
+
+                  <block wx:if="{{skillItem.inputCount > 1}}">
+                    <view class="multi-input-list">
+                      <block wx:for="{{skillItem.inputLabels}}" wx:key="*this" wx:for-item="inputLabel" wx:for-index="inputIndex">
+                        <view class="multi-input-item">
+                          <view class="multi-input-label">{{inputLabel}}</view>
+                          <view class="score-field score-field--compact">
+                            <input class="score-input" type="{{skillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{skillItem.values[inputIndex] || ''}}" data-group-key="auxiliaryGroup" data-ski="{{ski}}" data-input-index="{{inputIndex}}" bindinput="onSkillScoreInput" />
+                            <text class="score-unit" wx:if="{{skillItem.unit}}">{{skillItem.unit}}</text>
+                          </view>
+                        </view>
+                      </block>
+                    </view>
+                  </block>
+                </view>
+              </block>
+            </view>
+          </block>
+        </block>
+      </view>
+    </block>
 
     <view class="section-card">
       <view class="section-head">
         <view class="section-tag">专项</view>
         <view class="section-title">专项选择</view>
-        <view class="section-desc">用于匹配专项对应标准</view>
+        <view class="section-desc">按省份规则动态展示专项结构</view>
       </view>
 
       <view class="field-list">
         <view class="field-row">
           <view class="field-label">类别</view>
-          <view class="field-picker">
-            <view class="option-group option-group--row">
+          <view class="field-picker s-v">
+            <view class="option-group option-group--row option-group--special-type">
               <block wx:for="{{specialTypeList}}" wx:key="*this" wx:for-item="specialType" wx:for-index="typeIndex">
                 <button
                   class="option-btn {{specialTypeIndex === typeIndex ? 'option-btn--active' : ''}}"
@@ -92,6 +299,18 @@
             </view>
           </view>
         </view>
+
+        <block wx:if="{{specialGroup.groupList.length > 0}}">
+          <view class="field-row">
+            <view class="field-label">{{specialGroup.groupLabel}}</view>
+            <picker class="field-picker" mode="selector" range="{{specialGroup.groupList}}" value="{{specialGroup.groupIndex}}" bindchange="onSpecialGroupChange">
+              <view class="select-shell">
+                <text class="select-value">{{specialGroup.groupList[specialGroup.groupIndex]}}</text>
+                <text class="select-arrow">›</text>
+              </view>
+            </picker>
+          </view>
+        </block>
 
         <block wx:if="{{specialGroup.subList.length > 0}}">
           <view class="field-row">
@@ -111,12 +330,24 @@
           <view class="score-card">
             <view class="score-meta">
               <view class="score-name">{{specialGroup.currentSubName}}</view>
-              <view class="score-hint">请输入专项成绩</view>
+              <view class="score-hint">{{specialGroup.currentTimeDefaultHint || '请输入专项成绩'}}</view>
             </view>
-            <view class="score-field">
-              <input class="score-input" type="digit" placeholder="请输入成绩" value="{{specialGroup.score}}" bindinput="onSpecialScoreInput" />
-              <text class="score-unit" wx:if="{{specialGroup.currentUnit}}">{{specialGroup.currentUnit}}</text>
-            </view>
+
+            <block wx:if="{{specialGroup.currentIsTimePicker}}">
+              <picker mode="multiSelector" range="{{specialGroup.currentTimePickerRange}}" value="{{specialGroup.currentTimePickerValue}}" data-group-key="specialGroup" bindchange="onDirectTimePickerChange">
+                <view class="select-shell select-shell--soft">
+                  <text class="select-value">{{specialGroup.currentTimeDisplay || '请选择分 / 秒 / 毫秒'}}</text>
+                  <text class="select-arrow">›</text>
+                </view>
+              </picker>
+            </block>
+
+            <block wx:if="{{!specialGroup.currentIsTimePicker}}">
+              <view class="score-field">
+                <input class="score-input" type="{{specialGroup.currentAllowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{specialGroup.score}}" data-group-key="specialGroup" bindinput="onSpecialScoreInput" />
+                <text class="score-unit" wx:if="{{specialGroup.currentUnit}}">{{specialGroup.currentUnit}}</text>
+              </view>
+            </block>
           </view>
         </view>
       </block>
@@ -139,12 +370,12 @@
             <view class="score-card">
               <view class="score-meta">
                 <view class="score-name">{{specialGroup.currentSkillItem.name}}</view>
-                <view class="score-hint">请完成当前细项成绩填写</view>
+                <view class="score-hint">{{specialGroup.currentSkillItem.timeDefaultHint || '请完成当前细项成绩填写'}}</view>
               </view>
 
               <block wx:if="{{specialGroup.currentSkillItem.inputCount === 1}}">
                 <block wx:if="{{specialGroup.currentSkillItem.isTimePicker}}">
-                  <picker mode="multiSelector" range="{{timePickerRange}}" value="{{specialGroup.currentSkillItem.timePickerValue}}" data-ski="{{specialGroup.skillIndex}}" bindchange="onTimePickerChange">
+                  <picker mode="multiSelector" range="{{specialGroup.currentSkillItem.timePickerRange}}" value="{{specialGroup.currentSkillItem.timePickerValue}}" data-group-key="specialGroup" data-ski="{{specialGroup.skillIndex}}" bindchange="onTimePickerChange">
                     <view class="select-shell select-shell--soft">
                       <text class="select-value">{{specialGroup.currentSkillItem.timeDisplay || '请选择分 / 秒 / 毫秒'}}</text>
                       <text class="select-arrow">›</text>
@@ -153,7 +384,7 @@
                 </block>
                 <block wx:if="{{!specialGroup.currentSkillItem.isTimePicker}}">
                   <view class="score-field">
-                    <input class="score-input" type="{{specialGroup.currentSkillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{specialGroup.currentSkillItem.values[0] || ''}}" data-ski="{{specialGroup.skillIndex}}" data-input-index="0" bindinput="onSkillScoreInput" />
+                    <input class="score-input" type="{{specialGroup.currentSkillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{specialGroup.currentSkillItem.values[0] || ''}}" data-group-key="specialGroup" data-ski="{{specialGroup.skillIndex}}" data-input-index="0" bindinput="onSkillScoreInput" />
                     <text class="score-unit" wx:if="{{specialGroup.currentSkillItem.unit}}">{{specialGroup.currentSkillItem.unit}}</text>
                   </view>
                 </block>
@@ -165,7 +396,7 @@
                     <view class="multi-input-item">
                       <view class="multi-input-label">{{inputLabel}}</view>
                       <view class="score-field score-field--compact">
-                        <input class="score-input" type="{{specialGroup.currentSkillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{specialGroup.currentSkillItem.values[inputIndex] || ''}}" data-ski="{{specialGroup.skillIndex}}" data-input-index="{{inputIndex}}" bindinput="onSkillScoreInput" />
+                        <input class="score-input" type="{{specialGroup.currentSkillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{specialGroup.currentSkillItem.values[inputIndex] || ''}}" data-group-key="specialGroup" data-ski="{{specialGroup.skillIndex}}" data-input-index="{{inputIndex}}" bindinput="onSkillScoreInput" />
                         <text class="score-unit" wx:if="{{specialGroup.currentSkillItem.unit}}">{{specialGroup.currentSkillItem.unit}}</text>
                       </view>
                     </view>
@@ -182,12 +413,12 @@
               <view class="score-card">
                 <view class="score-meta">
                   <view class="score-name">{{skillItem.name}}</view>
-                  <view class="score-hint">请填写该细项成绩</view>
+                  <view class="score-hint">{{skillItem.timeDefaultHint || '请填写该细项成绩'}}</view>
                 </view>
 
                 <block wx:if="{{skillItem.inputCount === 1}}">
                   <block wx:if="{{skillItem.isTimePicker}}">
-                    <picker mode="multiSelector" range="{{timePickerRange}}" value="{{skillItem.timePickerValue}}" data-ski="{{ski}}" bindchange="onTimePickerChange">
+                    <picker mode="multiSelector" range="{{skillItem.timePickerRange}}" value="{{skillItem.timePickerValue}}" data-group-key="specialGroup" data-ski="{{ski}}" bindchange="onTimePickerChange">
                       <view class="select-shell select-shell--soft">
                         <text class="select-value">{{skillItem.timeDisplay || '请选择分 / 秒 / 毫秒'}}</text>
                         <text class="select-arrow">›</text>
@@ -196,7 +427,7 @@
                   </block>
                   <block wx:if="{{!skillItem.isTimePicker}}">
                     <view class="score-field">
-                      <input class="score-input" type="{{skillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{skillItem.values[0] || ''}}" data-ski="{{ski}}" data-input-index="0" bindinput="onSkillScoreInput" />
+                      <input class="score-input" type="{{skillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{skillItem.values[0] || ''}}" data-group-key="specialGroup" data-ski="{{ski}}" data-input-index="0" bindinput="onSkillScoreInput" />
                       <text class="score-unit" wx:if="{{skillItem.unit}}">{{skillItem.unit}}</text>
                     </view>
                   </block>
@@ -208,7 +439,7 @@
                       <view class="multi-input-item">
                         <view class="multi-input-label">{{inputLabel}}</view>
                         <view class="score-field score-field--compact">
-                          <input class="score-input" type="{{skillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{skillItem.values[inputIndex] || ''}}" data-ski="{{ski}}" data-input-index="{{inputIndex}}" bindinput="onSkillScoreInput" />
+                          <input class="score-input" type="{{skillItem.allowNegative ? 'text' : 'digit'}}" placeholder="请输入成绩" value="{{skillItem.values[inputIndex] || ''}}" data-group-key="specialGroup" data-ski="{{ski}}" data-input-index="{{inputIndex}}" bindinput="onSkillScoreInput" />
                           <text class="score-unit" wx:if="{{skillItem.unit}}">{{skillItem.unit}}</text>
                         </view>
                       </view>
@@ -223,8 +454,25 @@
     </view>
 
     <view class="section-card section-card--action">
-      <button class="submit-btn" bindtap="submitForm" loading="{{submitting}}" disabled="{{submitting}}">点击查分</button>
-      <button class="reset-btn" bindtap="resetForm">重置表单</button>
+      <!-- 偏好按钮单独放一行，避免与查分主操作混淆 -->
+      <view class="preference-action-row">
+        <button
+          class="preference-btn"
+          bindtap="saveCurrentPreferenceAsDefault"
+          loading="{{savingPreference}}"
+          disabled="{{savingPreference || clearingPreference}}"
+        >保存为默认偏好</button>
+        <button
+          class="preference-btn preference-btn--danger"
+          bindtap="clearUserPreference"
+          loading="{{clearingPreference}}"
+          disabled="{{savingPreference || clearingPreference}}"
+        >清空个人偏好</button>
+      </view>
+      <view class="primary-action-row">
+        <button class="submit-btn" bindtap="submitForm" loading="{{submitting}}" disabled="{{submitting}}">点击查分</button>
+        <button class="reset-btn" bindtap="resetForm">重置表单</button>
+      </view>
     </view>
   </view>
 </view>

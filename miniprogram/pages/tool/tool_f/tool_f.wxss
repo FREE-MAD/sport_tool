@@ -49,6 +49,19 @@
 .section-card--action {
   padding-top: 24rpx;
   display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+  align-items: stretch;
+}
+
+.preference-action-row {
+  display: flex;
+  gap: 14rpx;
+  align-items: center;
+}
+
+.primary-action-row {
+  display: flex;
   gap: 14rpx;
   align-items: center;
 }
@@ -98,6 +111,10 @@
   gap: 20rpx;
 }
 
+.field-row--aux-type {
+  margin-bottom: 16rpx;
+}
+
 .field-label {
   width: 112rpx;
   flex-shrink: 0;
@@ -109,6 +126,7 @@
 
 .field-picker {
   flex: 1;
+  min-width: 0;
 }
 
 .option-group {
@@ -128,6 +146,13 @@
   padding: 0 12rpx;
 }
 
+.option-group--adaptive .option-btn {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  padding: 0 24rpx;
+}
+
 .option-btn {
   margin: 0;
   min-width: 168rpx;
@@ -142,6 +167,28 @@
   font-size: 28rpx;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.s-v {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.s-v .option-group--row {
+  flex-wrap: nowrap;
+  width: max-content;
+  min-width: 100%;
+}
+
+.s-v .option-group--row .option-btn {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 0 24rpx;
+}
+
+.option-group--special-type {
+  margin-bottom: 30rpx;
 }
 
 .option-btn--active {
@@ -217,6 +264,7 @@
   font-size: 24rpx;
   color: #95a0b5;
   line-height: 1.5;
+  white-space: pre-wrap;
 }
 
 .score-field {
@@ -228,6 +276,10 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
+}
+
+.score-field--main-choice {
+  margin-top: 16rpx;
 }
 
 .score-field--compact {
@@ -322,6 +374,26 @@
   box-shadow: 0 8rpx 16rpx rgba(109, 121, 255, 0.15);
 }
 
+.preference-btn {
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+  height: 68rpx;
+  line-height: 68rpx;
+  border-radius: 999rpx;
+  border: 2rpx solid #d9e0f5;
+  background: #ffffff;
+  color: #5f6f92;
+  font-size: 26rpx;
+  font-weight: 700;
+}
+
+.preference-btn--danger {
+  border-color: #f0d8d8;
+  background: #fff7f7;
+  color: #c46b6b;
+}
+
 .submit-btn[disabled] {
   background: linear-gradient(90deg, #c7cffc 0%, #cfd7ff 100%);
   color: rgba(255, 255, 255, 0.92);
@@ -343,6 +415,7 @@
 }
 
 .submit-btn::after,
-.reset-btn::after {
+.reset-btn::after,
+.preference-btn::after {
   border: none;
 }

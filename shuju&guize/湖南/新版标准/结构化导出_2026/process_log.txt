@@ -1,0 +1,12 @@
+[HTML] 湖南省体育高考之游辅-女子评分标准（2026新版）.html data_images=63
+[HTML] 湖南省体育高考之游辅-男子评分标准（2026新版）.html data_images=77
+[HTML] 湖南省体育高考之立定跳远评分标准（2026新版）.html data_images=17
+[HTML] 湖南省体育高考之篮辅评分标准（2026新版）.html data_images=43
+[HTML] 湖南省体育高考之足辅评分标准（2026新版）.html data_images=53
+[TABLE] 游泳辅项成绩评分标准（男子） code=hunan_2026_03-04_m_001 images=74 total=2839 max=60.00 min=20
+  [WARN] 图片 69 抽取对数过少: pairs=0, lines=44, boxes=89, caption=
+  [WARN] 图片 70 抽取对数过少: pairs=0, lines=44, boxes=89, caption=
+  [WARN] 图片 71 抽取对数过少: pairs=0, lines=44, boxes=89, caption=
+  [WARN] 图片 74 抽取对数过少: pairs=0, lines=44, boxes=89, caption=
+  [WARN] 图片 75 抽取对数过少: pairs=0, lines=23, boxes=44, caption=
+  [WARN] 图片 76 抽取对数过少: pairs=0, lines=24, boxes=29, caption=

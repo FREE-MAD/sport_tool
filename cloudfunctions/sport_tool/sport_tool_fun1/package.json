@@ -1,0 +1,9 @@
+{
+  "name": "sport_tool_fun1",
+  "version": "1.0.0",
+  "description": "运动记录表单收集云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~4.0.2"
+  }
+}

@@ -1,0 +1,365 @@
+{
+  "code": {
+    "table_name": "立定跳远成绩评分标准（男子）",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2026_02-03_m_001",
+    "max_value": "2.85",
+    "min_value": "0.00",
+    "total": "70",
+    "data": [
+      {
+        "score": "25.00",
+        "value": "0.00",
+        "number": "1"
+      },
+      {
+        "score": "25.00",
+        "value": "0.01",
+        "number": "2"
+      },
+      {
+        "score": "25.00",
+        "value": "0.02",
+        "number": "3"
+      },
+      {
+        "score": "25.00",
+        "value": "0.03",
+        "number": "4"
+      },
+      {
+        "score": "25.00",
+        "value": "0.04",
+        "number": "5"
+      },
+      {
+        "score": "25.00",
+        "value": "0.05",
+        "number": "6"
+      },
+      {
+        "score": "25.00",
+        "value": "0.06",
+        "number": "7"
+      },
+      {
+        "score": "25.00",
+        "value": "0.08",
+        "number": "8"
+      },
+      {
+        "score": "25.00",
+        "value": "0.09",
+        "number": "9"
+      },
+      {
+        "score": "25.00",
+        "value": "0.10",
+        "number": "10"
+      },
+      {
+        "score": "25.00",
+        "value": "0.11",
+        "number": "11"
+      },
+      {
+        "score": "25.00",
+        "value": "0.12",
+        "number": "12"
+      },
+      {
+        "score": "25.00",
+        "value": "0.13",
+        "number": "13"
+      },
+      {
+        "score": "25.00",
+        "value": "0.14",
+        "number": "14"
+      },
+      {
+        "score": "25.00",
+        "value": "0.15",
+        "number": "15"
+      },
+      {
+        "score": "25.00",
+        "value": "0.16",
+        "number": "16"
+      },
+      {
+        "score": "25.00",
+        "value": "0.17",
+        "number": "17"
+      },
+      {
+        "score": "25.00",
+        "value": "0.18",
+        "number": "18"
+      },
+      {
+        "score": "25.00",
+        "value": "0.19",
+        "number": "19"
+      },
+      {
+        "score": "25.00",
+        "value": "0.20",
+        "number": "20"
+      },
+      {
+        "score": "25.00",
+        "value": "0.21",
+        "number": "21"
+      },
+      {
+        "score": "25.00",
+        "value": "0.22",
+        "number": "22"
+      },
+      {
+        "score": "25.00",
+        "value": "0.23",
+        "number": "23"
+      },
+      {
+        "score": "25.00",
+        "value": "0.24",
+        "number": "24"
+      },
+      {
+        "score": "25.00",
+        "value": "0.25",
+        "number": "25"
+      },
+      {
+        "score": "25.00",
+        "value": "0.26",
+        "number": "26"
+      },
+      {
+        "score": "25.00",
+        "value": "0.27",
+        "number": "27"
+      },
+      {
+        "score": "25.00",
+        "value": "0.28",
+        "number": "28"
+      },
+      {
+        "score": "25.00",
+        "value": "0.29",
+        "number": "29"
+      },
+      {
+        "score": "25.00",
+        "value": "0.30",
+        "number": "30"
+      },
+      {
+        "score": "25.00",
+        "value": "0.31",
+        "number": "31"
+      },
+      {
+        "score": "84.80",
+        "value": "2.47",
+        "number": "32"
+      },
+      {
+        "score": "85.20",
+        "value": "2.48",
+        "number": "33"
+      },
+      {
+        "score": "85.60",
+        "value": "2.49",
+        "number": "34"
+      },
+      {
+        "score": "86.00",
+        "value": "2.50",
+        "number": "35"
+      },
+      {
+        "score": "86.40",
+        "value": "2.51",
+        "number": "36"
+      },
+      {
+        "score": "86.80",
+        "value": "2.52",
+        "number": "37"
+      },
+      {
+        "score": "87.20",
+        "value": "2.53",
+        "number": "38"
+      },
+      {
+        "score": "87.60",
+        "value": "2.54",
+        "number": "39"
+      },
+      {
+        "score": "88.00",
+        "value": "2.55",
+        "number": "40"
+      },
+      {
+        "score": "88.40",
+        "value": "2.56",
+        "number": "41"
+      },
+      {
+        "score": "88.80",
+        "value": "2.57",
+        "number": "42"
+      },
+      {
+        "score": "89.20",
+        "value": "2.58",
+        "number": "43"
+      },
+      {
+        "score": "89.60",
+        "value": "2.59",
+        "number": "44"
+      },
+      {
+        "score": "90.00",
+        "value": "2.60",
+        "number": "45"
+      },
+      {
+        "score": "90.40",
+        "value": "2.61",
+        "number": "46"
+      },
+      {
+        "score": "90.80",
+        "value": "2.62",
+        "number": "47"
+      },
+      {
+        "score": "91.20",
+        "value": "2.63",
+        "number": "48"
+      },
+      {
+        "score": "91.60",
+        "value": "2.64",
+        "number": "49"
+      },
+      {
+        "score": "92.00",
+        "value": "2.65",
+        "number": "50"
+      },
+      {
+        "score": "92.40",
+        "value": "2.66",
+        "number": "51"
+      },
+      {
+        "score": "92.80",
+        "value": "2.67",
+        "number": "52"
+      },
+      {
+        "score": "93.20",
+        "value": "2.68",
+        "number": "53"
+      },
+      {
+        "score": "93.60",
+        "value": "2.69",
+        "number": "54"
+      },
+      {
+        "score": "94.00",
+        "value": "2.70",
+        "number": "55"
+      },
+      {
+        "score": "94.40",
+        "value": "2.71",
+        "number": "56"
+      },
+      {
+        "score": "94.80",
+        "value": "2.72",
+        "number": "57"
+      },
+      {
+        "score": "95.20",
+        "value": "2.73",
+        "number": "58"
+      },
+      {
+        "score": "95.60",
+        "value": "2.74",
+        "number": "59"
+      },
+      {
+        "score": "96.00",
+        "value": "2.75",
+        "number": "60"
+      },
+      {
+        "score": "96.40",
+        "value": "2.76",
+        "number": "61"
+      },
+      {
+        "score": "96.80",
+        "value": "2.77",
+        "number": "62"
+      },
+      {
+        "score": "97.20",
+        "value": "2.78",
+        "number": "63"
+      },
+      {
+        "score": "97.60",
+        "value": "2.79",
+        "number": "64"
+      },
+      {
+        "score": "98.00",
+        "value": "2.80",
+        "number": "65"
+      },
+      {
+        "score": "98.40",
+        "value": "2.81",
+        "number": "66"
+      },
+      {
+        "score": "98.80",
+        "value": "2.82",
+        "number": "67"
+      },
+      {
+        "score": "99.20",
+        "value": "2.83",
+        "number": "68"
+      },
+      {
+        "score": "99.60",
+        "value": "2.84",
+        "number": "69"
+      },
+      {
+        "score": "100.00",
+        "value": "2.85",
+        "number": "70"
+      }
+    ]
+  }
+}

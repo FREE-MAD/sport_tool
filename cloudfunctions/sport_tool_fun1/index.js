@@ -4,49 +4,51 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: "cloud1-6gh7jgl8c5b16a83" });
 const db = cloud.database();
 
+function resolveScoreCollectionName(options) {
+  const opts = options || {};
+  if (opts.forceScoreCollectionName) return opts.forceScoreCollectionName;
+  if (opts.useTestCollection === true) return 'test_tool_code';
+  if (opts.useTestCollection === false) return 'tool_code';
+  if (opts.runtimeEnvVersion === 'develop') return 'test_tool_code';
+  return 'tool_code';
+}
+
 // ==================== 数据库查表评分 ====================
 
 /**
- * 从数据库 score_table 集合中查询评分表条目
- * 数据库结构：
- *   - provinceCode: 省份编码，如 "001"
- *   - code: 项目编码，如 "001m1A001"
- *   - table_name, headers, max_value, min_value, total, data 等字段
+ * 从数据库中按 code 直查评分表条目。
+ * 当前约定：一条文档对应一个 code，必须存在顶层 code 字段。
  * @param {string} code - 项目编码，如 "001m1A001"
+ * @param {string} collectionName - 评分集合名
+ * @param {Map<string, object|null>} [entryCache] - 单次请求内的评分表缓存
  * @returns {object|null} 评分表条目
  */
-async function getScoreEntry(code) {
-  try {
-    const collection = db.collection('tool_code');
+async function getScoreEntry(code, collectionName, entryCache) {
+  const resolvedCollectionName = collectionName || 'tool_code';
+  const cacheKey = `${resolvedCollectionName}:${code}`;
+  if (entryCache && entryCache.has(cacheKey)) {
+    return entryCache.get(cacheKey);
+  }
 
-    let res = await collection
+  try {
+    const collection = db.collection(resolvedCollectionName);
+    const res = await collection
       .where({ code })
       .limit(1)
       .get();
 
-    if (res.data && res.data.length > 0) {
-      console.log('[查表] 按 code 命中:', code);
-      return res.data[0];
+    const entry = (res.data && res.data.length > 0) ? res.data[0] : null;
+    if (entry) {
+      console.log('[查表] 按 code 命中:', resolvedCollectionName, code);
+    } else {
+      console.warn('[查表] 未找到评分数据:', resolvedCollectionName, code, '(仅支持扁平文档结构)');
     }
-
-    // 兼容嵌套库存储：整个省份评分表存成一个大文档
-    res = await collection.limit(20).get();
-    if (res.data && res.data.length > 0) {
-      for (const doc of res.data) {
-        if (!doc || typeof doc !== 'object') continue;
-        for (const key of Object.keys(doc)) {
-          if (doc[key] && doc[key][code]) {
-            console.log('[查表] 按嵌套结构命中:', key, code);
-            return doc[key][code];
-          }
-        }
-      }
+    if (entryCache) {
+      entryCache.set(cacheKey, entry);
     }
-
-    console.warn('[查表] 未找到评分数据:', code, '(已尝试 code / nested)');
-    return null;
+    return entry;
   } catch (err) {
-    console.error('[查表] 数据库查询失败:', code, err.message);
+    console.error('[查表] 数据库查询失败:', collectionName || 'tool_code', code, err.message);
     return null;
   }
 }
@@ -185,14 +187,14 @@ function extractValue(d, genderCode) {
  *   - better=smaller：value 从小到大排列（如 100 米跑：11.48 → 16.65）
  *   - better=larger：value 从大到小排列（如 摸高：3.15 → 2.66）
  *
+ * @param {object|null} entry - 评分表条目
  * @param {string} code - 项目编码，如 "001m1A001"
  * @param {number} userValue - 用户成绩数值
  * @param {string} better - "smaller" 或 "larger"
  * @param {string} genderCode - 性别编码，用于游泳等多列格式的数据提取
  * @returns {number} 得分
  */
-async function lookupScore(code, userValue, better, genderCode) {
-  const entry = await getScoreEntry(code);
+function lookupScore(entry, code, userValue, better, genderCode) {
   if (!entry || !entry.data || entry.data.length === 0) {
     console.warn('[查表] 未找到评分数据:', code);
     return 0;
@@ -255,72 +257,123 @@ async function lookupScore(code, userValue, better, genderCode) {
 
 /**
  * 单个项目评分（异步）
+ * 返回说明：
+ * - rawScore: 数据库查到的原始换算分，用于前端明细展示
+ * - countedScore: 参与 totalScore 汇总的分值
  */
-async function scoreItem(item, genderCode) {
-  // 先检查数据库中的 rule 字段
-  if (item.rule === undefined) {
-    const entry = await getScoreEntry(item.code);
-    if (entry && (entry.rule === false || entry.rule === 'false')) {
-      item.rule = false;
-    }
-  }
-
+async function scoreItem(item, genderCode, collectionName, entryCache) {
   // rule: false 时，直接使用用户输入的值作为分数，跳过查表
   if (item.rule === false || item.rule === 'false') {
     const directScore = normalizeScore(item.value);
-    console.log(`[评分] ${item.name}(${item.code}) | rule=false | 直接得分=${directScore}`);
-    return Number.isFinite(directScore) ? directScore : 0;
+    const safeScore = Number.isFinite(directScore) ? directScore : 0;
+    console.log(`[评分] ${item.name}(${item.code}) | rule=false | 原始分=${safeScore} | 计入总分=${safeScore}`);
+    return {
+      rawScore: safeScore,
+      countedScore: safeScore
+    };
+  }
+
+  const entry = await getScoreEntry(item.code, collectionName, entryCache);
+  if (item.rule === undefined && entry && (entry.rule === false || entry.rule === 'false')) {
+    item.rule = false;
+  }
+  if (item.rule === false || item.rule === 'false') {
+    const directScore = normalizeScore(item.value);
+    const safeScore = Number.isFinite(directScore) ? directScore : 0;
+    console.log(`[评分] ${item.name}(${item.code}) | rule=false(db) | 原始分=${safeScore} | 计入总分=${safeScore}`);
+    return {
+      rawScore: safeScore,
+      countedScore: safeScore
+    };
   }
 
   const value = normalizeComparableValue(item.value);
   if (!Number.isFinite(value)) {
     console.warn('[评分] 无效数值:', item.name, item.value);
-    return 0;
+    return {
+      rawScore: 0,
+      countedScore: 0
+    };
   }
 
   const better = item.better || 'smaller';
-  const score = await lookupScore(item.code, value, better, genderCode);
+  const rawScore = lookupScore(entry, item.code, value, better, genderCode);
+  const countedScore = rawScore;
 
-  console.log(`[评分] ${item.name}(${item.code}) | 值=${value}${item.unit} | better=${better} | 得分=${score}`);
-  return score;
+  console.log(`[评分] ${item.name}(${item.code}) | 值=${value}${item.unit} | better=${better} | 原始分=${rawScore} | 计入总分=${countedScore}`);
+  return {
+    rawScore,
+    countedScore
+  };
 }
 
 /**
  * 对所有项目进行评分
  */
-async function scoreAll(mainData, specialDataList, genderCode) {
-  const mainScores = await Promise.all(mainData.map(async (item) => ({
-    name: item.name,
-    code: item.code,
-    score: await scoreItem(item, genderCode),
-    value: item.value,
-    unit: item.unit
-  })));
+async function scoreAll(mainData, specialDataList, genderCode, collectionName) {
+  const entryCache = new Map();
+  const mainScores = await Promise.all(mainData.map(async (item) => {
+    const scoreResult = await scoreItem(item, genderCode, collectionName, entryCache);
+    return {
+      name: item.name,
+      code: item.code,
+      score: scoreResult.rawScore,
+      rawScore: scoreResult.rawScore,
+      countedScore: scoreResult.countedScore,
+      value: item.value,
+      unit: item.unit
+    };
+  }));
 
-  const specialScores = await Promise.all((specialDataList || []).map(async (item) => ({
-    typeLabel: item.typeLabel,
-    name: item.name,
-    code: item.code,
-    score: await scoreItem(item, genderCode),
-    value: item.value,
-    unit: item.unit
-  })));
+  const specialScores = await Promise.all((specialDataList || []).map(async (item) => {
+    const scoreResult = await scoreItem(item, genderCode, collectionName, entryCache);
+    return {
+      typeLabel: item.typeLabel,
+      name: item.name,
+      code: item.code,
+      score: scoreResult.rawScore,
+      rawScore: scoreResult.rawScore,
+      countedScore: scoreResult.countedScore,
+      value: item.value,
+      unit: item.unit
+    };
+  }));
 
   const allScores = [...mainScores, ...specialScores];
-  const totalScore = allScores.reduce((sum, s) => sum + (s.score || 0), 0);
+  const totalScore = allScores.reduce((sum, s) => sum + (s.countedScore || 0), 0);
 
-  console.log('[评分] 总分:', totalScore, '| 基本素质:', mainScores.map(s => s.score), '| 专项:', specialScores.map(s => s.score));
+  console.log('[评分] 总分:', totalScore, '| 基本素质计分:', mainScores.map(s => s.countedScore), '| 专项计分:', specialScores.map(s => s.countedScore));
   return { mainScores, specialScores, totalScore };
 }
 
 // ==================== 云函数入口 ====================
 
 exports.main = async (event, context) => {
-  const { province, provinceCode, gender, genderCode, mainType, mainTypeKey, mainData, specialType, specialTypeKey, specialDataList } = event;
+  const {
+    province,
+    provinceCode,
+    gender,
+    genderCode,
+    mainType,
+    mainTypeKey,
+    mainData,
+    specialType,
+    specialTypeKey,
+    specialDataList,
+    runtimeEnvVersion,
+    useTestCollection,
+    forceScoreCollectionName
+  } = event;
+  const scoreCollectionName = resolveScoreCollectionName({
+    runtimeEnvVersion,
+    useTestCollection,
+    forceScoreCollectionName
+  });
 
   console.log('========== 前端传入数据 ==========');
   console.log('省份:', province, '(' + provinceCode + ')');
   console.log('性别:', gender, '(' + genderCode + ')');
+  console.log('环境:', runtimeEnvVersion || 'unknown', '| 评分集合:', scoreCollectionName);
   console.log('基本素质类别:', mainType, '(' + mainTypeKey + ')');
   console.log('基本素质数据:', JSON.stringify(mainData));
   console.log('专项类别:', specialType, '(' + specialTypeKey + ')');
@@ -330,7 +383,7 @@ exports.main = async (event, context) => {
   try {
     // ==================== 评分 ====================
     console.log('========== 开始评分 ==========');
-    const score = await scoreAll(mainData, specialDataList || [], provinceCode, genderCode);
+    const score = await scoreAll(mainData, specialDataList || [], genderCode, scoreCollectionName);
     console.log('评分结果:', JSON.stringify(score));
     console.log('====================================');
 

@@ -9,6 +9,8 @@
     "max_value": "11.54",
     "min_value": "15.24",
     "total": "371",
+    // total completed yuanbao_check 
+    // first to five check
     "data": [
       {
         "score": "100.00",
@@ -1866,5 +1868,7 @@
         "number": "371"
       }
     ]
+    // final five check
+    
   }
 }

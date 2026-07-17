@@ -386,6 +386,58 @@ submitCloudForm({
 
 ---
 
+## 6. 7.17 今日更新
+
+今天这轮主要补了两条主线：一条是 `tool_f` 页面继续重构和补全用户偏好能力，另一条是湖南评分表结构化数据继续完善，尤其是游泳辅项与专项数据的清洗、修正和编码整理。
+
+### 6.1 `tool_f` 页面继续拆分与稳定化
+
+围绕 `miniprogram/pages/tool/tool_f/`，今天完成了以下收口：
+
+- 将页面逻辑按职责拆分为交互入口、规则层、提交层三部分
+- 新增并落地 `rule2/addrule.js` 作为统一规则表入口定位
+- 调整模块命名，避免微信小程序对多点文件名识别不稳定导致的 `module not defined`
+- 修复规则层语法问题，重新完成依赖链检查
+
+当前对应的核心文件包括：
+
+- `miniprogram/pages/tool/tool_f/tool_f.js`
+- `miniprogram/pages/tool/tool_f/tool_f_rules.js`
+- `miniprogram/pages/tool/tool_f/tool_f_submit.js`
+- `miniprogram/pages/tool/tool_f/rule2/addrule.js`
+
+### 6.2 用户偏好能力补齐
+
+今天还补完了基于 `openid` 的 `tool_f` 个人偏好能力，覆盖：
+
+- 进入页面自动读取历史偏好
+- 支持手动保存默认偏好
+- 支持清空个人偏好
+- 偏好数据写入登录用户记录中统一管理
+
+对应联动修改了：
+
+- `cloudfunctions/sport_tool/login/index.js`
+- `miniprogram/pages/tool/tool_f/tool_f.wxml`
+- `miniprogram/pages/tool/tool_f/tool_f.wxss`
+
+### 6.3 湖南数据继续修正
+
+湖南数据这边，今天继续推进了 OCR 结构化后的复核和修正工作，重点集中在：
+
+- 游泳辅项与专项的 CSV / JSON 同步修正
+- 新增辅助校验脚本和批处理脚本，提升后续复查效率
+- 持续维护湖南数据编码与规则映射文件
+
+这部分改动主要位于：
+
+- `shuju&guize/湖南/OCR可编辑分章Word/结构化导出/csv/`
+- `shuju&guize/湖南/OCR可编辑分章Word/结构化导出/json/`
+- `shuju&guize/湖南/OCR可编辑分章Word/结构化导出/json/_工具脚本/`
+- `shuju&guize/湖南/数据编码和规则.json`
+
+---
+
 ## 当前目录中与本轮更新最相关的文件
 
 ### 小程序端
