@@ -1,0 +1,195 @@
+{
+  "code": {
+    "table_name": "表58 乒乓球专项达标成绩——正反手削球",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-10_002",
+    "max_value": "30.00",
+    "min_value": "1.00",
+    "total": "36",
+    "data": [
+      {
+        "score": "1.00",
+        "value": "1.00",
+        "number": "1"
+      },
+      {
+        "score": "2.00",
+        "value": "2.00",
+        "number": "2"
+      },
+      {
+        "score": "3.00",
+        "value": "3.00",
+        "number": "3"
+      },
+      {
+        "score": "4.00",
+        "value": "4.00",
+        "number": "4"
+      },
+      {
+        "score": "5.00",
+        "value": "5.00",
+        "number": "5"
+      },
+      {
+        "score": "6.00",
+        "value": "6.00",
+        "number": "6"
+      },
+      {
+        "score": "7.00",
+        "value": "7.00",
+        "number": "7"
+      },
+      {
+        "score": "8.00",
+        "value": "8.00",
+        "number": "8"
+      },
+      {
+        "score": "9.00",
+        "value": "9.00",
+        "number": "9"
+      },
+      {
+        "score": "10.00",
+        "value": "10.00",
+        "number": "10"
+      },
+      {
+        "score": "11.00",
+        "value": "11.00",
+        "number": "11"
+      },
+      {
+        "score": "12.00",
+        "value": "12.00",
+        "number": "12"
+      },
+      {
+        "score": "13.00",
+        "value": "13.00",
+        "number": "13"
+      },
+      {
+        "score": "14.00",
+        "value": "14.00",
+        "number": "14"
+      },
+      {
+        "score": "15.00",
+        "value": "15.00",
+        "number": "15"
+      },
+      {
+        "score": "16.00",
+        "value": "16.00",
+        "number": "16"
+      },
+      {
+        "score": "17.00",
+        "value": "17.00",
+        "number": "17"
+      },
+      {
+        "score": "18.00",
+        "value": "18.00",
+        "number": "18"
+      },
+      {
+        "score": "19.00",
+        "value": "19.00",
+        "number": "19"
+      },
+      {
+        "score": "21.00",
+        "value": "20.00",
+        "number": "20"
+      },
+      {
+        "score": "20.00",
+        "value": "20.00",
+        "number": "21"
+      },
+      {
+        "score": "23.00",
+        "value": "21.00",
+        "number": "22"
+      },
+      {
+        "score": "22.00",
+        "value": "21.00",
+        "number": "23"
+      },
+      {
+        "score": "25.00",
+        "value": "22.00",
+        "number": "24"
+      },
+      {
+        "score": "24.00",
+        "value": "22.00",
+        "number": "25"
+      },
+      {
+        "score": "27.00",
+        "value": "23.00",
+        "number": "26"
+      },
+      {
+        "score": "26.00",
+        "value": "23.00",
+        "number": "27"
+      },
+      {
+        "score": "29.00",
+        "value": "24.00",
+        "number": "28"
+      },
+      {
+        "score": "28.00",
+        "value": "24.00",
+        "number": "29"
+      },
+      {
+        "score": "31.00",
+        "value": "25.00",
+        "number": "30"
+      },
+      {
+        "score": "30.00",
+        "value": "25.00",
+        "number": "31"
+      },
+      {
+        "score": "32.00",
+        "value": "26.00",
+        "number": "32"
+      },
+      {
+        "score": "34.00",
+        "value": "27.00",
+        "number": "33"
+      },
+      {
+        "score": "36.00",
+        "value": "28.00",
+        "number": "34"
+      },
+      {
+        "score": "38.00",
+        "value": "29.00",
+        "number": "35"
+      },
+      {
+        "score": "40.00",
+        "value": "30.00",
+        "number": "36"
+      }
+    ]
+  }
+}

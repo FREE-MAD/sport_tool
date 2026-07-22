@@ -1,0 +1,92 @@
+{
+  "title": "湖南 2026 新版评分标准导出 JSON 分类索引",
+  "source_dir": "C:\\Users\\32614\\Desktop\\sport_tool\\dm\\shuju&guize\\湖南\\新版标准\\结构化导出_2026\\converted",
+  "generated_at": "2026-07-22 11:45:19",
+  "categories": [
+    {
+      "folder": "02_身体素质项目",
+      "code": "02",
+      "category": "身体素质项目",
+      "sub_items": [
+        {
+          "title": "立定跳远",
+          "folder": "02_身体素质项目/02-03_立定跳远",
+          "code": "02-03",
+          "json_files": [
+            {
+              "file_name": "hunan_2026_02-03_f_002_立定跳远成绩评分标准（女子）.json",
+              "relative_path": "02_身体素质项目/02-03_立定跳远/hunan_2026_02-03_f_002_立定跳远成绩评分标准（女子）.json"
+            },
+            {
+              "file_name": "hunan_2026_02-03_m_001_立定跳远成绩评分标准（男子）.json",
+              "relative_path": "02_身体素质项目/02-03_立定跳远/hunan_2026_02-03_m_001_立定跳远成绩评分标准（男子）.json"
+            }
+          ],
+          "json_count": 2,
+          "total_json_count": 2
+        }
+      ],
+      "total_json_count": 2
+    },
+    {
+      "folder": "03_辅助技术项目",
+      "code": "03",
+      "category": "辅助技术项目",
+      "sub_items": [
+        {
+          "title": "篮球辅项",
+          "folder": "03_辅助技术项目/03-01_篮球辅项",
+          "code": "03-01",
+          "json_files": [
+            {
+              "file_name": "hunan_2026_03-01_f_002_篮球辅项成绩评分标准（女子）.json",
+              "relative_path": "03_辅助技术项目/03-01_篮球辅项/hunan_2026_03-01_f_002_篮球辅项成绩评分标准（女子）.json"
+            },
+            {
+              "file_name": "hunan_2026_03-01_m_001_篮球辅项成绩评分标准（男子）.json",
+              "relative_path": "03_辅助技术项目/03-01_篮球辅项/hunan_2026_03-01_m_001_篮球辅项成绩评分标准（男子）.json"
+            }
+          ],
+          "json_count": 2,
+          "total_json_count": 2
+        },
+        {
+          "title": "足球辅项",
+          "folder": "03_辅助技术项目/03-03_足球辅项",
+          "code": "03-03",
+          "json_files": [
+            {
+              "file_name": "hunan_2026_03-03_f_002_足球辅项成绩评分标准（女子）.json",
+              "relative_path": "03_辅助技术项目/03-03_足球辅项/hunan_2026_03-03_f_002_足球辅项成绩评分标准（女子）.json"
+            },
+            {
+              "file_name": "hunan_2026_03-03_m_001_足球辅项成绩评分标准（男子）.json",
+              "relative_path": "03_辅助技术项目/03-03_足球辅项/hunan_2026_03-03_m_001_足球辅项成绩评分标准（男子）.json"
+            }
+          ],
+          "json_count": 2,
+          "total_json_count": 2
+        },
+        {
+          "title": "游泳",
+          "folder": "03_辅助技术项目/03-04_游泳",
+          "code": "03-04",
+          "json_files": [
+            {
+              "file_name": "hunan_2026_03-04_f_002_游泳辅项成绩评分标准（女子）.json",
+              "relative_path": "03_辅助技术项目/03-04_游泳/hunan_2026_03-04_f_002_游泳辅项成绩评分标准（女子）.json"
+            },
+            {
+              "file_name": "hunan_2026_03-04_m_001_游泳辅项成绩评分标准（男子）.json",
+              "relative_path": "03_辅助技术项目/03-04_游泳/hunan_2026_03-04_m_001_游泳辅项成绩评分标准（男子）.json"
+            }
+          ],
+          "json_count": 2,
+          "total_json_count": 2
+        }
+      ],
+      "total_json_count": 6
+    }
+  ],
+  "total_json_count": 8
+}

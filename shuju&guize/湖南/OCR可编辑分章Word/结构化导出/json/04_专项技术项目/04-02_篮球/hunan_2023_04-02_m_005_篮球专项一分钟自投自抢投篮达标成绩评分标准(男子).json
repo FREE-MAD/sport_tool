@@ -1,0 +1,55 @@
+{
+  "code": {
+    "table_name": "篮球专项达标项目成绩评分标准（男子）——1分钟自投自抢投篮",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-02_m_005",
+    "max_value": "8",
+    "min_value": "1",
+    "total": "8",
+    "data": [
+      {
+        "score": "1.00",
+        "value": "1",
+        "number": "1"
+      },
+      {
+        "score": "3.00",
+        "value": "2",
+        "number": "2"
+      },
+      {
+        "score": "6.00",
+        "value": "3",
+        "number": "3"
+      },
+      {
+        "score": "9.00",
+        "value": "4",
+        "number": "4"
+      },
+      {
+        "score": "12.00",
+        "value": "5",
+        "number": "5"
+      },
+      {
+        "score": "16.00",
+        "value": "6",
+        "number": "6"
+      },
+      {
+        "score": "20.00",
+        "value": "7",
+        "number": "7"
+      },
+      {
+        "score": "25.00",
+        "value": "8",
+        "number": "8"
+      }
+    ]
+  }
+}

@@ -111,6 +111,10 @@
   gap: 20rpx;
 }
 
+.field-row--stack {
+  align-items: flex-start;
+}
+
 .field-row--aux-type {
   margin-bottom: 16rpx;
 }
@@ -122,6 +126,10 @@
   font-weight: 700;
   color: #5c667b;
   line-height: 1.4;
+}
+
+.field-label--block {
+  padding-top: 18rpx;
 }
 
 .field-picker {
@@ -246,6 +254,10 @@
   border: 2rpx solid #dce5fb;
   border-radius: 24rpx;
   padding: 22rpx;
+}
+
+.score-card--plain {
+  background: #ffffff;
 }
 
 .score-meta {

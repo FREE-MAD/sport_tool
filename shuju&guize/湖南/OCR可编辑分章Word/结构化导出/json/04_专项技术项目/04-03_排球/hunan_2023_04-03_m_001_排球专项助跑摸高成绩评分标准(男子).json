@@ -1,0 +1,165 @@
+{
+  "code": {
+    "table_name": "排球专项助跑摸高成绩评分标准(男子)",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-03_m_001",
+    "max_value": "3.10",
+    "min_value": "2.81",
+    "total": "30",
+    "data": [
+      {
+        "score": "1.00",
+        "value": "2.81",
+        "number": "1"
+      },
+      {
+        "score": "2.00",
+        "value": "2.82",
+        "number": "2"
+      },
+      {
+        "score": "3.00",
+        "value": "2.83",
+        "number": "3"
+      },
+      {
+        "score": "4.00",
+        "value": "2.84",
+        "number": "4"
+      },
+      {
+        "score": "5.00",
+        "value": "2.85",
+        "number": "5"
+      },
+      {
+        "score": "6.00",
+        "value": "2.86",
+        "number": "6"
+      },
+      {
+        "score": "7.00",
+        "value": "2.87",
+        "number": "7"
+      },
+      {
+        "score": "8.00",
+        "value": "2.88",
+        "number": "8"
+      },
+      {
+        "score": "9.00",
+        "value": "2.89",
+        "number": "9"
+      },
+      {
+        "score": "10.00",
+        "value": "2.90",
+        "number": "10"
+      },
+      {
+        "score": "10.50",
+        "value": "2.91",
+        "number": "11"
+      },
+      {
+        "score": "11.00",
+        "value": "2.92",
+        "number": "12"
+      },
+      {
+        "score": "11.50",
+        "value": "2.93",
+        "number": "13"
+      },
+      {
+        "score": "12.00",
+        "value": "2.94",
+        "number": "14"
+      },
+      {
+        "score": "12.50",
+        "value": "2.95",
+        "number": "15"
+      },
+      {
+        "score": "13.00",
+        "value": "2.96",
+        "number": "16"
+      },
+      {
+        "score": "13.50",
+        "value": "2.97",
+        "number": "17"
+      },
+      {
+        "score": "14.00",
+        "value": "2.98",
+        "number": "18"
+      },
+      {
+        "score": "14.50",
+        "value": "2.99",
+        "number": "19"
+      },
+      {
+        "score": "15.00",
+        "value": "3.00",
+        "number": "20"
+      },
+      {
+        "score": "15.50",
+        "value": "3.01",
+        "number": "21"
+      },
+      {
+        "score": "16.00",
+        "value": "3.02",
+        "number": "22"
+      },
+      {
+        "score": "16.50",
+        "value": "3.03",
+        "number": "23"
+      },
+      {
+        "score": "17.00",
+        "value": "3.04",
+        "number": "24"
+      },
+      {
+        "score": "17.50",
+        "value": "3.05",
+        "number": "25"
+      },
+      {
+        "score": "18.00",
+        "value": "3.06",
+        "number": "26"
+      },
+      {
+        "score": "18.50",
+        "value": "3.07",
+        "number": "27"
+      },
+      {
+        "score": "19.00",
+        "value": "3.08",
+        "number": "28"
+      },
+      {
+        "score": "19.50",
+        "value": "3.09",
+        "number": "29"
+      },
+      {
+        "score": "20.00",
+        "value": "3.10",
+        "number": "30"
+      }
+    ]
+  }
+}

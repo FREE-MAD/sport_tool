@@ -1,0 +1,80 @@
+{
+  "code": {
+    "table_name": "表58 乒乓球专项达标成绩——搓中侧身突击",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-10_003",
+    "max_value": "10.00",
+    "min_value": "1.00",
+    "total": "13",
+    "data": [
+      {
+        "score": "4.00",
+        "value": "1.00",
+        "number": "1"
+      },
+      {
+        "score": "8.00",
+        "value": "2.00",
+        "number": "2"
+      },
+      {
+        "score": "12.00",
+        "value": "3.00",
+        "number": "3"
+      },
+      {
+        "score": "16.00",
+        "value": "4.00",
+        "number": "4"
+      },
+      {
+        "score": "20.00",
+        "value": "5.00",
+        "number": "5"
+      },
+      {
+        "score": "24.00",
+        "value": "6.00",
+        "number": "6"
+      },
+      {
+        "score": "30.00",
+        "value": "7.00",
+        "number": "7"
+      },
+      {
+        "score": "28.00",
+        "value": "7.00",
+        "number": "8"
+      },
+      {
+        "score": "34.00",
+        "value": "8.00",
+        "number": "9"
+      },
+      {
+        "score": "32.00",
+        "value": "8.00",
+        "number": "10"
+      },
+      {
+        "score": "38.00",
+        "value": "9.00",
+        "number": "11"
+      },
+      {
+        "score": "36.00",
+        "value": "9.00",
+        "number": "12"
+      },
+      {
+        "score": "40.00",
+        "value": "10.00",
+        "number": "13"
+      }
+    ]
+  }
+}

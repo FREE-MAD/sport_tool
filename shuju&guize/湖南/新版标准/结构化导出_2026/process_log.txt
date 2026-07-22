@@ -1,12 +1,8 @@
-[HTML] 湖南省体育高考之游辅-女子评分标准（2026新版）.html data_images=63
-[HTML] 湖南省体育高考之游辅-男子评分标准（2026新版）.html data_images=77
-[HTML] 湖南省体育高考之立定跳远评分标准（2026新版）.html data_images=17
-[HTML] 湖南省体育高考之篮辅评分标准（2026新版）.html data_images=43
-[HTML] 湖南省体育高考之足辅评分标准（2026新版）.html data_images=53
-[TABLE] 游泳辅项成绩评分标准（男子） code=hunan_2026_03-04_m_001 images=74 total=2839 max=60.00 min=20
-  [WARN] 图片 69 抽取对数过少: pairs=0, lines=44, boxes=89, caption=
-  [WARN] 图片 70 抽取对数过少: pairs=0, lines=44, boxes=89, caption=
-  [WARN] 图片 71 抽取对数过少: pairs=0, lines=44, boxes=89, caption=
-  [WARN] 图片 74 抽取对数过少: pairs=0, lines=44, boxes=89, caption=
-  [WARN] 图片 75 抽取对数过少: pairs=0, lines=23, boxes=44, caption=
-  [WARN] 图片 76 抽取对数过少: pairs=0, lines=24, boxes=29, caption=
+[TABLE] 立定跳远成绩评分标准（女子） code=hunan_2026_02-03_f_002 images=6 total=182 max=2.39 min=0.52
+[TABLE] 立定跳远成绩评分标准（男子） code=hunan_2026_02-03_m_001 images=7 total=185 max=2.85 min=0.98
+[TABLE] 篮球辅项成绩评分标准（女子） code=hunan_2026_03-01_f_002 images=20 total=781 max=15.65 min=23.45
+[TABLE] 篮球辅项成绩评分标准（男子） code=hunan_2026_03-01_m_001 images=19 total=781 max=13.95 min=21.75
+[TABLE] 足球辅项成绩评分标准（女子） code=hunan_2026_03-03_f_002 images=25 total=978 max=19.51 min=9.50
+[TABLE] 足球辅项成绩评分标准（男子） code=hunan_2026_03-03_m_001 images=24 total=989 max=18.51 min=8.50
+[TABLE] 游泳辅项成绩评分标准（女子） code=hunan_2026_03-04_f_002 images=60 total=2474 max=53.5 min=1:31.01
+[TABLE] 游泳辅项成绩评分标准（男子） code=hunan_2026_03-04_m_001 images=74 total=3079 max=38.50 min=1:16.01

@@ -6,9 +6,9 @@
       "value"
     ],
     "code": "hunan_2023_04-08_f_006",
-    "max_value": "01:30.00",
-    "min_value": "81.65",
-    "total": "999",
+    "max_value": "01:45.00",
+    "min_value": "01:30.00",
+    "total": "997",
     "data": [
       {
         "score": "100.00",
@@ -4994,16 +4994,6 @@
         "score": "2.50",
         "value": "01:45.00",
         "number": "997"
-      },
-      {
-        "score": "55",
-        "value": "57.78",
-        "number": "998"
-      },
-      {
-        "score": "55",
-        "value": "81.65",
-        "number": "999"
       }
     ]
   }

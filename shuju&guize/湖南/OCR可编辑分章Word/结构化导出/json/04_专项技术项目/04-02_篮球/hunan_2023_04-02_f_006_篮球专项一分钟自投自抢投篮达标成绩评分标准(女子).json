@@ -1,0 +1,40 @@
+{
+  "code": {
+    "table_name": "篮球专项达标项目成绩评分标准（女子）——1分钟自投自抢投篮",
+    "headers": [
+      "score",
+      "value"
+    ],
+    "code": "hunan_2023_04-02_f_006",
+    "max_value": "5",
+    "min_value": "1",
+    "total": "5",
+    "data": [
+      {
+        "score": "2.00",
+        "value": "1",
+        "number": "1"
+      },
+      {
+        "score": "6.00",
+        "value": "2",
+        "number": "2"
+      },
+      {
+        "score": "12.00",
+        "value": "3",
+        "number": "3"
+      },
+      {
+        "score": "18.00",
+        "value": "4",
+        "number": "4"
+      },
+      {
+        "score": "25.00",
+        "value": "5",
+        "number": "5"
+      }
+    ]
+  }
+}

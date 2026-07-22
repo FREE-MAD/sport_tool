@@ -1,1194 +1,164 @@
 {
   "code": {
-    "table_name": "篮球专项达标项目成绩评分标准(女子)",
+    "table_name": "表32 篮球专项达标项目——助跑摸高（女）",
     "headers": [
       "score",
       "value"
     ],
     "code": "hunan_2023_04-02_f_002",
-    "max_value": "32.27",
-    "min_value": "1.00",
-    "total": "236",
+    "max_value": "2.75",
+    "min_value": "2.46",
+    "total": "30",
     "data": [
-      {
-        "score": "2.66",
-        "value": "1.00",
-        "number": "1"
-      },
-      {
-        "score": "6.00",
-        "value": "2",
-        "number": "2"
-      },
-      {
-        "score": "2.67",
-        "value": "2.00",
-        "number": "3"
-      },
       {
         "score": "1.00",
         "value": "2.46",
-        "number": "4"
+        "number": "1"
       },
       {
         "score": "2.00",
         "value": "2.47",
-        "number": "5"
+        "number": "2"
       },
       {
         "score": "3.00",
         "value": "2.48",
-        "number": "6"
+        "number": "3"
       },
       {
         "score": "4.00",
         "value": "2.49",
-        "number": "7"
+        "number": "4"
       },
       {
         "score": "5.00",
         "value": "2.50",
-        "number": "8"
+        "number": "5"
       },
       {
         "score": "6.00",
         "value": "2.51",
-        "number": "9"
+        "number": "6"
       },
       {
         "score": "7.00",
         "value": "2.52",
-        "number": "10"
+        "number": "7"
       },
       {
         "score": "8.00",
         "value": "2.53",
-        "number": "11"
+        "number": "8"
       },
       {
         "score": "9.00",
         "value": "2.54",
-        "number": "12"
+        "number": "9"
       },
       {
         "score": "10.00",
         "value": "2.55",
-        "number": "13"
+        "number": "10"
       },
       {
         "score": "11.00",
         "value": "2.56",
-        "number": "14"
+        "number": "11"
       },
       {
         "score": "12.00",
         "value": "2.57",
-        "number": "15"
+        "number": "12"
       },
       {
         "score": "13.00",
         "value": "2.58",
-        "number": "16"
+        "number": "13"
       },
       {
         "score": "14.00",
         "value": "2.59",
-        "number": "17"
+        "number": "14"
       },
       {
         "score": "15.00",
         "value": "2.60",
-        "number": "18"
+        "number": "15"
       },
       {
         "score": "16.00",
         "value": "2.61",
-        "number": "19"
+        "number": "16"
       },
       {
         "score": "17.00",
         "value": "2.62",
-        "number": "20"
+        "number": "17"
       },
       {
         "score": "18.00",
         "value": "2.63",
-        "number": "21"
+        "number": "18"
       },
       {
         "score": "19.00",
         "value": "2.64",
-        "number": "22"
+        "number": "19"
       },
       {
         "score": "20.00",
         "value": "2.65",
-        "number": "23"
+        "number": "20"
+      },
+      {
+        "score": "21.00",
+        "value": "2.66",
+        "number": "21"
+      },
+      {
+        "score": "22.00",
+        "value": "2.67",
+        "number": "22"
       },
       {
         "score": "23.00",
         "value": "2.68",
-        "number": "24"
+        "number": "23"
       },
       {
         "score": "24.00",
         "value": "2.69",
+        "number": "24"
+      },
+      {
+        "score": "25.00",
+        "value": "2.70",
         "number": "25"
+      },
+      {
+        "score": "26.00",
+        "value": "2.71",
+        "number": "26"
       },
       {
         "score": "27.00",
         "value": "2.72",
-        "number": "26"
+        "number": "27"
       },
       {
         "score": "28.00",
         "value": "2.73",
-        "number": "27"
-      },
-      {
-        "score": "18.00",
-        "value": "4",
         "number": "28"
       },
       {
-        "score": "2.70",
-        "value": "9.00",
+        "score": "29.00",
+        "value": "2.74",
         "number": "29"
       },
       {
-        "score": "2.71",
-        "value": "12.00",
+        "score": "30.00",
+        "value": "2.75",
         "number": "30"
-      },
-      {
-        "score": "2.74",
-        "value": "20.00",
-        "number": "31"
-      },
-      {
-        "score": "1",
-        "value": "21.00",
-        "number": "32"
-      },
-      {
-        "score": "3.00",
-        "value": "22.00",
-        "number": "33"
-      },
-      {
-        "score": "3",
-        "value": "25.00",
-        "number": "34"
-      },
-      {
-        "score": "2.75",
-        "value": "25.00",
-        "number": "35"
-      },
-      {
-        "score": "16.00",
-        "value": "26.00",
-        "number": "36"
-      },
-      {
-        "score": "5",
-        "value": "29.00",
-        "number": "37"
-      },
-      {
-        "score": "1",
-        "value": "30.00",
-        "number": "38"
-      },
-      {
-        "score": "25.00",
-        "value": "30.30",
-        "number": "39"
-      },
-      {
-        "score": "24.98",
-        "value": "30.31",
-        "number": "40"
-      },
-      {
-        "score": "24.96",
-        "value": "30.32",
-        "number": "41"
-      },
-      {
-        "score": "24.94",
-        "value": "30.33",
-        "number": "42"
-      },
-      {
-        "score": "24.92",
-        "value": "30.34",
-        "number": "43"
-      },
-      {
-        "score": "24.90",
-        "value": "30.35",
-        "number": "44"
-      },
-      {
-        "score": "24.88",
-        "value": "30.36",
-        "number": "45"
-      },
-      {
-        "score": "24.86",
-        "value": "30.37",
-        "number": "46"
-      },
-      {
-        "score": "24.84",
-        "value": "30.38",
-        "number": "47"
-      },
-      {
-        "score": "24.82",
-        "value": "30.39",
-        "number": "48"
-      },
-      {
-        "score": "24.80",
-        "value": "30.40",
-        "number": "49"
-      },
-      {
-        "score": "24.78",
-        "value": "30.41",
-        "number": "50"
-      },
-      {
-        "score": "24.76",
-        "value": "30.42",
-        "number": "51"
-      },
-      {
-        "score": "24.74",
-        "value": "30.43",
-        "number": "52"
-      },
-      {
-        "score": "24.72",
-        "value": "30.44",
-        "number": "53"
-      },
-      {
-        "score": "24.70",
-        "value": "30.45",
-        "number": "54"
-      },
-      {
-        "score": "24.68",
-        "value": "30.46",
-        "number": "55"
-      },
-      {
-        "score": "24.66",
-        "value": "30.47",
-        "number": "56"
-      },
-      {
-        "score": "24.64",
-        "value": "30.48",
-        "number": "57"
-      },
-      {
-        "score": "24.62",
-        "value": "30.49",
-        "number": "58"
-      },
-      {
-        "score": "24.60",
-        "value": "30.50",
-        "number": "59"
-      },
-      {
-        "score": "24.58",
-        "value": "30.51",
-        "number": "60"
-      },
-      {
-        "score": "24.56",
-        "value": "30.52",
-        "number": "61"
-      },
-      {
-        "score": "24.54",
-        "value": "30.53",
-        "number": "62"
-      },
-      {
-        "score": "24.52",
-        "value": "30.54",
-        "number": "63"
-      },
-      {
-        "score": "24.50",
-        "value": "30.55",
-        "number": "64"
-      },
-      {
-        "score": "24.48",
-        "value": "30.56",
-        "number": "65"
-      },
-      {
-        "score": "24.46",
-        "value": "30.57",
-        "number": "66"
-      },
-      {
-        "score": "24.44",
-        "value": "30.58",
-        "number": "67"
-      },
-      {
-        "score": "24.42",
-        "value": "30.59",
-        "number": "68"
-      },
-      {
-        "score": "24.40",
-        "value": "30.60",
-        "number": "69"
-      },
-      {
-        "score": "24.38",
-        "value": "30.61",
-        "number": "70"
-      },
-      {
-        "score": "24.36",
-        "value": "30.62",
-        "number": "71"
-      },
-      {
-        "score": "24.34",
-        "value": "30.63",
-        "number": "72"
-      },
-      {
-        "score": "24.32",
-        "value": "30.64",
-        "number": "73"
-      },
-      {
-        "score": "24.30",
-        "value": "30.65",
-        "number": "74"
-      },
-      {
-        "score": "24.28",
-        "value": "30.66",
-        "number": "75"
-      },
-      {
-        "score": "24.26",
-        "value": "30.67",
-        "number": "76"
-      },
-      {
-        "score": "24.24",
-        "value": "30.68",
-        "number": "77"
-      },
-      {
-        "score": "24.22",
-        "value": "30.69",
-        "number": "78"
-      },
-      {
-        "score": "24.20",
-        "value": "30.70",
-        "number": "79"
-      },
-      {
-        "score": "24.18",
-        "value": "30.71",
-        "number": "80"
-      },
-      {
-        "score": "24.16",
-        "value": "30.72",
-        "number": "81"
-      },
-      {
-        "score": "24.14",
-        "value": "30.73",
-        "number": "82"
-      },
-      {
-        "score": "24.12",
-        "value": "30.74",
-        "number": "83"
-      },
-      {
-        "score": "24.10",
-        "value": "30.75",
-        "number": "84"
-      },
-      {
-        "score": "24.08",
-        "value": "30.76",
-        "number": "85"
-      },
-      {
-        "score": "24.06",
-        "value": "30.77",
-        "number": "86"
-      },
-      {
-        "score": "24.04",
-        "value": "30.78",
-        "number": "87"
-      },
-      {
-        "score": "24.02",
-        "value": "30.79",
-        "number": "88"
-      },
-      {
-        "score": "24.00",
-        "value": "30.80",
-        "number": "89"
-      },
-      {
-        "score": "23.98",
-        "value": "30.81",
-        "number": "90"
-      },
-      {
-        "score": "23.96",
-        "value": "30.82",
-        "number": "91"
-      },
-      {
-        "score": "23.94",
-        "value": "30.83",
-        "number": "92"
-      },
-      {
-        "score": "23.92",
-        "value": "30.84",
-        "number": "93"
-      },
-      {
-        "score": "23.90",
-        "value": "30.85",
-        "number": "94"
-      },
-      {
-        "score": "23.88",
-        "value": "30.86",
-        "number": "95"
-      },
-      {
-        "score": "23.86",
-        "value": "30.87",
-        "number": "96"
-      },
-      {
-        "score": "23.84",
-        "value": "30.88",
-        "number": "97"
-      },
-      {
-        "score": "23.82",
-        "value": "30.89",
-        "number": "98"
-      },
-      {
-        "score": "23.80",
-        "value": "30.90",
-        "number": "99"
-      },
-      {
-        "score": "23.78",
-        "value": "30.91",
-        "number": "100"
-      },
-      {
-        "score": "23.76",
-        "value": "30.92",
-        "number": "101"
-      },
-      {
-        "score": "23.74",
-        "value": "30.93",
-        "number": "102"
-      },
-      {
-        "score": "23.72",
-        "value": "30.94",
-        "number": "103"
-      },
-      {
-        "score": "23.70",
-        "value": "30.95",
-        "number": "104"
-      },
-      {
-        "score": "23.68",
-        "value": "30.96",
-        "number": "105"
-      },
-      {
-        "score": "23.66",
-        "value": "30.97",
-        "number": "106"
-      },
-      {
-        "score": "23.64",
-        "value": "30.98",
-        "number": "107"
-      },
-      {
-        "score": "23.62",
-        "value": "30.99",
-        "number": "108"
-      },
-      {
-        "score": "23.60",
-        "value": "31.00",
-        "number": "109"
-      },
-      {
-        "score": "23.58",
-        "value": "31.01",
-        "number": "110"
-      },
-      {
-        "score": "23.56",
-        "value": "31.02",
-        "number": "111"
-      },
-      {
-        "score": "23.54",
-        "value": "31.03",
-        "number": "112"
-      },
-      {
-        "score": "23.52",
-        "value": "31.04",
-        "number": "113"
-      },
-      {
-        "score": "23.50",
-        "value": "31.05",
-        "number": "114"
-      },
-      {
-        "score": "23.48",
-        "value": "31.06",
-        "number": "115"
-      },
-      {
-        "score": "23.46",
-        "value": "31.07",
-        "number": "116"
-      },
-      {
-        "score": "23.44",
-        "value": "31.08",
-        "number": "117"
-      },
-      {
-        "score": "23.42",
-        "value": "31.09",
-        "number": "118"
-      },
-      {
-        "score": "23.40",
-        "value": "31.10",
-        "number": "119"
-      },
-      {
-        "score": "23.38",
-        "value": "31.11",
-        "number": "120"
-      },
-      {
-        "score": "23.36",
-        "value": "31.12",
-        "number": "121"
-      },
-      {
-        "score": "23.34",
-        "value": "31.13",
-        "number": "122"
-      },
-      {
-        "score": "23.32",
-        "value": "31.14",
-        "number": "123"
-      },
-      {
-        "score": "23.30",
-        "value": "31.15",
-        "number": "124"
-      },
-      {
-        "score": "23.28",
-        "value": "31.16",
-        "number": "125"
-      },
-      {
-        "score": "23.26",
-        "value": "31.17",
-        "number": "126"
-      },
-      {
-        "score": "23.24",
-        "value": "31.18",
-        "number": "127"
-      },
-      {
-        "score": "23.22",
-        "value": "31.19",
-        "number": "128"
-      },
-      {
-        "score": "23.20",
-        "value": "31.20",
-        "number": "129"
-      },
-      {
-        "score": "23.18",
-        "value": "31.21",
-        "number": "130"
-      },
-      {
-        "score": "23.16",
-        "value": "31.22",
-        "number": "131"
-      },
-      {
-        "score": "23.14",
-        "value": "31.23",
-        "number": "132"
-      },
-      {
-        "score": "23.12",
-        "value": "31.24",
-        "number": "133"
-      },
-      {
-        "score": "23.10",
-        "value": "31.25",
-        "number": "134"
-      },
-      {
-        "score": "23.08",
-        "value": "31.26",
-        "number": "135"
-      },
-      {
-        "score": "23.06",
-        "value": "31.27",
-        "number": "136"
-      },
-      {
-        "score": "23.04",
-        "value": "31.28",
-        "number": "137"
-      },
-      {
-        "score": "23.02",
-        "value": "31.29",
-        "number": "138"
-      },
-      {
-        "score": "23.00",
-        "value": "31.30",
-        "number": "139"
-      },
-      {
-        "score": "22.98",
-        "value": "31.31",
-        "number": "140"
-      },
-      {
-        "score": "22.96",
-        "value": "31.32",
-        "number": "141"
-      },
-      {
-        "score": "22.94",
-        "value": "31.33",
-        "number": "142"
-      },
-      {
-        "score": "22.92",
-        "value": "31.34",
-        "number": "143"
-      },
-      {
-        "score": "22.90",
-        "value": "31.35",
-        "number": "144"
-      },
-      {
-        "score": "22.88",
-        "value": "31.36",
-        "number": "145"
-      },
-      {
-        "score": "22.86",
-        "value": "31.37",
-        "number": "146"
-      },
-      {
-        "score": "22.84",
-        "value": "31.38",
-        "number": "147"
-      },
-      {
-        "score": "22.82",
-        "value": "31.39",
-        "number": "148"
-      },
-      {
-        "score": "22.80",
-        "value": "31.40",
-        "number": "149"
-      },
-      {
-        "score": "22.78",
-        "value": "31.41",
-        "number": "150"
-      },
-      {
-        "score": "22.76",
-        "value": "31.42",
-        "number": "151"
-      },
-      {
-        "score": "22.74",
-        "value": "31.43",
-        "number": "152"
-      },
-      {
-        "score": "22.72",
-        "value": "31.44",
-        "number": "153"
-      },
-      {
-        "score": "22.70",
-        "value": "31.45",
-        "number": "154"
-      },
-      {
-        "score": "22.68",
-        "value": "31.46",
-        "number": "155"
-      },
-      {
-        "score": "22.66",
-        "value": "31.47",
-        "number": "156"
-      },
-      {
-        "score": "22.64",
-        "value": "31.48",
-        "number": "157"
-      },
-      {
-        "score": "22.62",
-        "value": "31.49",
-        "number": "158"
-      },
-      {
-        "score": "22.60",
-        "value": "31.50",
-        "number": "159"
-      },
-      {
-        "score": "22.58",
-        "value": "31.51",
-        "number": "160"
-      },
-      {
-        "score": "22.56",
-        "value": "31.52",
-        "number": "161"
-      },
-      {
-        "score": "22.54",
-        "value": "31.53",
-        "number": "162"
-      },
-      {
-        "score": "22.52",
-        "value": "31.54",
-        "number": "163"
-      },
-      {
-        "score": "22.50",
-        "value": "31.55",
-        "number": "164"
-      },
-      {
-        "score": "22.48",
-        "value": "31.56",
-        "number": "165"
-      },
-      {
-        "score": "22.46",
-        "value": "31.57",
-        "number": "166"
-      },
-      {
-        "score": "22.44",
-        "value": "31.58",
-        "number": "167"
-      },
-      {
-        "score": "22.42",
-        "value": "31.59",
-        "number": "168"
-      },
-      {
-        "score": "22.40",
-        "value": "31.60",
-        "number": "169"
-      },
-      {
-        "score": "22.38",
-        "value": "31.61",
-        "number": "170"
-      },
-      {
-        "score": "22.36",
-        "value": "31.62",
-        "number": "171"
-      },
-      {
-        "score": "22.34",
-        "value": "31.63",
-        "number": "172"
-      },
-      {
-        "score": "22.32",
-        "value": "31.64",
-        "number": "173"
-      },
-      {
-        "score": "22.30",
-        "value": "31.65",
-        "number": "174"
-      },
-      {
-        "score": "22.28",
-        "value": "31.66",
-        "number": "175"
-      },
-      {
-        "score": "22.26",
-        "value": "31.67",
-        "number": "176"
-      },
-      {
-        "score": "22.24",
-        "value": "31.68",
-        "number": "177"
-      },
-      {
-        "score": "22.22",
-        "value": "31.69",
-        "number": "178"
-      },
-      {
-        "score": "22.20",
-        "value": "31.70",
-        "number": "179"
-      },
-      {
-        "score": "22.18",
-        "value": "31.71",
-        "number": "180"
-      },
-      {
-        "score": "22.16",
-        "value": "31.72",
-        "number": "181"
-      },
-      {
-        "score": "22.14",
-        "value": "31.73",
-        "number": "182"
-      },
-      {
-        "score": "22.12",
-        "value": "31.74",
-        "number": "183"
-      },
-      {
-        "score": "22.10",
-        "value": "31.75",
-        "number": "184"
-      },
-      {
-        "score": "22.08",
-        "value": "31.76",
-        "number": "185"
-      },
-      {
-        "score": "22.06",
-        "value": "31.77",
-        "number": "186"
-      },
-      {
-        "score": "22.04",
-        "value": "31.78",
-        "number": "187"
-      },
-      {
-        "score": "22.02",
-        "value": "31.79",
-        "number": "188"
-      },
-      {
-        "score": "22.00",
-        "value": "31.80",
-        "number": "189"
-      },
-      {
-        "score": "21.98",
-        "value": "31.81",
-        "number": "190"
-      },
-      {
-        "score": "21.96",
-        "value": "31.82",
-        "number": "191"
-      },
-      {
-        "score": "21.94",
-        "value": "31.83",
-        "number": "192"
-      },
-      {
-        "score": "21.92",
-        "value": "31.84",
-        "number": "193"
-      },
-      {
-        "score": "21.90",
-        "value": "31.85",
-        "number": "194"
-      },
-      {
-        "score": "21.88",
-        "value": "31.86",
-        "number": "195"
-      },
-      {
-        "score": "21.86",
-        "value": "31.87",
-        "number": "196"
-      },
-      {
-        "score": "21.84",
-        "value": "31.88",
-        "number": "197"
-      },
-      {
-        "score": "21.82",
-        "value": "31.89",
-        "number": "198"
-      },
-      {
-        "score": "21.80",
-        "value": "31.90",
-        "number": "199"
-      },
-      {
-        "score": "21.78",
-        "value": "31.91",
-        "number": "200"
-      },
-      {
-        "score": "21.76",
-        "value": "31.92",
-        "number": "201"
-      },
-      {
-        "score": "21.74",
-        "value": "31.93",
-        "number": "202"
-      },
-      {
-        "score": "21.72",
-        "value": "31.94",
-        "number": "203"
-      },
-      {
-        "score": "21.70",
-        "value": "31.95",
-        "number": "204"
-      },
-      {
-        "score": "21.68",
-        "value": "31.96",
-        "number": "205"
-      },
-      {
-        "score": "21.66",
-        "value": "31.97",
-        "number": "206"
-      },
-      {
-        "score": "21.64",
-        "value": "31.98",
-        "number": "207"
-      },
-      {
-        "score": "21.62",
-        "value": "31.99",
-        "number": "208"
-      },
-      {
-        "score": "21.60",
-        "value": "32.00",
-        "number": "209"
-      },
-      {
-        "score": "21.58",
-        "value": "32.01",
-        "number": "210"
-      },
-      {
-        "score": "21.56",
-        "value": "32.02",
-        "number": "211"
-      },
-      {
-        "score": "21.54",
-        "value": "32.03",
-        "number": "212"
-      },
-      {
-        "score": "21.52",
-        "value": "32.04",
-        "number": "213"
-      },
-      {
-        "score": "21.50",
-        "value": "32.05",
-        "number": "214"
-      },
-      {
-        "score": "21.48",
-        "value": "32.06",
-        "number": "215"
-      },
-      {
-        "score": "21.46",
-        "value": "32.07",
-        "number": "216"
-      },
-      {
-        "score": "21.44",
-        "value": "32.08",
-        "number": "217"
-      },
-      {
-        "score": "21.42",
-        "value": "32.09",
-        "number": "218"
-      },
-      {
-        "score": "21.40",
-        "value": "32.10",
-        "number": "219"
-      },
-      {
-        "score": "21.38",
-        "value": "32.11",
-        "number": "220"
-      },
-      {
-        "score": "21.36",
-        "value": "32.12",
-        "number": "221"
-      },
-      {
-        "score": "21.34",
-        "value": "32.13",
-        "number": "222"
-      },
-      {
-        "score": "21.32",
-        "value": "32.14",
-        "number": "223"
-      },
-      {
-        "score": "21.30",
-        "value": "32.15",
-        "number": "224"
-      },
-      {
-        "score": "21.28",
-        "value": "32.16",
-        "number": "225"
-      },
-      {
-        "score": "21.26",
-        "value": "32.17",
-        "number": "226"
-      },
-      {
-        "score": "21.24",
-        "value": "32.18",
-        "number": "227"
-      },
-      {
-        "score": "21.22",
-        "value": "32.19",
-        "number": "228"
-      },
-      {
-        "score": "21.20",
-        "value": "32.20",
-        "number": "229"
-      },
-      {
-        "score": "21.18",
-        "value": "32.21",
-        "number": "230"
-      },
-      {
-        "score": "21.16",
-        "value": "32.22",
-        "number": "231"
-      },
-      {
-        "score": "21.14",
-        "value": "32.23",
-        "number": "232"
-      },
-      {
-        "score": "21.12",
-        "value": "32.24",
-        "number": "233"
-      },
-      {
-        "score": "21.10",
-        "value": "32.25",
-        "number": "234"
-      },
-      {
-        "score": "21.08",
-        "value": "32.26",
-        "number": "235"
-      },
-      {
-        "score": "21.06",
-        "value": "32.27",
-        "number": "236"
       }
     ]
   }

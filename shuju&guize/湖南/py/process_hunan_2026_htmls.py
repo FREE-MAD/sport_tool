@@ -84,7 +84,8 @@ TABLE_DEFS = [
         "code": "hunan_2026_03-04_f_002",
         "folder": "03_辅助技术项目/03-04_游泳",
         "image_range": [3, 62],
-        "value_range": [20.0, 90.0],
+        # 女子游泳尾段成绩会延伸到 1:31.xx，不能把上限卡在 90 秒内。
+        "value_range": [20.0, 100.0],
     },
 ]
 
@@ -114,11 +115,16 @@ def normalize_score(text: str) -> str:
 
 def normalize_value(text: str) -> str:
     text = clean_text(text).replace("O", "0").replace("o", "0")
+    # RapidOCR 在分秒类成绩上常把小数点识别成第二个冒号，例如 1:11:24。
+    # 这里统一规范成 1:11.24，后续排序与范围判断也会按秒数处理。
+    if text.count(":") == 2:
+        minute, second, fraction = text.split(":")
+        text = f"{minute}:{second}.{fraction}"
     return text
 
 
 def value_sort_key(text: str) -> float:
-    return float(normalize_value(text))
+    return parse_value_number(text)
 
 
 def score_sort_key(text: str) -> float:
@@ -188,18 +194,53 @@ def tokenize_numbers(text: str) -> list[str]:
     text = re.sub(r"(?<=\d)\s+\.(?=\d)", ".", text)
     text = re.sub(r"(?<=\d)\.\s+(?=\d)", ".", text)
     text = re.sub(r"(?<=\d)\s+(?=\d{2}\b)", "", text)
-    return re.findall(r"\d+\.\d+|\d+", text)
+    # 保留分秒类 token，避免 1:11:24 被拆成 1 / 11 / 24 导致整行配对失败。
+    return re.findall(r"\d+:\d+(?::\d+)?|\d+\.\d+|\d+", text)
 
 
-def extract_line_tokens_from_image(image_path: Path, ocr: RapidOCR) -> tuple[list[list[str]], int]:
+def is_probable_ad_page(raw_text: str) -> bool:
+    """识别尾页广告/咨询页，避免把非评分页误记为异常。"""
+    normalized = clean_text(raw_text)
+    ad_keywords = [
+        "扫码添加咨询",
+        "微信咨询",
+        "微信公众号",
+        "小程序",
+        "抖音",
+        "交流群",
+        "王老师",
+        "肖老师",
+        "QQ墙号",
+        "体育留学",
+        "干体体育",
+    ]
+    hit_count = sum(keyword in normalized for keyword in ad_keywords)
+    return hit_count >= 2
+
+
+def parse_value_number(text: str) -> float:
+    normalized = normalize_value(text)
+    if ":" not in normalized:
+        return float(normalized)
+    parts = normalized.split(":")
+    if len(parts) != 2:
+        raise ValueError(f"无法解析成绩值: {text}")
+    minute = int(parts[0])
+    second = float(parts[1])
+    return minute * 60 + second
+
+
+def extract_line_tokens_from_image(image_path: Path, ocr: RapidOCR) -> tuple[list[list[str]], int, str]:
     result, _ = ocr(str(image_path))
     if not result:
-        return [], 0
+        return [], 0, ""
     cells: list[OcrCell] = []
+    raw_texts: list[str] = []
     for box, text, _score in result:
         x = sum(point[0] for point in box) / 4
         y = sum(point[1] for point in box) / 4
         cells.append(OcrCell(x=x, y=y, text=text))
+        raw_texts.append(text)
     lines = group_cells_to_lines(cells)
     line_tokens_list: list[list[str]] = []
     for line in lines:
@@ -207,7 +248,7 @@ def extract_line_tokens_from_image(image_path: Path, ocr: RapidOCR) -> tuple[lis
         for cell in line:
             line_tokens.extend(tokenize_numbers(cell.text))
         line_tokens_list.append(line_tokens)
-    return line_tokens_list, len(result)
+    return line_tokens_list, len(result), "\n".join(raw_texts)
 
 
 def infer_score_index(tokens: list[str]) -> int:
@@ -235,14 +276,12 @@ def infer_score_index(tokens: list[str]) -> int:
     return 0 if even_score >= odd_score else 1
 
 
-def build_pairs(line_tokens_list: list[list[str]], table_def: dict) -> tuple[list[tuple[str, str]], int]:
-    candidate_lines = [tokens for tokens in line_tokens_list if 2 <= len(tokens) <= 6 and len(tokens) % 2 == 0]
-    tokens = [token for line_tokens in candidate_lines for token in line_tokens]
-    if len(tokens) % 2 != 0:
-        tokens = tokens[:-1]
-    if len(tokens) < 4:
-        return [], 0
-    score_index = infer_score_index(tokens)
+def build_pairs_with_score_index(
+    candidate_lines: list[list[str]],
+    table_def: dict,
+    score_index: int,
+) -> tuple[list[tuple[str, str]], int]:
+    """按指定列方向提取配对数据，score_index=0 表示左列为分数，1 表示右列为分数。"""
     pairs: list[tuple[str, str]] = []
     skipped_line_count = 0
     for line_tokens in candidate_lines:
@@ -254,7 +293,7 @@ def build_pairs(line_tokens_list: list[list[str]], table_def: dict) -> tuple[lis
             value = normalize_value(right if score_index == 0 else left)
             try:
                 score_float = float(score)
-                value_float = float(value)
+                value_float = parse_value_number(value)
             except ValueError:
                 continue
             if not 0.0 <= score_float <= 100.0:
@@ -268,6 +307,21 @@ def build_pairs(line_tokens_list: list[list[str]], table_def: dict) -> tuple[lis
         if accepted_on_line == 0:
             skipped_line_count += 1
     return pairs, skipped_line_count
+
+
+def build_pairs(line_tokens_list: list[list[str]], table_def: dict) -> tuple[list[tuple[str, str]], int]:
+    candidate_lines = [tokens for tokens in line_tokens_list if 2 <= len(tokens) <= 6 and len(tokens) % 2 == 0]
+    tokens = [token for line_tokens in candidate_lines for token in line_tokens]
+    if len(tokens) % 2 != 0:
+        tokens = tokens[:-1]
+    if len(tokens) < 4:
+        return [], 0
+    preferred_score_index = infer_score_index(tokens)
+    preferred_pairs, preferred_skipped = build_pairs_with_score_index(candidate_lines, table_def, preferred_score_index)
+    fallback_pairs, fallback_skipped = build_pairs_with_score_index(candidate_lines, table_def, 1 - preferred_score_index)
+    if len(fallback_pairs) > len(preferred_pairs):
+        return fallback_pairs, fallback_skipped
+    return preferred_pairs, preferred_skipped
 
 
 def finalize_rows(rows: list[tuple[str, str]]) -> tuple[list[tuple[str, str]], str, str]:
@@ -340,9 +394,15 @@ def process_table(table_def: dict, image_cache: dict[str, list[dict]], ocr: Rapi
         print(f"[image] {table_def['code']} downloading/ocr {item['index']} -> {image_name}", flush=True)
         download_image(item["url"], image_path)
         image_paths.append(str(image_path))
-        line_tokens_list, box_count = extract_line_tokens_from_image(image_path, ocr)
+        line_tokens_list, box_count, raw_text = extract_line_tokens_from_image(image_path, ocr)
         pairs, skipped_line_count = build_pairs(line_tokens_list, table_def)
         if len(pairs) < 5:
+            if is_probable_ad_page(raw_text):
+                print(
+                    f"[image] {table_def['code']} idx={item['index']} skipped as non-table ad page",
+                    flush=True,
+                )
+                continue
             anomalies.append(
                 f"图片 {item['index']} 抽取对数过少: pairs={len(pairs)}, lines={len(line_tokens_list)}, boxes={box_count}, caption={item['caption']}"
             )

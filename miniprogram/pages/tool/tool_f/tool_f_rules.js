@@ -623,20 +623,63 @@ function hasTopLevelSkills(typeRule) {
 }
 
 /**
+ * 获取当前生效的分组规则
+ * 统一处理 groupKey 为空、越界等情况，始终回退到第一个合法分组
+ * @param {Object} typeRule - 大类规则
+ * @param {string} groupKey - 分组编码
+ * @returns {Object|null}
+ */
+function getResolvedGroupRule(typeRule, groupKey) {
+  if (!typeRule || !typeRule.groups) return null;
+  const groupKeys = Object.keys(typeRule.groups);
+  const resolvedGroupKey = groupKey && typeRule.groups[groupKey] ? groupKey : groupKeys[0];
+  return resolvedGroupKey ? (typeRule.groups[resolvedGroupKey] || null) : null;
+}
+
+/**
+ * 获取当前分组下真正用于渲染技能区的规则容器
+ * 支持两种形态：
+ *   1. 大类顶层直接挂 skills
+ *   2. 分组下直接挂 skills（湖南 5ej 体操）
+ * @param {Object} typeRule - 大类规则
+ * @param {string} groupKey - 当前分组编码
+ * @returns {Object|null}
+ */
+function getActiveSkillContainerRule(typeRule, groupKey) {
+  if (hasTopLevelSkills(typeRule)) return typeRule;
+  const groupRule = getResolvedGroupRule(typeRule, groupKey);
+  if (groupRule && groupRule.skills && !groupRule.items) return groupRule;
+  return null;
+}
+
+/**
  * 获取指定分组下的所有子项字典
  * 规则分两种结构：
  *   ① 有 groups：需先定位到具体 group，再取其 items
- *   ② 无 groups（扁平结构）：直接取 typeRule.items
+ *   ② 分组本身就是一个直接输入项：groupRule 外层直接挂 name/unit/rule
+ *   ③ 无 groups（扁平结构）：直接取 typeRule.items
  * @param {Object} typeRule - 大类规则
  * @param {string} groupKey - 分组编码（结构①用）
  * @returns {Object} 子项字典 { subCode1: {name,unit,skills...}, subCode2: {...} }
  */
+function isDirectGroupInputRule(groupRule) {
+  if (!groupRule || groupRule.items || groupRule.skills) return false;
+  return groupRule.name !== undefined
+    || groupRule.rule !== undefined
+    || groupRule.unit !== undefined
+    || groupRule['Seconds and minutes'] !== undefined;
+}
+
 function getTypeItems(typeRule, groupKey) {
   if (!typeRule) return {};
   if (typeRule.groups) {
-    const groupKeys = Object.keys(typeRule.groups);
-    const resolvedGroupKey = groupKey && typeRule.groups[groupKey] ? groupKey : groupKeys[0];
-    const groupRule = resolvedGroupKey ? typeRule.groups[resolvedGroupKey] : null;
+    const groupRule = getResolvedGroupRule(typeRule, groupKey);
+    // 兼容“分组外层直接挂 name/unit/rule”的写法，内部统一包装成一个空编码子项。
+    if (isDirectGroupInputRule(groupRule)) {
+      return {
+        '': groupRule
+      };
+    }
     return (groupRule && groupRule.items) || {};
   }
   return typeRule.items || {};
@@ -770,6 +813,115 @@ function getSkillInputLabels(skill) {
   return Array.from({ length: count }, (_, index) => name + (index + 1));
 }
 
+/**
+ * 构建技能层「局部二选一/多选一」状态
+ * 设计目的：
+ *   1. 支持某个项目下仅部分技能互斥，其他技能仍然保留为必填项
+ *   2. 复用主项 chooseGroups 的思路，但作用对象从 items 下沉到 skills
+ *   3. skillItems 始终保留全部技能对象，activeSkillItems 只保留当前应渲染/提交的技能
+ *   4. fixedSkillItems / selectedSkillItems 用于页面拆分固定项与互斥选中项的展示顺序
+ *
+ * 规则示例：
+ *   skillChooseGroups: [{ label:'二选一', codes:['0004','0005'], choose:1 }]
+ *   skillChooseGroups: [{ label:'项目选择', options:[{ code:'0002', name:'运球绕杆射门', codes:['0002'] }, { code:'goalkeeper', name:'守门员加试', codes:['0004','0005'] }], choose:1 }]
+ *
+ * @param {Array<Object>} skillItems - 全量技能对象数组（已标准化）
+ * @param {Array<Object>} chooseGroups - 规则中声明的技能互斥组
+ * @param {Array<Object>} [previousChooseGroups] - 旧互斥组状态（用于继承 selectedCode）
+ * @param {Array<string>} [selectedCodeOverrides] - 外部强制指定的 selectedCode 列表
+ * @returns {{skillChooseGroups: Array<Object>, activeSkillItems: Array<Object>, fixedSkillItems: Array<Object>, selectedSkillItems: Array<Object>}}
+ */
+function buildSkillChooseGroupState(skillItems, chooseGroups, previousChooseGroups, selectedCodeOverrides) {
+  const allSkillItems = Array.isArray(skillItems) ? skillItems : [];
+  const rawChooseGroups = Array.isArray(chooseGroups) ? chooseGroups : [];
+  if (!rawChooseGroups.length) {
+    return {
+      skillChooseGroups: [],
+      activeSkillItems: allSkillItems.slice(),
+      fixedSkillItems: allSkillItems.slice(),
+      selectedSkillItems: []
+    };
+  }
+
+  const skillItemMap = {};
+  allSkillItems.forEach((item) => {
+    if (item && item.code) skillItemMap[item.code] = item;
+  });
+
+  const exclusiveCodeSet = new Set();
+  const skillChooseGroups = rawChooseGroups.map((group, groupIndex) => {
+    const rawOptions = Array.isArray(group.options) && group.options.length
+      ? group.options
+      : null;
+    const options = rawOptions
+      ? rawOptions.map((option) => {
+        const optionCodes = Array.isArray(option.codes)
+          ? option.codes.filter((code) => !!skillItemMap[code])
+          : (option.code && skillItemMap[option.code] ? [option.code] : []);
+        optionCodes.forEach((code) => exclusiveCodeSet.add(code));
+        const firstSkillItem = optionCodes.length ? skillItemMap[optionCodes[0]] : null;
+        return {
+          code: option.code || (optionCodes[0] || ''),
+          name: option.name || (firstSkillItem && firstSkillItem.name) || '',
+          unit: option.unit || (firstSkillItem && firstSkillItem.unit) || '',
+          codes: optionCodes
+        };
+      }).filter((option) => option.code && option.codes.length > 0)
+      : (() => {
+        const codes = Array.isArray(group.codes)
+          ? group.codes.filter((code) => !!skillItemMap[code])
+          : [];
+        codes.forEach((code) => exclusiveCodeSet.add(code));
+        return codes.map((code) => ({
+          code,
+          name: skillItemMap[code].name || '',
+          unit: skillItemMap[code].unit || '',
+          codes: [code]
+        }));
+      })();
+
+    const overrideCode = Array.isArray(selectedCodeOverrides) ? selectedCodeOverrides[groupIndex] : '';
+    const previousGroup = Array.isArray(previousChooseGroups) ? previousChooseGroups[groupIndex] : null;
+    const preferredCode = overrideCode || (previousGroup && previousGroup.selectedCode) || '';
+    const selectedCode = options.some((option) => option.code === preferredCode)
+      ? preferredCode
+      : (options[0] ? options[0].code : '');
+
+    return {
+      label: group.label || '细项',
+      choose: group.choose || 1,
+      options,
+      selectedCode
+    };
+  });
+
+  const activeCodeSet = new Set();
+  const selectedCodeSet = new Set();
+  allSkillItems.forEach((item) => {
+    if (item && item.code && !exclusiveCodeSet.has(item.code)) {
+      activeCodeSet.add(item.code);
+    }
+  });
+  skillChooseGroups.forEach((group) => {
+    if (group.selectedCode) {
+      const selectedOption = (group.options || []).find((option) => option.code === group.selectedCode);
+      (selectedOption && selectedOption.codes ? selectedOption.codes : []).forEach((code) => {
+        activeCodeSet.add(code);
+        selectedCodeSet.add(code);
+      });
+    }
+  });
+
+  return {
+    skillChooseGroups,
+    activeSkillItems: allSkillItems.filter((item) => item && activeCodeSet.has(item.code)),
+    // 固定项：不在任一互斥组选项里的技能，始终独立展示。
+    fixedSkillItems: allSkillItems.filter((item) => item && item.code && !exclusiveCodeSet.has(item.code)),
+    // 可变项：只展示当前互斥组里真正被选中的技能卡。
+    selectedSkillItems: allSkillItems.filter((item) => item && item.code && selectedCodeSet.has(item.code))
+  };
+}
+
 /* ============================================================
  * 第六部分：技能项标准化构建（buildSkillItems）
  * ============================================================ */
@@ -802,6 +954,15 @@ function getSkillInputLabels(skill) {
  */
 function buildSkillItems(skills, options) {
   const opts = options || {};
+  const rawSkills = skills || {};
+  // techSkill 仅作为某个主技能的附加评分项时，不单独在页面渲染为一张技能卡。
+  const linkedTechSkillCodes = new Set();
+  Object.keys(rawSkills).forEach((code) => {
+    const skill = rawSkills[code] || {};
+    if (skill.techSkill && rawSkills[skill.techSkill]) {
+      linkedTechSkillCodes.add(skill.techSkill);
+    }
+  });
   // 确定本批技能共用的时间范围
   const itemTimePickerRange = Array.isArray(opts.timePickerRange)
     ? opts.timePickerRange
@@ -813,16 +974,17 @@ function buildSkillItems(skills, options) {
     ? opts.parentDefaultValue
     : getTimeDefaultValue(opts.parentRule, itemTimePickerRange);
 
-  const skillKeys = Object.keys(skills || {});
+  const skillKeys = Object.keys(rawSkills).filter((code) => !linkedTechSkillCodes.has(code));
   const skillItems = skillKeys.map((code) => {
-    const skill = skills[code] || {};
+    const skill = rawSkills[code] || {};
+    const linkedTechSkillRule = skill.techSkill ? (rawSkills[skill.techSkill] || null) : null;
     const inputCount = getSkillInputCount(skill);
     const inputLabels = getSkillInputLabels(skill);
     // 单输入框 + 启用时间模式 = 走 picker
     const isTimePicker = !!opts.useMinuteSecondTime && inputCount === 1;
 
     // 优先从 previousValues.skills 里继承（同编码则继承）
-    const previousValue = Array.isArray(opts.previousTimePickerValues) && Array.isArray(opts.previousTimePickerValues[code])
+    const previousValue = opts.previousTimePickerValues && Array.isArray(opts.previousTimePickerValues[code])
       ? opts.previousTimePickerValues[code]
       : null;
     // 技能自身的默认时间
@@ -847,15 +1009,32 @@ function buildSkillItems(skills, options) {
         ? buildTimeDefaultHint(skill, itemTimePickerRange) || buildTimeDefaultHint(opts.parentRule, itemTimePickerRange)
         : '',
       allowNegative: skill.number === 'Positive or negative',
-      values: Array.from({ length: inputCount }, () => '')
+      values: Array.from({ length: inputCount }, () => ''),
+      // techSkill：湖南篮球等项目存在「主项编码可查 + 附加评审编码手填」的组合结构。
+      techSkillCode: linkedTechSkillRule ? skill.techSkill : '',
+      techSkillName: linkedTechSkillRule ? (linkedTechSkillRule.name || '') : '',
+      techSkillUnit: linkedTechSkillRule ? (linkedTechSkillRule.unit || '') : '',
+      techSkillAllowNegative: !!(linkedTechSkillRule && linkedTechSkillRule.number === 'Positive or negative'),
+      techSkillValue: ''
     };
   });
+
+  const skillChooseMeta = buildSkillChooseGroupState(
+    skillItems,
+    opts.skillChooseGroups,
+    opts.previousSkillChooseGroups,
+    opts.skillChooseSelectedCodes
+  );
 
   return {
     skillKeys,          // 技能编码数组（提交编码用）
     skillList: skillItems.map((item) => item.name), // 技能名数组（picker显示）
     skillUnits: skillItems.map((item) => item.unit), // 技能单位数组
-    skillItems         // 完整技能对象数组（页面渲染核心）
+    skillItems,         // 完整技能对象数组（包含互斥组选项内的所有技能）
+    activeSkillItems: skillChooseMeta.activeSkillItems, // 当前激活技能（页面渲染/提交使用）
+    fixedSkillItems: skillChooseMeta.fixedSkillItems,   // 页面展示：固定技能项
+    selectedSkillItems: skillChooseMeta.selectedSkillItems, // 页面展示：互斥组当前选中的技能项
+    skillChooseGroups: skillChooseMeta.skillChooseGroups
   };
 }
 
@@ -1093,6 +1272,10 @@ function createEmptyProjectGroup(scopeKey) {
     skillList: [],                  // 技能名称数组
     skillUnits: [],                  // 技能单位数组
     skillItems: [],                 // 技能完整对象数组
+    activeSkillItems: [],           // 当前激活技能数组（局部二选一后真正参与渲染/提交的技能）
+    fixedSkillItems: [],            // 页面展示：固定技能项（不受互斥组选项切换影响）
+    selectedSkillItems: [],         // 页面展示：互斥组当前选中的技能项
+    skillChooseGroups: [],          // 技能层互斥组（如乒乓球结合技术二选一）
     skillChooseCount: 0,            // 规则配置的 choose 值
     useSkillPicker: false,         // choose=1 时用 picker 选一个技能
     skillIndex: 0,                  // 当前技能选中下标
@@ -1175,32 +1358,36 @@ function buildProjectGroup(provinceKey, scopeKey, typeKey, options) {
   const groupMeta = getTypeGroupMeta(typeRule);
   const groupIndex = clampIndex(parseInt(opts.groupIndex, 10), groupMeta.groupKeys.length || 1);
   const groupKey = groupMeta.groupKeys[groupIndex] || '';
-  // 是否顶层技能型结构
-  const isTopSkill = hasTopLevelSkills(typeRule);
+  // 是否技能直挂型结构：支持大类直挂 skills，也支持分组直挂 skills。
+  const activeSkillContainerRule = getActiveSkillContainerRule(typeRule, groupKey);
+  const isTopSkill = !!activeSkillContainerRule;
 
   /* -------------------- 分支①：顶层技能型结构 -------------------- */
   if (isTopSkill) {
-    const topTimePickerRange = buildTimePickerRange(typeRule);
+    const topTimePickerRange = buildTimePickerRange(activeSkillContainerRule);
     // 判断技能时间上下文：大类相同则允许继承技能时间
     const allowSkillPrevious = isSameSkillTimeContext(previousGroup, typeKey, groupKey, '', true);
     // 构建技能项
-    const skillMeta = buildSkillItems(typeRule.skills, {
-      useMinuteSecondTime: useMinuteSecondTime(typeRule),
+    const skillMeta = buildSkillItems(activeSkillContainerRule.skills, {
+      useMinuteSecondTime: useMinuteSecondTime(activeSkillContainerRule),
       timePickerRange: topTimePickerRange,
-      parentRule: typeRule,
-      previousTimePickerValues: allowSkillPrevious ? previousValues.skills : null
+      parentRule: activeSkillContainerRule,
+      previousTimePickerValues: allowSkillPrevious ? previousValues.skills : null,
+      skillChooseGroups: activeSkillContainerRule.skillChooseGroups,
+      previousSkillChooseGroups: previousGroup && previousGroup.skillChooseGroups,
+      skillChooseSelectedCodes: opts.skillChooseSelectedCodes
     });
     const skillIndex = clampIndex(parseInt(opts.skillIndex, 10), skillMeta.skillItems.length || 1);
     const currentSkillItem = skillMeta.skillItems[skillIndex] || null;
     // 顶层技能大类默认时间（用于 currentTimePickerValue 兜底）
-    const topLevelDefault = getTimeDefaultValue(typeRule, topTimePickerRange);
+    const topLevelDefault = getTimeDefaultValue(activeSkillContainerRule, topTimePickerRange);
     // 上一次同上下文的 current 值，否则默认
     const rawTopCurrentValue = previousValues.current || topLevelDefault || [0, 0, 0];
 
     return {
       scopeKey,
       typeKey,
-      typeLabel: typeRule.label || '',
+      typeLabel: typeRule.label || activeSkillContainerRule.label || '',
       groupKeys: groupMeta.groupKeys,
       groupList: groupMeta.groupList,
       groupLabel: groupMeta.groupLabel,
@@ -1224,8 +1411,12 @@ function buildProjectGroup(provinceKey, scopeKey, typeKey, options) {
       skillList: skillMeta.skillList,
       skillUnits: skillMeta.skillUnits,
       skillItems: skillMeta.skillItems,
-      skillChooseCount: getChooseCount(typeRule),
-      useSkillPicker: getChooseCount(typeRule) === 1,
+      activeSkillItems: skillMeta.activeSkillItems,
+      fixedSkillItems: skillMeta.fixedSkillItems,
+      selectedSkillItems: skillMeta.selectedSkillItems,
+      skillChooseGroups: skillMeta.skillChooseGroups,
+      skillChooseCount: getChooseCount(activeSkillContainerRule),
+      useSkillPicker: getChooseCount(activeSkillContainerRule) === 1 && !skillMeta.skillChooseGroups.length,
       skillIndex,
       currentSkillItem
     };
@@ -1243,7 +1434,16 @@ function buildProjectGroup(provinceKey, scopeKey, typeKey, options) {
   const itemDirectTimeRange = buildTimePickerRange(itemRule);
 
   // 步骤2：默认声明（后续根据 hasSkill 条件赋值）
-  let skillMeta = { skillKeys: [], skillList: [], skillUnits: [], skillItems: [] };
+  let skillMeta = {
+    skillKeys: [],
+    skillList: [],
+    skillUnits: [],
+    skillItems: [],
+    activeSkillItems: [],
+    fixedSkillItems: [],
+    selectedSkillItems: [],
+    skillChooseGroups: []
+  };
   let skillChooseCount = 0;
   let useSkillPicker = false;
   let skillIndex = 0;
@@ -1273,10 +1473,13 @@ function buildProjectGroup(provinceKey, scopeKey, typeKey, options) {
       useMinuteSecondTime: useMinuteSecondTime(itemRule),
       timePickerRange: skillTimeRange,
       parentRule: itemRule,
-      previousTimePickerValues: allowSkillPrevious ? previousValues.skills : null
+      previousTimePickerValues: allowSkillPrevious ? previousValues.skills : null,
+      skillChooseGroups: itemRule.skillChooseGroups,
+      previousSkillChooseGroups: previousGroup && previousGroup.skillChooseGroups,
+      skillChooseSelectedCodes: opts.skillChooseSelectedCodes
     });
     skillChooseCount = getChooseCount(itemRule);
-    useSkillPicker = skillChooseCount === 1;
+    useSkillPicker = skillChooseCount === 1 && !skillMeta.skillChooseGroups.length;
     skillIndex = clampIndex(parseInt(opts.skillIndex, 10), skillMeta.skillItems.length || 1);
     currentSkillItem = skillMeta.skillItems[skillIndex] || null;
     // 技能型：单位从当前技能取
@@ -1315,6 +1518,10 @@ function buildProjectGroup(provinceKey, scopeKey, typeKey, options) {
     skillList: skillMeta.skillList,
     skillUnits: skillMeta.skillUnits,
     skillItems: skillMeta.skillItems,
+    activeSkillItems: skillMeta.activeSkillItems,
+    fixedSkillItems: skillMeta.fixedSkillItems,
+    selectedSkillItems: skillMeta.selectedSkillItems,
+    skillChooseGroups: skillMeta.skillChooseGroups,
     skillChooseCount,
     useSkillPicker,
     skillIndex,
@@ -1443,6 +1650,7 @@ module.exports = {
   getTypeRule,
 
   // 结构判断（提交层区分TopSkill分支）
+  getActiveSkillContainerRule,
   hasTopLevelSkills,
 
   // 输入值标准化（提交层校验数字/时间）

@@ -91,12 +91,12 @@ const {
   buildSpecialCodeLog,     // 专项/辅助编码日志结构（调试打印用）
   buildSpecialItemCode,    // 专项/辅助编码生成
   cloneRuleMeta,            // 规则元对象深拷贝（防污染原规则）
+  getActiveSkillContainerRule, // 取当前生效的技能容器（支持 group 直挂 skills）
   getCurrentSkillItem,      // 从分组中取当前选中的技能项快照
   getItemRule,              // 取子项规则细节
   getMainActiveItems,       // 汇总主项激活的子项数组
   getProvinceRuleMeta,      // 取省份 addRuleMeta（计算/总分/特殊案例规则编码+对象）
   getTypeRule,              // 取某省某作用域某大类的规则
-  hasTopLevelSkills,        // 判断大类是否为顶层技能型结构
   normalizeComparableValue  // 各种输入值 → 可比较数字（含时间转秒）
 } = require('./tool_f_rules.js');
 
@@ -139,6 +139,83 @@ module.exports = {
   },
 
   /**
+   * 获取当前分组真正参与校验/提交的技能数组
+   * 规则：
+   *   1. 整体 choose=1 时仅取当前选中技能
+   *   2. 存在 skillChooseGroups 时取 activeSkillItems（普通技能 + 各互斥组选中项）
+   *   3. 兜底回退到 skillItems
+   * @param {Object} group - 分组对象
+   * @returns {Array<Object>}
+   */
+  _getActiveGroupSkillItems(group) {
+    if (!group || !group.showSkill) return [];
+    const currentSkillItem = getCurrentSkillItem(group);
+    if (group.useSkillPicker) {
+      return currentSkillItem ? [currentSkillItem] : [];
+    }
+    if (Array.isArray(group.activeSkillItems) && group.activeSkillItems.length > 0) {
+      return group.activeSkillItems;
+    }
+    return group.skillItems || [];
+  },
+
+  /**
+   * 组装 techSkill 附加评审记录
+   * 场景：湖南篮球等项目存在「主技能编码 + 附加评审编码」的组合提交方式
+   * @param {Object} options - 组装参数
+   * @returns {Object|null} 成功返回提交记录，空值则返回 null
+   */
+  _buildTechSkillSubmitEntry(options) {
+    const opts = options || {};
+    const skillItem = opts.skillItem || null;
+    const techSkillCode = skillItem && skillItem.techSkillCode;
+    const techValue = this._safeTrim(skillItem && skillItem.techSkillValue);
+    if (!techSkillCode || !techValue) return null;
+
+    const techSkillRule = ((opts.skillRuleMap || {})[techSkillCode]) || null;
+    if (!techSkillRule) return null;
+
+    const mergedSkillCode = (skillItem.code || '') + techSkillCode;
+    const code = buildSpecialItemCode(
+      opts.provinceCode,
+      opts.genderCode,
+      opts.group.typeKey,
+      opts.subCode || '',
+      opts.itemRule || {},
+      mergedSkillCode,
+      techSkillRule,
+      opts.group.groupKey
+    );
+
+    console.log('[code-project-tech-skill]', JSON.stringify(buildSpecialCodeLog(
+      opts.provinceCode,
+      opts.genderCode,
+      opts.group.typeKey,
+      opts.subCode || '',
+      opts.itemRule || {},
+      mergedSkillCode,
+      techSkillRule,
+      code,
+      opts.scopeKey,
+      opts.group.groupKey
+    )));
+
+    const namePrefix = opts.namePrefix ? (opts.namePrefix + '-') : '';
+    return {
+      code,
+      typeKey: opts.group.typeKey,
+      typeLabel: opts.group.typeLabel,
+      scopeKey: opts.scopeKey,
+      name: namePrefix + (techSkillRule.name || '技术评审'),
+      unit: techSkillRule.unit || '',
+      value: techValue,
+      better: techSkillRule.better || '',
+      match: techSkillRule.match || '',
+      rule: techSkillRule.rule !== undefined ? techSkillRule.rule : ''
+    };
+  },
+
+  /**
    * 校验一个专项/辅助分组（整组）的输入合法性
    * 分组分两种形态分别处理：
    *
@@ -166,11 +243,7 @@ module.exports = {
 
     /* ---------- 形态A：技能型（showSkill=true） ---------- */
     if (group.showSkill) {
-      // 当前选中技能项（useSkillPicker 时只会有这一个）
-      const currentSkillItem = getCurrentSkillItem(group);
-      const skillItems = group.useSkillPicker
-        ? (currentSkillItem ? [currentSkillItem] : [])
-        : (group.skillItems || []);
+      const skillItems = this._getActiveGroupSkillItems(group);
 
       // 逐个技能校验
       for (let skillIdx = 0; skillIdx < skillItems.length; skillIdx++) {
@@ -198,12 +271,21 @@ module.exports = {
             return { valid: false, hasValue: false };
           }
         }
+
+        const techSkillValue = this._safeTrim(skillItem.techSkillValue);
+        if (techSkillValue && isNaN(Number(techSkillValue))) {
+          wx.showToast({
+            title: (skillItem.techSkillName || '技术评审') + '成绩必须为数字',
+            icon: 'none'
+          });
+          return { valid: false, hasValue: false };
+        }
       }
 
       return {
         valid: true,
         // 是否至少有一个技能至少有一个非空输入
-        hasValue: skillItems.some((skillItem) => this._getSkillSubmitEntries(skillItem).length > 0)
+        hasValue: skillItems.some((skillItem) => this._getSkillSubmitEntries(skillItem).length > 0 || !!this._safeTrim(skillItem.techSkillValue))
       };
     }
 
@@ -306,19 +388,16 @@ module.exports = {
     if (!typeRule) return [];
 
     const result = [];
-    const isTopSkill = hasTopLevelSkills(typeRule);
+    const topSkillRule = getActiveSkillContainerRule(typeRule, group.groupKey);
+    const isTopSkill = !!topSkillRule;
 
     /* -------------------- 分支①：顶层技能型（TopSkill） -------------------- */
     if (isTopSkill) {
-      const currentSkillItem = getCurrentSkillItem(group);
-      // useSkillPicker 仅取当前选中技能；否则取所有 skillItems
-      const skillItems = group.useSkillPicker
-        ? (currentSkillItem ? [currentSkillItem] : [])
-        : (group.skillItems || []);
+      const skillItems = this._getActiveGroupSkillItems(group);
 
       skillItems.forEach((skillItem) => {
         // 从 typeRule.skills 里拿到原始 skillRule（含 better/match/rule/unit 等字段）
-        const skillRule = (typeRule.skills || {})[skillItem.code];
+        const skillRule = (topSkillRule.skills || {})[skillItem.code];
         if (!skillRule) return;
 
         // 本技能所有非空输入 → 每条对应一条提交记录
@@ -363,6 +442,19 @@ module.exports = {
             rule: skillRule.rule !== undefined ? skillRule.rule : ''
           });
         });
+
+        const techEntry = this._buildTechSkillSubmitEntry({
+          provinceCode,
+          genderCode,
+          group,
+          scopeKey,
+          subCode: '',
+          itemRule: {},
+          skillItem,
+          skillRuleMap: topSkillRule.skills,
+          namePrefix: skillItem.name
+        });
+        if (techEntry) result.push(techEntry);
       });
 
       return result;
@@ -377,10 +469,7 @@ module.exports = {
 
     /* -------------------- 分支②：子项下挂技能（showSkill && skillKeys） -------------------- */
     if (group.showSkill && group.skillKeys.length > 0) {
-      const currentSkillItem = getCurrentSkillItem(group);
-      const skillItems = group.useSkillPicker
-        ? (currentSkillItem ? [currentSkillItem] : [])
-        : (group.skillItems || []);
+      const skillItems = this._getActiveGroupSkillItems(group);
 
       skillItems.forEach((skillItem) => {
         const skillRule = (itemConfig.skills || {})[skillItem.code];
@@ -425,6 +514,19 @@ module.exports = {
             rule: skillRule.rule !== undefined ? skillRule.rule : ''
           });
         });
+
+        const techEntry = this._buildTechSkillSubmitEntry({
+          provinceCode,
+          genderCode,
+          group,
+          scopeKey,
+          subCode: sub.code,
+          itemRule: itemConfig,
+          skillItem,
+          skillRuleMap: itemConfig.skills,
+          namePrefix: sub.name + '-' + skillItem.name
+        });
+        if (techEntry) result.push(techEntry);
       });
 
       return result;

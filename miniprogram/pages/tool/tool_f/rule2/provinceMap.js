@@ -26,9 +26,9 @@ const provinceMap = {
     specialProject: [
       { code: "1a", order: 1, enabled: true },
       { code: "2b", order: 2, enabled: true },
-      { code: "3c", order: 3, enabled: true },
-      { code: "4d", order: 4, enabled: true },
-      { code: "5e", order: 5, enabled: true }
+      // 湖南标准编码已将体操/健美操展示类并入 5e 分组，不再单独启用 3c。
+      { code: "4d", order: 3, enabled: true },
+      { code: "5e", order: 4, enabled: true }
     ],
    
   }

@@ -115,7 +115,8 @@ const interactionMethods = {
       typeKey: typeKeys[typeIndex] || group.typeKey || '',
       groupKey: group.groupKey || '',
       subCode: currentSub ? currentSub.code : '',
-      skillCode: currentSkill ? currentSkill.code : ''
+      skillCode: currentSkill ? currentSkill.code : '',
+      skillChooseSelectedCodes: (group.skillChooseGroups || []).map((item) => item.selectedCode || '')
     };
   },
 
@@ -251,6 +252,16 @@ const interactionMethods = {
           previousGroup: group
         });
       }
+    }
+
+    if (scopePreference && Array.isArray(scopePreference.skillChooseSelectedCodes) && group.skillChooseGroups.length > 0) {
+      group = buildProjectGroup(provinceKey, scopeKey, typeKey, {
+        groupIndex: group.groupIndex,
+        subIndex: group.subIndex,
+        skillIndex: group.skillIndex,
+        previousGroup: group,
+        skillChooseSelectedCodes: scopePreference.skillChooseSelectedCodes
+      });
     }
 
     if (scopePreference && scopePreference.skillCode && group.skillItems.length > 0) {
@@ -465,6 +476,136 @@ const interactionMethods = {
       [groupKey + '.skillIndex']: skillIndex,
       [groupKey + '.currentSkillItem']: currentSkillItem,
       [groupKey + '.currentUnit']: currentSkillItem ? currentSkillItem.unit : ''
+    });
+  },
+
+  /**
+   * 根据技能层互斥组生成当前真正生效的技能数组
+   * 说明：group.skillItems 保留全量技能对象，activeSkillItems 才是当前要渲染/提交的技能
+   * @param {Object} group - 当前专项/辅助分组
+   * @param {Array<Object>} [skillChooseGroups] - 指定的技能互斥组，未传则取 group 上现有值
+   * @returns {Array<Object>}
+   */
+  _buildActiveSkillItems(group, skillChooseGroups) {
+    const allSkillItems = (group && group.skillItems) || [];
+    const chooseGroups = Array.isArray(skillChooseGroups)
+      ? skillChooseGroups
+      : ((group && group.skillChooseGroups) || []);
+
+    if (!chooseGroups.length) return allSkillItems.slice();
+
+    const exclusiveCodeSet = new Set();
+    chooseGroups.forEach((item) => {
+      (item.options || []).forEach((option) => {
+        ((option && option.codes) || []).forEach((code) => {
+          if (code) exclusiveCodeSet.add(code);
+        });
+      });
+    });
+
+    const activeCodeSet = new Set();
+    allSkillItems.forEach((item) => {
+      if (item && item.code && !exclusiveCodeSet.has(item.code)) {
+        activeCodeSet.add(item.code);
+      }
+    });
+    chooseGroups.forEach((item) => {
+      const selectedOption = (item && item.selectedCode)
+        ? (item.options || []).find((option) => option.code === item.selectedCode)
+        : null;
+      ((selectedOption && selectedOption.codes) || []).forEach((code) => {
+        if (code) activeCodeSet.add(code);
+      });
+    });
+
+    return allSkillItems.filter((item) => item && activeCodeSet.has(item.code));
+  },
+
+  /**
+   * 根据技能层互斥组拆分固定技能项与当前选中技能项
+   * 说明：用于页面把固定项与“专项分离选项”的结果分别渲染到不同 view 中
+   * @param {Object} group - 当前专项/辅助分组
+   * @param {Array<Object>} [skillChooseGroups] - 指定的技能互斥组，未传则取 group 上现有值
+   * @returns {{fixedSkillItems: Array<Object>, selectedSkillItems: Array<Object>}}
+   */
+  _buildDisplayedSkillSections(group, skillChooseGroups) {
+    const allSkillItems = (group && group.skillItems) || [];
+    const chooseGroups = Array.isArray(skillChooseGroups)
+      ? skillChooseGroups
+      : ((group && group.skillChooseGroups) || []);
+
+    if (!chooseGroups.length) {
+      return {
+        fixedSkillItems: allSkillItems.slice(),
+        selectedSkillItems: []
+      };
+    }
+
+    const exclusiveCodeSet = new Set();
+    const selectedCodeSet = new Set();
+    chooseGroups.forEach((item) => {
+      (item.options || []).forEach((option) => {
+        ((option && option.codes) || []).forEach((code) => {
+          if (code) exclusiveCodeSet.add(code);
+        });
+      });
+      const selectedOption = (item && item.selectedCode)
+        ? (item.options || []).find((option) => option.code === item.selectedCode)
+        : null;
+      ((selectedOption && selectedOption.codes) || []).forEach((code) => {
+        if (code) selectedCodeSet.add(code);
+      });
+    });
+
+    return {
+      fixedSkillItems: allSkillItems.filter((item) => item && item.code && !exclusiveCodeSet.has(item.code)),
+      selectedSkillItems: allSkillItems.filter((item) => item && item.code && selectedCodeSet.has(item.code))
+    };
+  },
+
+  /**
+   * 根据事件 dataset 解析技能在全量 skillItems 中的真实下标
+   * 设计原因：局部二选一渲染时传的是 activeSkillItems 的 code，不能再直接依赖可见列表下标
+   * @param {Object} group - 当前分组
+   * @param {Object} dataset - 事件携带的 dataset
+   * @returns {number}
+   */
+  _resolveSkillIndex(group, dataset) {
+    const skillCode = dataset && dataset.skillCode;
+    if (skillCode) {
+      const matchedIndex = (group.skillItems || []).findIndex((item) => item.code === skillCode);
+      if (matchedIndex >= 0) return matchedIndex;
+    }
+    return parseInt(dataset && dataset.ski, 10) || 0;
+  },
+
+  /**
+   * 设置技能层互斥组选项
+   * 场景：乒乓球结合技术、足球专项动作这类“局部二选一”点击按钮切换时调用
+   * @param {string} groupKey - 'specialGroup' | 'auxiliaryGroup'
+   * @param {number} chooseGroupIndex - 互斥组下标
+   * @param {string} selectedCode - 新选中的技能编码
+   */
+  _setGroupSkillChooseOption(groupKey, chooseGroupIndex, selectedCode) {
+    const group = this.data[groupKey] || createEmptyProjectGroup('specialProject');
+    const currentChooseGroups = group.skillChooseGroups || [];
+    const targetGroup = currentChooseGroups[chooseGroupIndex];
+    if (!targetGroup || !selectedCode) return;
+
+    const hasMatchedOption = (targetGroup.options || []).some((option) => option.code === selectedCode);
+    if (!hasMatchedOption) return;
+
+    const nextChooseGroups = currentChooseGroups.map((item, index) => (index === chooseGroupIndex
+      ? Object.assign({}, item, { selectedCode })
+      : item));
+    const activeSkillItems = this._buildActiveSkillItems(group, nextChooseGroups);
+    const displayedSkillSections = this._buildDisplayedSkillSections(group, nextChooseGroups);
+
+    this.setData({
+      [groupKey + '.skillChooseGroups']: nextChooseGroups,
+      [groupKey + '.activeSkillItems']: activeSkillItems,
+      [groupKey + '.fixedSkillItems']: displayedSkillSections.fixedSkillItems,
+      [groupKey + '.selectedSkillItems']: displayedSkillSections.selectedSkillItems
     });
   },
 
@@ -763,6 +904,18 @@ const interactionMethods = {
   },
 
   /**
+   * 事件：技能层互斥组选项点击
+   * 说明：这里不重建整个 group，而是直接在现有 skillItems 上切换激活技能，避免用户已填值被清空
+   */
+  onSkillChooseOptionTap(e) {
+    const groupKey = e.currentTarget.dataset.groupKey || 'specialGroup';
+    const chooseGroupIndex = parseInt(e.currentTarget.dataset.groupIndex, 10);
+    const skillCode = e.currentTarget.dataset.code;
+    if (!Number.isInteger(chooseGroupIndex) || !skillCode) return;
+    this._setGroupSkillChooseOption(groupKey, chooseGroupIndex, skillCode);
+  },
+
+  /**
    * 事件：专项/辅助技能的多个输入框之一内容变化
    * 通过 dataset 携带的 groupKey / ski / inputIndex 精确定位更新位置
    * 同时同步更新 currentSkillItem 快照（如果当前操作的正是选中的技能项）
@@ -774,7 +927,7 @@ const interactionMethods = {
   onSkillScoreInput(e) {
     const groupKey = e.currentTarget.dataset.groupKey || 'specialGroup';
     const group = this.data[groupKey] || createEmptyProjectGroup('specialProject');
-    const skillIndex = parseInt(e.currentTarget.dataset.ski, 10) || 0;
+    const skillIndex = this._resolveSkillIndex(group, e.currentTarget.dataset || {});
     const inputIndex = parseInt(e.currentTarget.dataset.inputIndex, 10) || 0;
 
     // 先更新 skillItems 数组中的对应值
@@ -785,6 +938,27 @@ const interactionMethods = {
     // 如果修改的是当前选中的技能项，同步更新 currentSkillItem 快照（用于视图渲染）
     if (parseInt(group.skillIndex, 10) === skillIndex) {
       updates[groupKey + '.currentSkillItem.values[' + inputIndex + ']'] = e.detail.value;
+    }
+
+    this.setData(updates);
+  },
+
+  /**
+   * 事件：专项/辅助技能项的附加评审分输入变化
+   * 场景：湖南篮球等项目存在 techSkill，需要跟随主技能额外提交一条手填编码
+   * @param {Object} e - input 事件对象，dataset 包含 groupKey / ski
+   */
+  onTechSkillScoreInput(e) {
+    const groupKey = e.currentTarget.dataset.groupKey || 'specialGroup';
+    const group = this.data[groupKey] || createEmptyProjectGroup('specialProject');
+    const skillIndex = this._resolveSkillIndex(group, e.currentTarget.dataset || {});
+
+    const updates = {
+      [groupKey + '.skillItems[' + skillIndex + '].techSkillValue']: e.detail.value
+    };
+
+    if (parseInt(group.skillIndex, 10) === skillIndex) {
+      updates[groupKey + '.currentSkillItem.techSkillValue'] = e.detail.value;
     }
 
     this.setData(updates);
@@ -802,7 +976,7 @@ const interactionMethods = {
   onTimePickerChange(e) {
     const groupKey = e.currentTarget.dataset.groupKey || 'specialGroup';
     const group = this.data[groupKey] || createEmptyProjectGroup('specialProject');
-    const skillIndex = parseInt(e.currentTarget.dataset.ski, 10) || 0;
+    const skillIndex = this._resolveSkillIndex(group, e.currentTarget.dataset || {});
     const skillItem = (group.skillItems || [])[skillIndex] || null;
     const timeRange = skillItem && skillItem.timePickerRange;
 
