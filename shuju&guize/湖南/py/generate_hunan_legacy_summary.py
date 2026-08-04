@@ -82,6 +82,19 @@ OLD_CODE_PATTERN = re.compile(
 )
 
 
+def load_json_with_line_comments(file_path: Path) -> dict:
+    """兼容源文件中的 `//` 行注释，避免合法业务注释导致整表被跳过。"""
+    raw_text = file_path.read_text(encoding="utf-8")
+    cleaned_lines: list[str] = []
+    for line in raw_text.splitlines():
+        stripped = line.lstrip()
+        # 仅剥离整行注释，避免误伤字符串中的 `//`。
+        if stripped.startswith("//"):
+            continue
+        cleaned_lines.append(line)
+    return json.loads("\n".join(cleaned_lines))
+
+
 def iter_json_files() -> list[Path]:
     """收集所有单表 JSON，跳过总表、索引和工具目录。"""
     return sorted(
@@ -117,7 +130,7 @@ def build_standard_code(old_code: str) -> str:
 
 def build_table_entry(file_path: Path) -> tuple[str, dict]:
     """把单表 JSON 转成老总表条目结构。"""
-    raw_payload = json.loads(file_path.read_text(encoding="utf-8"))["code"]
+    raw_payload = load_json_with_line_comments(file_path)["code"]
     old_code = str(raw_payload.get("code", ""))
     business_code = build_standard_code(old_code)
     data_rows = list(raw_payload.get("data", []))

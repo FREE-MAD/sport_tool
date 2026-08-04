@@ -618,4 +618,38 @@
       </view>
     </view>
   </view>
+
+  <!-- 查分提交时的等待蒙层：自动识别 GIF / 视频资源，直到结果页成功跳转或本次提交失败 -->
+  <view class="submit-loading-overlay" wx:if="{{showSubmitLoadingOverlay}}">
+    <block wx:if="{{submitLoadingMediaType === 'image'}}">
+      <image
+        class="submit-loading-image"
+        src="{{submitLoadingVideoUrl}}"
+        mode="aspectFill"
+        binderror="onSubmitLoadingMediaError"
+      ></image>
+    </block>
+
+    <block wx:if="{{submitLoadingMediaType !== 'image'}}">
+      <video
+        class="submit-loading-video"
+        src="{{submitLoadingVideoUrl}}"
+        autoplay
+        loop
+        muted
+        object-fit="cover"
+        show-center-play-btn="{{false}}"
+        show-play-btn="{{false}}"
+        show-fullscreen-btn="{{false}}"
+        controls="{{false}}"
+        enable-progress-gesture="{{false}}"
+        binderror="onSubmitLoadingMediaError"
+      ></video>
+    </block>
+
+    <!-- <view class="submit-loading-tips">
+      <view class="submit-loading-title">正在查分</view>
+      <view class="submit-loading-desc">{{submitLoadingMediaError ? '动效加载中，请稍候...' : '请稍候，结果马上出来'}}</view>
+    </view> -->
+  </view>
 </view>

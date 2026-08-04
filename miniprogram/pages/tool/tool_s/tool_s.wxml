@@ -1,0 +1,71 @@
+<view class="tool-s-page">
+  <!-- <view class="tool-s-header">
+    保留页面头部说明，明确当前页面定位为 AI 聊天助手。 -->
+    <!-- <view class="tool-s-title">AI 聊天助手</view>
+    <view class="tool-s-desc">这里可以直接提问，页面会通过 sport_tool_fun2 云函数返回回复。</view> 
+  </view> -->
+
+  <scroll-view
+    class="chat-scroll"
+    scroll-y="true"
+    scroll-with-animation="true"
+    scroll-into-view="{{scrollIntoView}}"
+  >
+    <block wx:for="{{messageList}}" wx:key="id">
+      <view id="{{item.id}}" class="message-row {{item.role === 'user' ? 'is-user' : 'is-assistant'}}">
+        <view class="message-bubble {{item.isError ? 'is-error' : ''}}">
+          <view class="message-role">{{item.roleLabel}}</view>
+          <view class="message-content">{{item.content}}</view>
+          <view class="message-time">{{item.timeLabel}}</view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 发送中时展示加载态气泡，让用户感知当前请求仍在处理中。 -->
+    <view wx:if="{{loading}}" id="chat-loading-anchor" class="message-row is-assistant">
+      <view class="message-bubble loading-bubble">
+        <view class="message-role">AI 助手</view>
+        <view class="message-content">正在整理回复...</view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="quick-question-panel">
+    <view class="quick-question-title">快捷提问</view>
+    <view class="quick-question-list">
+      <view
+        wx:for="{{quickQuestions}}"
+        wx:key="*this"
+        class="quick-question-item"
+        data-value="{{item}}"
+        bindtap="handleQuickQuestion"
+      >
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <view class="input-panel">
+    <!-- 输入框负责承接多行提问内容，confirm 事件可直接触发发送。 -->
+    <textarea
+      class="chat-input"
+      value="{{inputValue}}"
+      placeholder="输入你想问的问题..."
+      maxlength="300"
+      auto-height="true"
+      confirm-type="send"
+      show-confirm-bar="false"
+      bindinput="handleInput"
+      bindconfirm="handleSend"
+    />
+    <button
+      class="send-button"
+      type="primary"
+      loading="{{sending}}"
+      disabled="{{sending}}"
+      bindtap="handleSend"
+    >
+      发送
+    </button>
+  </view>
+</view>

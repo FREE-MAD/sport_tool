@@ -23,7 +23,175 @@
     <view class="hero-spark hero-spark-two">✦</view>
   </view>
 
-  <view class="action-card" >
+  <view class="actions-card">
+    <!-- 首页新增轮播卡片入口，分别跳转到查分页和知识库 AI 问答页。 -->
+    <swiper
+      class="actions-swiper"
+      indicator-dots="{{true}}"
+      autoplay="{{true}}"
+      interval="5000"
+      circular="{{true}}"
+      previous-margin="0rpx"
+      next-margin="0rpx"
+    >
+      <swiper-item
+        wx:for="{{actionBanners}}"
+        wx:key="key"
+      >
+        <view
+          wx:if="{{item.key === 'score'}}"
+          class="banner-card banner-card-score {{item.themeClass}}"
+          bindtap="handleQuickCard"
+          data-path="{{item.path}}"
+        >
+          <view class="score-panel">
+            <view class="score-panel-header">
+              <view class="score-panel-header-main">
+                <view class="score-panel-title">{{item.title}}</view>
+                <view class="score-panel-value-row">
+                  <text class="score-panel-value">{{item.mainValue}}</text>
+                  <text class="score-panel-unit">{{item.mainUnit}}</text>
+                  <view class="score-panel-tag">{{item.tag}}</view>
+                </view>
+                <view class="score-panel-desc">{{item.desc}}</view>
+                <view class="score-panel-summary">{{item.summary}}</view>
+              </view>
+            </view>
+
+            <view class="score-metric-list">
+              <view
+                class="score-metric-item"
+                wx:for="{{item.metricList}}"
+                wx:key="label"
+              >
+                <view class="score-metric-value">{{item.value}}</view>
+                <view class="score-metric-label">{{item.label}}</view>
+              </view>
+            </view>
+
+            <view class="score-wave-chart">
+              <view
+                class="score-wave-bar tone-{{item.tone}}"
+                wx:for="{{item.waveList}}"
+                wx:key="index"
+                style="height: {{item.height}}rpx;"
+              ></view>
+            </view>
+          </view>
+
+          <view class="score-footer">
+            <view
+              class="score-footer-item"
+              wx:for="{{item.footerList}}"
+              wx:key="label"
+            >
+              <view class="score-footer-value-row">
+                <text class="score-footer-value">{{item.value}}</text>
+                <text wx:if="{{item.unit}}" class="score-footer-unit">{{item.unit}}</text>
+              </view>
+              <view class="score-footer-label">{{item.label}}</view>
+            </view>
+          </view>
+        </view>
+
+        <view
+          wx:elif="{{item.key === 'ai'}}"
+          class="banner-card banner-card-ai {{item.themeClass}}"
+          bindtap="handleQuickCard"
+          data-path="{{item.path}}"
+        >
+          <view class="ai-panel-shell">
+            <view class="ai-panel-top">
+              <view class="ai-panel-header">
+                <view>
+                  <view class="ai-panel-title">{{item.title}}</view>
+                  <view class="ai-panel-desc">{{item.desc}}</view>
+                </view>
+                <view class="ai-panel-tag">{{item.tag}}</view>
+              </view>
+
+              <!-- 参考示意图补充三块能力入口，让第二张卡片更像 AI 智库总览卡。 -->
+              <view class="ai-feature-list">
+                <view
+                  class="ai-feature-item"
+                  wx:for="{{item.featureList}}"
+                  wx:key="title"
+                  wx:for-item="feature"
+                >
+                  <!-- <view class="ai-feature-icon">{{feature.icon}}</view> -->
+                  <view class="ai-feature-title">{{feature.title}}</view>
+                </view>
+              </view>
+
+              <view class="ai-data-card">
+                <view class="ai-data-card-copy">
+                  <view class="ai-data-card-title">智能咨询数据</view>
+                  <view class="ai-data-card-value-row">
+                    <text class="ai-highlight-value">{{item.highlightValue}}</text>
+                    <!-- <view class="ai-highlight-tag">AI智能问答</view> -->
+                  </view>
+                  <view class="ai-data-card-label">AI智能问答</view>
+                </view>
+
+                <view class="ai-trend-card">
+                  <view class="ai-trend-list">
+                    <view
+                      class="ai-trend-item"
+                      wx:for="{{item.trendBars}}"
+                      wx:key="index"
+                      wx:for-item="trend"
+                    >
+                      <view
+                        class="ai-trend-bar tone-{{trend.tone}}"
+                        style="height: {{trend.height}}rpx;"
+                      ></view>
+                    </view>
+                  </view>
+                  <view class="ai-trend-label">近7天咨询趋势</view>
+                </view>
+            </view>
+          </view>
+
+          <view class="ai-panel-bottom">
+              <!-- 第二张卡片底部改成示意图里的左右双卡结构。 -->
+              <view class="ai-panel-bottom-summary">
+                <view class="ai-panel-bottom-main-value-row">
+                  <text class="ai-panel-bottom-main-value">{{item.totalValue}}</text>
+                  <view class="ai-panel-bottom-main-tag">{{item.totalTag}}</view>
+                </view>
+                <view class="ai-panel-bottom-main-label">累计知识库调用量</view>
+              </view>
+
+              <view class="ai-panel-bottom-quick">
+                <view class="ai-panel-bottom-quick-title">{{item.quickTitle}}</view>
+                <view class="ai-panel-bottom-quick-desc">{{item.quickDesc}}</view>
+                <view class="ai-panel-bottom-quick-button">
+                  <text>{{item.quickButtonText}}</text>
+                </view>
+              </view>
+              <!-- 第二张卡片底部改为三列统计条，样式参考你给的示意图。 -->
+              <!-- <view class="ai-panel-bottom-stats">
+                <view
+                  class="ai-panel-bottom-stat"
+                  wx:for="{{item.bottomStats}}"
+                  wx:key="label"
+                >
+                  <view class="ai-panel-bottom-stat-value">{{item.value}}</view>
+                  <view class="ai-panel-bottom-stat-label">{{item.label}}</view>
+                </view>
+              </view> -->
+              <!-- <view class="ai-panel-bottom-action">
+                <text>{{item.buttonText}}</text>
+                <text class="ai-panel-bottom-action-arrow">›</text>
+              </view> -->
+            </view>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- <view class="action-card" >
     <view class="action-copy">
       <view class="action-title">今天，想解决什么问题？</view>
       <view class="action-desc">选择一个工具，开始探索。</view>
@@ -57,8 +225,29 @@
       <view class="visual-base visual-base-inner"></view>
     </view>
   </view>
+  <view class="action-card2" >
 
-  <view class="section-card">
+    工具 S 独立放在 action-card2 中，并与 action-card3 保持并列。
+    <view
+      class="tool-s-entry"
+      bindtap="handleQuickCard"
+      data-path="{{toolSCard.path}}"
+    >
+      <view class="tool-s-entry-copy">
+        <view class="tool-s-entry-tag">{{toolSCard.tag}}</view>
+        <view class="tool-s-entry-title">{{toolSCard.title}}</view>
+        <view class="tool-s-entry-desc">{{toolSCard.desc}}</view>
+      </view>
+      <view class="tool-s-entry-action">
+        <text class="tool-s-entry-action-text">进入</text>
+        <text class="tool-s-entry-action-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+
+
+  <view class="action-card3" >
     <view class="section-head">
       <view class="section-tag">
         <text class="section-tag-icon">⚡</text>
@@ -83,5 +272,8 @@
         <view class="quick-arrow">›</view>
       </view>
     </view>
-  </view>
+  </view> -->
+
+
+
 </view>

@@ -54,6 +54,38 @@
 
   <view class="section-card">
     <view class="section-head">
+      <view class="section-tag section-tag--blue">我的偏好</view>
+      <view class="section-title">默认查分条件已经帮你记住</view>
+      <view class="section-desc">
+        <block wx:if="{{hasPreference}}">
+          最近一次保存的偏好会优先展示在这里，进入查分页后会自动回填。
+        </block>
+        <block wx:else>
+          你还没有保存默认偏好，去查分页选择一次后，这里会自动同步。
+        </block>
+      </view>
+    </view>
+
+    <view wx:if="{{hasPreference}}" class="preference-card">
+      <view class="preference-list">
+        <view class="preference-item" wx:for="{{preferenceSummaryRows}}" wx:key="label">
+          <view class="preference-label">{{item.label}}</view>
+          <view class="preference-value">{{item.value}}</view>
+        </view>
+      </view>
+      <view wx:if="{{preferenceUpdatedAtText}}" class="preference-foot">
+        最近更新：{{preferenceUpdatedAtText}}
+      </view>
+    </view>
+
+    <view wx:else class="empty-card">
+      <view class="empty-title">暂未保存默认偏好</view>
+      <view class="empty-desc">建议先去查分页完成一次选择，再点击“保存为默认偏好”。</view>
+    </view>
+  </view>
+
+  <!-- <view class="section-card">
+    <view class="section-head">
       <view class="section-tag">常用入口</view>
       <view class="section-title">把高频动作收在这一屏</view>
       <view class="section-desc">个人中心不只展示信息，也保留你最常回去的两个核心页面。</view>
@@ -79,6 +111,52 @@
         <view class="quick-desc">{{item.desc}}</view>
         <view class="quick-arrow">›</view>
       </view>
+    </view>
+  </view> -->
+
+  <view class="section-card">
+    <view class="section-head">
+      <view class="section-tag">查分历史</view>
+      <view class="section-title">最近查过的成绩都在这里</view>
+      <view class="section-desc">按当前登录用户展示最近 10 条查分记录，点开就能继续回看明细。</view>
+    </view>
+
+    <view wx:if="{{historyLoading}}" class="history-status-card">
+      <view class="history-status-title">正在加载历史记录</view>
+      <view class="history-status-desc">稍等一下，我正在把你最近的查分结果拉出来。</view>
+    </view>
+
+    <view wx:elif="{{scoreHistoryList.length > 0}}" class="history-list">
+      <view
+        class="history-card"
+        wx:for="{{scoreHistoryList}}"
+        wx:key="id"
+        bindtap="openHistoryDetail"
+        data-history-id="{{item.id}}"
+      >
+        <view class="history-card-top">
+          <view class="history-meta">
+            <view class="history-title">{{item.projectTitle}}</view>
+            <view class="history-subtitle">{{item.projectSubtitle}}</view>
+          </view>
+          <view class="history-score">
+            <view class="history-score-value">{{item.totalScoreText}}</view>
+            <view class="history-score-label">总分</view>
+          </view>
+        </view>
+        <view class="history-card-body">
+          <view class="history-preview">{{item.scorePreviewText}}</view>
+        </view>
+        <view class="history-card-foot">
+          <view class="history-time">{{item.submitTimeText}}</view>
+          <view class="history-count">{{item.projectCountText}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="empty-card">
+      <view class="empty-title">还没有查分历史</view>
+      <view class="empty-desc">{{historyEmptyText}}</view>
     </view>
   </view>
 

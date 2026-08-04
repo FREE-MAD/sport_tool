@@ -36,6 +36,9 @@ const {
 // 从提交层导入提交相关的方法集合（校验、提交、云函数调用等）
 const submitMethods = require('./tool_f_submit.js');
 
+// 查分提交中的等待动效资源：支持 GIF / MP4，点击“查分”后持续展示直到成功跳转结果页或提交失败
+const SUBMIT_LOADING_VIDEO_CLOUD_ID = 'cloud://cloud1-6gh7jgl8c5b16a83.636c-cloud1-6gh7jgl8c5b16a83-1398046944/sport_tool/pageview/tool/8月4日.gif';
+
 /**
  * 交互层方法集合
  * 设计原则：所有事件处理器仅做三件事 ——
@@ -44,6 +47,20 @@ const submitMethods = require('./tool_f_submit.js');
  *   3. 通过 setData 更新页面数据
  */
 const interactionMethods = {
+
+  /**
+   * 根据资源路径识别查分等待动效的类型
+   * 说明：当前既支持 gif 图片，也支持 mp4 / mov 视频，便于后续自由替换云端资源
+   * @param {string} resourcePath - 云文件 ID 或临时地址
+   * @returns {string} image | video
+   */
+  _detectSubmitLoadingMediaType(resourcePath) {
+    const normalizedPath = String(resourcePath || '').toLowerCase();
+    if (/\.(gif|png|jpg|jpeg|webp)(\?|$)/.test(normalizedPath)) {
+      return 'image';
+    }
+    return 'video';
+  },
 
   /**
    * 页面生命周期：页面加载时触发
@@ -59,6 +76,8 @@ const interactionMethods = {
     console.log('[tool_f] mainTypeList:', this.data.mainTypeList);
     console.log('[tool_f] specialTypeList:', this.data.specialTypeList);
     console.log('[tool_f] auxiliaryTypeList:', this.data.auxiliaryTypeList);
+    // 预加载查分等待视频地址，尽量让用户点击“查分”后能立即看到循环动效
+    this._loadSubmitLoadingVideoUrl();
     // 页面加载后按当前 openid 读取该用户上次使用的省份和项目偏好
     this._loadUserPreference();
   },
@@ -380,6 +399,113 @@ const interactionMethods = {
       .catch((err) => {
         console.error('[tool_f] 获取 openid 后读取偏好失败:', err);
       });
+  },
+
+  /**
+   * 预加载“点击查分”后的等待动效临时地址
+   * 说明：
+   *   1. data 里默认先放 cloud 文件 ID，保证即使临时链接还没换到，也有可用兜底值
+   *   2. 优先下载到本地临时文件，提升 GIF / 视频在真机中的加载稳定性
+   *   3. 下载失败时再回退到 tempFileURL，避免因为一次网络波动直接失效
+   */
+  _loadSubmitLoadingVideoUrl() {
+    if (!wx.cloud) return;
+
+    const fallbackToTempFileUrl = () => {
+      if (!wx.cloud.getTempFileURL) return;
+
+      wx.cloud.getTempFileURL({
+        fileList: [SUBMIT_LOADING_VIDEO_CLOUD_ID],
+        success: (res) => {
+          const file = res && res.fileList ? res.fileList[0] : null;
+          if (file && file.tempFileURL) {
+            this.setData({
+              submitLoadingVideoUrl: file.tempFileURL,
+              submitLoadingMediaType: this._detectSubmitLoadingMediaType(file.tempFileURL)
+            });
+          }
+        },
+        fail: (err) => {
+          console.error('[tool_f] 获取查分等待动效地址失败:', err);
+        }
+      });
+    };
+
+    if (!wx.cloud.downloadFile) {
+      fallbackToTempFileUrl();
+      return;
+    }
+
+    wx.cloud.downloadFile({
+      fileID: SUBMIT_LOADING_VIDEO_CLOUD_ID,
+      success: (res) => {
+        if (res && res.tempFilePath) {
+          this.setData({
+            submitLoadingVideoUrl: res.tempFilePath,
+            submitLoadingMediaType: this._detectSubmitLoadingMediaType(res.tempFilePath)
+          });
+          return;
+        }
+        fallbackToTempFileUrl();
+      },
+      fail: (err) => {
+        console.error('[tool_f] 下载查分等待动效失败，准备回退临时链接:', err);
+        fallbackToTempFileUrl();
+      }
+    });
+  },
+
+  /**
+   * 打开查分等待视频蒙层
+   * 作用：在云函数计算期间循环播放视频，给用户明确的过渡反馈
+   * 说明：记录打开时间戳，配合 hideSubmitLoadingOverlay 保证最小展示 2000ms
+   */
+  showSubmitLoadingOverlay() {
+    if (this._submitLoadingHideTimer) {
+      clearTimeout(this._submitLoadingHideTimer);
+      this._submitLoadingHideTimer = null;
+    }
+    this._submitLoadingOverlayShowTime = Date.now();
+    this.setData({
+      submitLoadingMediaError: false,
+      showSubmitLoadingOverlay: true
+    });
+  },
+
+  /**
+   * 关闭查分等待视频蒙层
+   * 作用：提交失败、异常结束或页面未跳转时，及时回收遮罩
+   * 说明：保证视频至少播放 3000ms 再关闭，避免快速返回时蒙层一闪而过
+   */
+  hideSubmitLoadingOverlay() {
+    const MIN_DISPLAY_MS = 3000;
+    const elapsed = Date.now() - (this._submitLoadingOverlayShowTime || 0);
+    const remaining = MIN_DISPLAY_MS - elapsed;
+
+    if (this._submitLoadingHideTimer) {
+      clearTimeout(this._submitLoadingHideTimer);
+      this._submitLoadingHideTimer = null;
+    }
+
+    if (remaining > 0) {
+      this._submitLoadingHideTimer = setTimeout(() => {
+        this._submitLoadingHideTimer = null;
+        this.setData({ showSubmitLoadingOverlay: false });
+      }, remaining);
+    } else {
+      this.setData({ showSubmitLoadingOverlay: false });
+    }
+  },
+
+  /**
+   * 等待动效资源加载失败时的兜底处理
+   * 作用：记录错误并保持全屏遮罩文案，避免用户只看到一块黑色区域
+   */
+  onSubmitLoadingMediaError(e) {
+    console.error('[tool_f] 查分等待动效加载失败:', e);
+    this.setData({
+      submitLoadingMediaError: true
+    });
   },
 
   /**
@@ -1059,6 +1185,10 @@ const interactionMethods = {
 Page(Object.assign({
   data: Object.assign(createInitialPageData(), {
     savingPreference: false,
-    clearingPreference: false
+    clearingPreference: false,
+    submitLoadingVideoUrl: SUBMIT_LOADING_VIDEO_CLOUD_ID,
+    submitLoadingMediaType: 'image',
+    submitLoadingMediaError: false,
+    showSubmitLoadingOverlay: false
   })
 }, interactionMethods, submitMethods));

@@ -585,7 +585,7 @@ module.exports = {
    *  [1] 前置守卫：validate() 不通过 → 直接 return
    *            data.submitting 为 true → 直接 return（防重复点击）
    *
-   *  [2] 提交锁 + loading：submitting=true，wx.showLoading
+   *  [2] 提交锁 + 等待视频蒙层：submitting=true，并展示循环播放的视频过渡动画
    *
    *  [3] 从 data 解包所有需要的字段（解构赋值）
    *
@@ -637,9 +637,11 @@ module.exports = {
     if (!this.validate()) return;
     if (this.data.submitting) return;
 
-    // [2] 提交锁 + loading 动画
+    // [2] 提交锁 + 等待视频蒙层
     this.setData({ submitting: true });
-    wx.showLoading({ title: '提交中...' });
+    if (typeof this.showSubmitLoadingOverlay === 'function') {
+      this.showSubmitLoadingOverlay();
+    }
 
     // [3] 解构 data 字段
     const {
@@ -776,7 +778,6 @@ module.exports = {
     })
       .then((res) => {
         // [10] 成功分支
-        wx.hideLoading();
         this.setData({ submitting: false });
 
         if (res.result && res.result.success) {
@@ -793,17 +794,33 @@ module.exports = {
             url: '/pages/tool/tool_f/tool_f_detailed/tool_f_detailed',
             success: (navRes) => {
               navRes.eventChannel.emit('scoreResult', scoreData);
+              // 跳转成功后关闭等待蒙层（受最小展示 2000ms 约束）
+              if (typeof this.hideSubmitLoadingOverlay === 'function') {
+                this.hideSubmitLoadingOverlay();
+              }
+            },
+            fail: (navErr) => {
+              if (typeof this.hideSubmitLoadingOverlay === 'function') {
+                this.hideSubmitLoadingOverlay();
+              }
+              wx.showToast({ title: '结果页打开失败', icon: 'none' });
+              console.error('[tool_f] 结果页跳转失败:', navErr);
             }
           });
         } else {
           // 业务失败（查分逻辑返回 success=false）
+          if (typeof this.hideSubmitLoadingOverlay === 'function') {
+            this.hideSubmitLoadingOverlay();
+          }
           wx.showToast({ title: (res.result && res.result.message) || '提交失败', icon: 'none' });
         }
       })
       .catch((err) => {
         // [11] 异常分支
-        wx.hideLoading();
         this.setData({ submitting: false });
+        if (typeof this.hideSubmitLoadingOverlay === 'function') {
+          this.hideSubmitLoadingOverlay();
+        }
         if (err && err.code === 'DUPLICATE_SUBMIT') {
           // 重复提交（5秒锁窗内多次点击）
           wx.showToast({ title: err.message || '请勿重复提交', icon: 'none' });

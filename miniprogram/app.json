@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/tool/tool_f/tool_f",
+    "pages/tool/tool_s/tool_s",
     "pages/tool/tool_f/tool_f_detailed/tool_f_detailed",
     "pages/mine/mine"
   ],

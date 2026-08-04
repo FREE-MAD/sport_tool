@@ -13,6 +13,16 @@ function resolveScoreCollectionName(options) {
   return 'tool_code';
 }
 
+function resolveRecordCollectionName(options) {
+  const opts = options || {};
+  if (opts.forceRecordCollectionName) return opts.forceRecordCollectionName;
+  // 提交记录按环境分仓：开发态写 tool_records，预览/正式统一写真实环境库。
+  if (opts.useTestCollection === true) return 'tool_records';
+  if (opts.useTestCollection === false) return 'real_environment_tool_records';
+  if (opts.runtimeEnvVersion === 'develop') return 'tool_records';
+  return 'real_environment_tool_records';
+}
+
 async function findRecentDuplicateRecord(openid, submitMeta) {
   // 本轮“云函数二次校验防重”先停用，只保留前端 globalSubmit.js 拦截。
   // 如需恢复服务端防重，可回滚到基于 openid + submitFingerprint 的最近记录查询逻辑。
@@ -483,7 +493,8 @@ exports.main = async (event, context) => {
     __submitMeta,
     runtimeEnvVersion,
     useTestCollection,
-    forceScoreCollectionName
+    forceScoreCollectionName,
+    forceRecordCollectionName
   } = event;
   const resolvedOpenid = clientOpenid || wxContext.OPENID || '';
   const submitMeta = __submitMeta || {};
@@ -491,6 +502,11 @@ exports.main = async (event, context) => {
     runtimeEnvVersion,
     useTestCollection,
     forceScoreCollectionName
+  });
+  const recordCollectionName = resolveRecordCollectionName({
+    runtimeEnvVersion,
+    useTestCollection,
+    forceRecordCollectionName
   });
 
   console.log('========== 前端传入数据 ==========');
@@ -500,7 +516,7 @@ exports.main = async (event, context) => {
   console.log('提交时间:', submitMeta.clientSubmitAt || 'missing', '| 请求ID:', submitMeta.clientRequestId || 'missing');
   console.log('提交流转页:', submitMeta.submitPageRoute || 'unknown', '| 锁Key:', submitMeta.submitLockKey || 'unknown');
   console.log('提交指纹:', submitMeta.submitFingerprint || 'missing', '| 防重窗口ms:', submitMeta.duplicateWindowMs || 'default');
-  console.log('环境:', runtimeEnvVersion || 'unknown', '| 评分集合:', scoreCollectionName);
+  console.log('环境:', runtimeEnvVersion || 'unknown', '| 评分集合:', scoreCollectionName, '| 记录集合:', recordCollectionName);
   console.log('规则码:', JSON.stringify({
     computationRuleCode: computationRuleCode || '',
     totalScoreCode: totalScoreCode || '',
@@ -537,13 +553,15 @@ exports.main = async (event, context) => {
     console.log('评分结果:', JSON.stringify(score));
     console.log('====================================');
 
-    // ==================== 存储到 tool_records ====================
-    const result = await db.collection('tool_records').add({
+    // ==================== 按环境存储提交记录 ====================
+    const result = await db.collection(recordCollectionName).add({
       data: {
         openid: resolvedOpenid,
         appid: wxContext.APPID || '',
         unionid: wxContext.UNIONID || '',
         runtimeEnvVersion: runtimeEnvVersion || 'release',
+        scoreCollectionName,
+        recordCollectionName,
         clientRequestId: submitMeta.clientRequestId || '',
         clientSubmitAt: submitMeta.clientSubmitAt || '',
         clientSubmitTimestamp: submitMeta.clientSubmitTimestamp || 0,
