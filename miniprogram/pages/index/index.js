@@ -1,13 +1,54 @@
 // pages/index/index.js
+const { ensureOpenId, getRuntimeEnvVersion } = require('../../utils/globalSubmit.js')
+
 const HERO_IMAGE_CLOUD_ID = 'cloud://cloud1-6gh7jgl8c5b16a83.636c-cloud1-6gh7jgl8c5b16a83-1398046944/sport_tool/pageview/index/物品处理-49ed9fb0-9c06-421e-9617-b923af5f7522-removebg-preview.png'
+const INDEX_COLLECT_FORM_STORAGE_KEY = 'indexCollectForm'
+const INDEX_COLLECT_TOOL_KEY = 'index_collect_form'
+const GENDER_OPTIONS = ['男', '女', '保密']
+const ROLE_OPTIONS = ['学生', '家长', '教练', '其他']
+
+function createEmptyCollectForm() {
+  return {
+    name: '',
+    gender: '',
+    age: '',
+    phone: '',
+    region: [],
+    addressDetail: '',
+    role: '',
+    schoolName: '',
+    remark: ''
+  }
+}
+
+function formatDateTime(timestamp) {
+  const date = new Date(timestamp || Date.now())
+  if (Number.isNaN(date.getTime())) {
+    return ''
+  }
+
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hour = String(date.getHours()).padStart(2, '0')
+  const minute = String(date.getMinutes()).padStart(2, '0')
+  return year + '-' + month + '-' + day + ' ' + hour + ':' + minute
+}
 
 Page({
   data: {
     heroImageUrl: '',
+    genderOptions: GENDER_OPTIONS,
+    roleOptions: ROLE_OPTIONS,
+    collectForm: createEmptyCollectForm(),
+    collectRegionText: '请选择所在地区',
+    collectSubmitting: false,
+    collectSavedAtText: '',
     // 首页轮播入口配置：第一张进入查分，第二张进入知识库 AI 问答。
     actionBanners: [
       {
         key: 'score',
+        // visible 不配置时默认展示，便于后续继续按配置控制轮播卡片显隐。
         tag: '+查分',
         title: '查分入口',
         desc: '提高流程效率，一键保存用户偏好与记录',
@@ -49,6 +90,8 @@ Page({
       },
       {
         key: 'ai',
+        // 这里先关闭第二张轮播卡片渲染，后续需要恢复时改为 true 或直接移除该字段即可。
+        visible: false,
         tag: '+知识库',
         title: '体育专项AI智库',
         desc: '输入运动目标，点击进行提问',
@@ -133,6 +176,7 @@ Page({
 
   onLoad() {
     this.loadHeroImage()
+    this.loadCollectForm()
   },
 
   loadHeroImage() {
@@ -153,6 +197,255 @@ Page({
     })
   },
 
+  // 首页资料采集表单先从本地回填，再尝试读取云端记录，确保用户再次进入时能继续编辑。
+  loadCollectForm() {
+    const cachedForm = wx.getStorageSync(INDEX_COLLECT_FORM_STORAGE_KEY)
+    if (cachedForm) {
+      this.applyCollectForm(cachedForm)
+    }
+
+    this.callLoginAction('getToolPreference', {
+      toolKey: INDEX_COLLECT_TOOL_KEY
+    })
+      .then((result) => {
+        const preference = result && result.preference ? result.preference : null
+        if (!preference) {
+          return
+        }
+
+        this.applyCollectForm(preference, {
+          collectSavedAtText: result.updatedAt ? '最近保存：' + formatDateTime(result.updatedAt) : ''
+        })
+      })
+      .catch((err) => {
+        console.warn('[index] 读取首页采集表单失败，继续使用本地缓存:', err && err.message ? err.message : err)
+      })
+  },
+
+  // 统一封装 login 云函数动作调用，首页后续继续扩展别的用户偏好时可以直接复用。
+  callLoginAction(action, extraData) {
+    const runtimeEnvVersion = getRuntimeEnvVersion()
+    return ensureOpenId(runtimeEnvVersion)
+      .then(() => new Promise((resolve, reject) => {
+        wx.cloud.callFunction({
+          name: 'login',
+          data: Object.assign({
+            action,
+            runtimeEnvVersion
+          }, extraData || {}),
+          success: (res) => {
+            const result = res && res.result ? res.result : {}
+            if (result.success === false) {
+              reject(new Error(result.message || '请求失败'))
+              return
+            }
+
+            resolve(result)
+          },
+          fail: reject
+        })
+      }))
+  },
+
+  // 所有字段都先归一化后再写入 data，避免 region 非数组等情况影响页面渲染。
+  applyCollectForm(form, extraData) {
+    const normalizedForm = this.normalizeCollectForm(form)
+
+    this.setData(Object.assign({
+      collectForm: normalizedForm,
+      collectRegionText: this.buildCollectRegionText(normalizedForm.region)
+    }, extraData || {}))
+  },
+
+  normalizeCollectForm(form) {
+    const source = form || {}
+    const region = Array.isArray(source.region) ? source.region.filter(Boolean).slice(0, 3) : []
+
+    return {
+      name: (source.name || '').trim(),
+      gender: (source.gender || '').trim(),
+      age: source.age === 0 ? '0' : String(source.age || '').trim(),
+      phone: String(source.phone || '').replace(/\s+/g, ''),
+      region,
+      addressDetail: (source.addressDetail || '').trim(),
+      role: (source.role || '').trim(),
+      schoolName: (source.schoolName || '').trim(),
+      remark: (source.remark || '').trim()
+    }
+  },
+
+  buildCollectRegionText(region) {
+    if (!Array.isArray(region) || !region.length) {
+      return '请选择所在地区'
+    }
+
+    return region.join(' / ')
+  },
+
+  handleCollectInput(event) {
+    const field = event.currentTarget.dataset.field
+    let value = event.detail && event.detail.value ? event.detail.value : ''
+
+    if (!field) {
+      return
+    }
+
+    if (field === 'phone') {
+      value = value.replace(/[^\d]/g, '').slice(0, 11)
+    }
+
+    if (field === 'age') {
+      value = value.replace(/[^\d]/g, '').slice(0, 2)
+    }
+
+    this.setData({
+      ['collectForm.' + field]: value
+    })
+  },
+
+  handleGenderSelect(event) {
+    const value = event.currentTarget.dataset.value || ''
+    this.setData({
+      'collectForm.gender': value
+    })
+  },
+
+  handleRoleSelect(event) {
+    const value = event.currentTarget.dataset.value || ''
+    this.setData({
+      'collectForm.role': value
+    })
+  },
+
+  handleRegionChange(event) {
+    const region = event.detail && Array.isArray(event.detail.value) ? event.detail.value : []
+    this.setData({
+      'collectForm.region': region,
+      collectRegionText: this.buildCollectRegionText(region)
+    })
+  },
+
+  validateCollectForm(form) {
+    const normalizedForm = this.normalizeCollectForm(form)
+
+    if (!normalizedForm.name) {
+      return '请先填写姓名'
+    }
+
+    if (!normalizedForm.gender) {
+      return '请先选择性别'
+    }
+
+    if (!normalizedForm.age) {
+      return '请先填写年龄'
+    }
+
+    const ageNumber = Number(normalizedForm.age)
+    if (!Number.isFinite(ageNumber) || ageNumber < 1 || ageNumber > 99) {
+      return '年龄请填写 1-99'
+    }
+
+    if (!/^1\d{10}$/.test(normalizedForm.phone)) {
+      return '请输入正确的11位手机号'
+    }
+
+    if (!normalizedForm.region.length) {
+      return '请先选择所在地区'
+    }
+
+    if (!normalizedForm.addressDetail) {
+      return '请先填写详细地址'
+    }
+
+    if (!normalizedForm.role) {
+      return '请先选择身份'
+    }
+
+    return ''
+  },
+
+  // 点击提交后会先保存在本地，再同步到当前 openid 的用户偏好里，方便后续继续做名单管理。
+  submitCollectForm() {
+    if (this.data.collectSubmitting) {
+      return
+    }
+
+    const normalizedForm = this.normalizeCollectForm(this.data.collectForm)
+    const errorMessage = this.validateCollectForm(normalizedForm)
+
+    if (errorMessage) {
+      wx.showToast({
+        title: errorMessage,
+        icon: 'none'
+      })
+      return
+    }
+
+    wx.setStorageSync(INDEX_COLLECT_FORM_STORAGE_KEY, normalizedForm)
+
+    this.setData({
+      collectSubmitting: true
+    })
+
+    this.callLoginAction('saveToolPreference', {
+      toolKey: INDEX_COLLECT_TOOL_KEY,
+      preference: normalizedForm
+    })
+      .then((result) => {
+        this.applyCollectForm(normalizedForm, {
+          collectSubmitting: false,
+          collectSavedAtText: '最近保存：' + (result.updatedAt ? formatDateTime(result.updatedAt) : formatDateTime(Date.now()))
+        })
+
+        wx.showToast({
+          title: '资料已提交',
+          icon: 'success'
+        })
+      })
+      .catch((err) => {
+        console.error('[index] 保存首页采集表单失败:', err)
+        this.setData({
+          collectSubmitting: false,
+          collectSavedAtText: '已保存到本机，云端同步稍后重试'
+        })
+
+        wx.showToast({
+          title: '已保存到本机',
+          icon: 'none'
+        })
+      })
+  },
+
+  handleCollectReset() {
+    const page = this
+
+    wx.showModal({
+      title: '清空当前表单',
+      content: '清空后需要重新填写本页采集内容，是否继续？',
+      success(res) {
+        if (!res.confirm) {
+          return
+        }
+
+        wx.removeStorageSync(INDEX_COLLECT_FORM_STORAGE_KEY)
+        page.applyCollectForm(createEmptyCollectForm(), {
+          collectSavedAtText: ''
+        })
+
+        page.callLoginAction('clearToolPreference', {
+          toolKey: INDEX_COLLECT_TOOL_KEY
+        }).catch((err) => {
+          console.warn('[index] 清空首页采集表单云端记录失败:', err && err.message ? err.message : err)
+        })
+
+        wx.showToast({
+          title: '表单已清空',
+          icon: 'success'
+        })
+      }
+    })
+  },
+
   switchTabPage(path) {
     wx.switchTab({
       url: path
@@ -169,6 +462,13 @@ Page({
   showExploreToast() {
     wx.showToast({
       title: '前方的区域<><<>>>以后再来探索吧!!!!!',
+      icon: 'none'
+    })
+  },
+
+  handleAICardTap() {
+    wx.showToast({
+      title: '前方的区域以后再来探索吧',
       icon: 'none'
     })
   },

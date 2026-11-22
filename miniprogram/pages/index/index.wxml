@@ -37,6 +37,7 @@
       <swiper-item
         wx:for="{{actionBanners}}"
         wx:key="key"
+        wx:if="{{item.visible !== false}}"
       >
         <view
           wx:if="{{item.key === 'score'}}"
@@ -97,8 +98,7 @@
         <view
           wx:elif="{{item.key === 'ai'}}"
           class="banner-card banner-card-ai {{item.themeClass}}"
-          bindtap="handleQuickCard"
-          data-path="{{item.path}}"
+          bindtap="handleAICardTap"
         >
           <view class="ai-panel-shell">
             <view class="ai-panel-top">
@@ -189,6 +189,154 @@
         </view>
       </swiper-item>
     </swiper>
+  </view>
+
+  <!-- 首页新增资料采集表单，统一承接手机号、地址和基础资料填写。 -->
+  <view class="collect-card">
+    <view class="collect-header">
+      <view class="collect-tag">信息采集</view>
+      <view class="collect-title">手机号 / 地址 / 基础信息采集</view>
+      <view class="collect-desc">适合先登记用户基础资料，后续做联系、回访和页面回填会更顺手。</view>
+    </view>
+
+    <view class="collect-form">
+      <view class="collect-section-title">基础信息</view>
+
+      <view class="collect-field">
+        <view class="collect-label">姓名</view>
+        <input
+          class="collect-input"
+          placeholder="请输入姓名"
+          value="{{collectForm.name}}"
+          data-field="name"
+          bindinput="handleCollectInput"
+        />
+      </view>
+
+      <view class="collect-field">
+        <view class="collect-label">性别</view>
+        <view class="collect-option-list">
+          <view
+            wx:for="{{genderOptions}}"
+            wx:key="*this"
+            class="collect-option {{collectForm.gender === item ? 'is-active' : ''}}"
+            data-value="{{item}}"
+            bindtap="handleGenderSelect"
+          >
+            {{item}}
+          </view>
+        </view>
+      </view>
+
+      <view class="collect-field">
+        <view class="collect-label">年龄</view>
+        <input
+          class="collect-input"
+          type="number"
+          maxlength="2"
+          placeholder="请输入年龄"
+          value="{{collectForm.age}}"
+          data-field="age"
+          bindinput="handleCollectInput"
+        />
+      </view>
+
+      <view class="collect-field">
+        <view class="collect-label">身份</view>
+        <view class="collect-option-list">
+          <view
+            wx:for="{{roleOptions}}"
+            wx:key="*this"
+            class="collect-option {{collectForm.role === item ? 'is-active' : ''}}"
+            data-value="{{item}}"
+            bindtap="handleRoleSelect"
+          >
+            {{item}}
+          </view>
+        </view>
+      </view>
+
+      <view class="collect-field">
+        <view class="collect-label">学校 / 单位</view>
+        <input
+          class="collect-input"
+          placeholder="请输入学校、机构或单位名称"
+          value="{{collectForm.schoolName}}"
+          data-field="schoolName"
+          bindinput="handleCollectInput"
+        />
+      </view>
+
+      <view class="collect-section-title">联系方式</view>
+
+      <view class="collect-field">
+        <view class="collect-label">手机号</view>
+        <input
+          class="collect-input"
+          type="number"
+          maxlength="11"
+          placeholder="请输入11位手机号"
+          value="{{collectForm.phone}}"
+          data-field="phone"
+          bindinput="handleCollectInput"
+        />
+      </view>
+
+      <view class="collect-section-title">地址采集</view>
+
+      <view class="collect-field">
+        <view class="collect-label">所在地区</view>
+        <picker mode="region" value="{{collectForm.region}}" bindchange="handleRegionChange">
+          <view class="collect-picker {{collectForm.region.length ? 'is-filled' : ''}}">
+            {{collectRegionText}}
+          </view>
+        </picker>
+      </view>
+
+      <view class="collect-field">
+        <view class="collect-label">详细地址</view>
+        <textarea
+          class="collect-textarea"
+          placeholder="请输入街道、门牌号、宿舍或训练场馆等详细地址"
+          maxlength="120"
+          auto-height="{{true}}"
+          value="{{collectForm.addressDetail}}"
+          data-field="addressDetail"
+          bindinput="handleCollectInput"
+        />
+      </view>
+
+      <view class="collect-section-title">补充说明</view>
+
+      <view class="collect-field">
+        <view class="collect-label">备注</view>
+        <textarea
+          class="collect-textarea"
+          placeholder="可填写训练方向、当前需求、跟进说明等"
+          maxlength="200"
+          auto-height="{{true}}"
+          value="{{collectForm.remark}}"
+          data-field="remark"
+          bindinput="handleCollectInput"
+        />
+      </view>
+
+      <view class="collect-footer">
+        <view wx:if="{{collectSavedAtText}}" class="collect-saved-tip">{{collectSavedAtText}}</view>
+
+        <view class="collect-button-row">
+          <button class="collect-button collect-button-light" bindtap="handleCollectReset">重置</button>
+          <button
+            class="collect-button collect-button-primary"
+            loading="{{collectSubmitting}}"
+            disabled="{{collectSubmitting}}"
+            bindtap="submitCollectForm"
+          >
+            提交资料
+          </button>
+        </view>
+      </view>
+    </view>
   </view>
 
   <!-- <view class="action-card" >
